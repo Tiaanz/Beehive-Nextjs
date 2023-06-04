@@ -1,4 +1,3 @@
-
 import * as React from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
@@ -7,11 +6,20 @@ import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Autocomplete } from '@mui/material'
 // const centres = require('../../../../data/centersArr')
+import { gql } from '@apollo/client'
+import client from '../../apollo-client'
 
 const theme = createTheme()
 const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
 
-const Centre = ({}) => {
+interface Props {
+  centers: { ECE_id: number; name: string }[]
+}
+
+const Centre = ({ centers }: Props) => {
+  const dropdownCenters = centers.map((center) => center.ECE_id + " " + center.name)
+
+
   const [passwordMessage, setPswMessage] = React.useState('')
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,7 +43,7 @@ const Centre = ({}) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs" className='pt-20'>
+      <Container component="main" maxWidth="xs" className="pt-20">
         <CssBaseline />
         <Box
           sx={{
@@ -52,11 +60,11 @@ const Centre = ({}) => {
             className="flex flex-col items-center w-full"
           >
             <h1 className="text-xl mb-2">Register as centre manager</h1>{' '}
-            {/* <Autocomplete
+            <Autocomplete
               clearOnEscape
               fullWidth
               id="clear-on-escape"
-              options={centres}
+              options={dropdownCenters}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -67,7 +75,7 @@ const Centre = ({}) => {
                   name="centreName"
                 />
               )}
-            /> */}
+            />
             <TextField
               margin="normal"
               inputProps={{
@@ -155,3 +163,22 @@ const Centre = ({}) => {
 }
 
 export default Centre
+
+export async function getStaticProps() {
+  const { data } = await client.query({
+    query: gql`
+      query GetAllCenters {
+        getAllCenters {
+          ECE_id
+          name
+        }
+      }
+    `,
+  })
+
+  return {
+    props: {
+      centers: data.getAllCenters,
+    },
+  }
+}

@@ -3,13 +3,19 @@ import LargeHeading from '@/components/ui/LargeHeading'
 import Link from 'next/link'
 import Meta from '@/components/Meta'
 
+
 const workSans = Work_Sans({
   weight: '400',
   subsets: ['latin'],
   display: 'swap',
 })
 
+
+
 export default function Home() {
+  
+ 
+  
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
@@ -37,3 +43,5 @@ export default function Home() {
     </>
   )
 }
+
+
