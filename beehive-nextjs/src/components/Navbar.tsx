@@ -5,11 +5,10 @@ import { buttonVariants } from './ui/Button'
 import SignInButton from './SignInButton'
 import SignOutButton from './SignOutButton'
 
-
 const Navbar = () => {
   const { data: session } = useSession()
-  console.log(session);
-  
+  console.log(session)
+
   return (
     <div className="fixed backdrop-blur-sm bg-white z-50 top-0 left-0 right-0 h-20 border-b border-slate-300 shadow-sm flex items-center justify-between">
       <div className="w-11/12 mx-auto flex justify-between items-center">
@@ -33,11 +32,19 @@ const Navbar = () => {
               >
                 NOTIFICATION
               </Link>
+              {1 !== 1 && (
+                <Link
+                  className={buttonVariants({ variant: 'link' })}
+                  href="/my-jobs"
+                >
+                  MY JOBS
+                </Link>
+              )}
               <Link
                 className={buttonVariants({ variant: 'link' })}
-                href="/my-jobs"
+                href="/my-posts"
               >
-                MY JOBS
+                MY POSTS
               </Link>
               <Link
                 className={buttonVariants({ variant: 'link' })}

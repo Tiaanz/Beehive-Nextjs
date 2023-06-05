@@ -1,10 +1,9 @@
 import { NextAuthOptions } from 'next-auth'
-// import { db } from './db'
-// import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
+import { gql } from '@apollo/client'
+
 export const authOptions: NextAuthOptions = {
-  // adapter: PrismaAdapter(db),
   session: { strategy: 'jwt' },
   pages: {
     signIn: '/login',
@@ -13,18 +12,51 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       type: 'credentials',
       credentials: {},
-      authorize(credentials, req) {
+      async authorize(credentials, req) {
         const { email, password } = credentials as {
           email: string
           password: string
         }
         //perform authentication logic
         //find out user from db
-        if (email !== 'tian@test.com' || password !== '123') {
+        const GET_USER = `
+          query GetOneUser($email: String!) {
+            getOneUser(email: $email) {
+              id
+              first_name
+              email
+              password
+            }
+          }
+        `
+
+        async function getOneUser() {
+          const response = await fetch('http://localhost:4000', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: GET_USER, variables: { email } }),
+          })
+
+          const data = await response.json()
+          return data
+        }
+        const user = await getOneUser()
+
+        console.log(user)
+        if (
+          user.data.getOneUser === null ||
+          email !== user.data.getOneUser.email ||
+          password !== user.data.getOneUser.password
+        ) {
           throw new Error('invalid password or email')
         }
+
         //if everything is fine
-        return { id: '1234', name: 'Tian', email: 'tian@test.com' }
+        return {
+          id: user.data.getOneUser.id,
+          name: user.data.getOneUser.first_name,
+          email: user.data.getOneUser.email,
+        }
       },
     }),
   ],

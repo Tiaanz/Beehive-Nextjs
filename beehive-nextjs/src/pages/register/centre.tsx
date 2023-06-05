@@ -5,7 +5,6 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Autocomplete } from '@mui/material'
-// const centres = require('../../../../data/centersArr')
 import { gql } from '@apollo/client'
 import client from '../../apollo-client'
 
