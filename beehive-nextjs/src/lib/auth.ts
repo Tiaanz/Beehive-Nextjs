@@ -1,7 +1,6 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-
-import { gql } from '@apollo/client'
+import bcrypt from 'bcrypt'
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' },
@@ -26,6 +25,7 @@ export const authOptions: NextAuthOptions = {
               first_name
               email
               password
+              role
             }
           }
         `
@@ -42,20 +42,24 @@ export const authOptions: NextAuthOptions = {
         }
         const user = await getOneUser()
 
-        console.log(user)
+console.log(user);
+
         if (
           user.data.getOneUser === null ||
           email !== user.data.getOneUser.email ||
-          password !== user.data.getOneUser.password
+         !await bcrypt.compare(password,user.data.getOneUser.password)
         ) {
+          
           throw new Error('invalid password or email')
         }
 
         //if everything is fine
+ 
         return {
           id: user.data.getOneUser.id,
           name: user.data.getOneUser.first_name,
           email: user.data.getOneUser.email,
+          image:"somephotourl"
         }
       },
     }),
