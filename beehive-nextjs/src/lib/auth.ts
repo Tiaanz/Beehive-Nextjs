@@ -18,9 +18,9 @@ export const authOptions: NextAuthOptions = {
         }
         //perform authentication logic
         //find out user from db
-        const GET_USER = `
-          query GetOneUser($email: String!) {
-            getOneUser(email: $email) {
+        const GET_RELIEVER = `
+          query GetOneReliever($email: String!) {
+            getOneReliever(email: $email) {
               id
               first_name
               email
@@ -29,37 +29,79 @@ export const authOptions: NextAuthOptions = {
             }
           }
         `
+        const GET_MANAGER = `
+        query GetOneManager($email: String!) {
+          getOneManager(email: $email) {
+            id
+            first_name
+            email
+            password
+            role
+          }
+        }
+      `
 
-        async function getOneUser() {
+        async function getOneReliever() {
           const response = await fetch('http://localhost:4000', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query: GET_USER, variables: { email } }),
+            body: JSON.stringify({ query: GET_RELIEVER, variables: { email } }),
           })
 
           const data = await response.json()
           return data
         }
-        const user = await getOneUser()
+        const reliever = await getOneReliever()
+ 
+        
 
-console.log(user);
+        async function getOneManager() {
+          const response = await fetch('http://localhost:4000', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: GET_MANAGER, variables: { email } }),
+          })
+
+          const data = await response.json()
+          return data
+        }
+        const manager = await getOneManager()
+
+    
 
         if (
-          user.data.getOneUser === null ||
-          email !== user.data.getOneUser.email ||
-         !await bcrypt.compare(password,user.data.getOneUser.password)
+          reliever.data.getOneReliever === null ||
+          email !== reliever.data.getOneReliever.email ||
+          !(await bcrypt.compare(
+            password,
+            reliever.data.getOneReliever.password
+          ))
         ) {
-          
-          throw new Error('invalid password or email')
+          if (
+            manager.data.getOneManager === null ||
+            email !== manager.data.getOneManager.email ||
+            !(await bcrypt.compare(
+              password,
+              manager.data.getOneManager.password
+            ))
+          ) {
+            throw new Error('invalid password or email')
+          }
+          return {
+            id: manager.data.getOneManager.id,
+            name: manager.data.getOneManager.first_name,
+            email: manager.data.getOneManager.email,
+            image: 'somephotourl',
+          }
         }
 
         //if everything is fine
- 
+
         return {
-          id: user.data.getOneUser.id,
-          name: user.data.getOneUser.first_name,
-          email: user.data.getOneUser.email,
-          image:"somephotourl"
+          id: reliever.data.getOneReliever.id,
+          name: reliever.data.getOneReliever.first_name,
+          email: reliever.data.getOneReliever.email,
+          image: 'somephotourl',
         }
       },
     }),
