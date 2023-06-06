@@ -4,20 +4,65 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Autocomplete } from '@mui/material'
-import { gql } from '@apollo/client'
-import client from '../../apollo-client'
+import { Autocomplete} from '@mui/material'
+import { gql, useLazyQuery } from '@apollo/client'
+
+
 
 const theme = createTheme()
 const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
 
 interface Props {
-  centers: { ECE_id: number; name: string }[]
+  ECE_id: number
+  name: string
 }
 
-const Centre = ({ centers }: Props) => {
-  const dropdownCenters = centers.map((center) => center.ECE_id + " " + center.name)
+const GET_FILTERED_CENTER = gql`
+  query GetFilteredCenters($input: String!) {
+    getFilteredCenters(input: $input) {
+      ECE_id
+      name
+    }
+  }
+`
 
+const Centre = () => {
+  const [inputValue, setInputValue] = React.useState('')
+  const [options, setOptions] = React.useState([])
+
+  const [getCenters, { data, loading }] = useLazyQuery(GET_FILTERED_CENTER)
+
+  React.useEffect(() => {
+    // Set a debounce delay (e.g., 500 milliseconds)
+    const debounceDelay = 500
+    let debounceTimeout: string | number | NodeJS.Timeout | undefined
+    // Define the debounced function
+    const debouncedFetchData = async () => {
+      // Clear the previous debounce timeout
+      clearTimeout(debounceTimeout)
+      // Set a new debounce timeout
+      debounceTimeout = setTimeout(async () => {
+        if (inputValue !== '') {
+          const response = await getCenters({
+            variables: { input: inputValue },
+          })
+          setOptions(
+            response.data.getFilteredCenters.map(
+              (center: Props) => center.ECE_id + ' ' + center.name
+            )
+          )
+        } else {
+          setOptions([])
+        }
+      }, debounceDelay)
+    }
+    // Call the debounced function
+    debouncedFetchData()
+    // Clean up the debounce timeout on component unmount
+    return () => {
+      clearTimeout(debounceTimeout)
+    }
+  }, [inputValue])
 
   const [passwordMessage, setPswMessage] = React.useState('')
 
@@ -59,11 +104,56 @@ const Centre = ({ centers }: Props) => {
             className="flex flex-col items-center w-full"
           >
             <h1 className="text-xl mb-2">Register as centre manager</h1>{' '}
+            {/* <Autocomplete
+              id="google-map-demo"
+              sx={{ width: 300 }}
+              filterOptions={(x) => x}
+              options={options}
+              autoComplete
+              includeInputInList
+              filterSelectedOptions
+              value={value}
+              noOptionsText="No centers"
+              onChange={(event, newValue) => {
+                setOptions(newValue ? [newValue, ...options] : options)
+                setValue(newValue)
+              }}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue)
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="Add a location" fullWidth />
+              )}
+              renderOption={(props, option) => {
+               
+
+              
+                return (
+                  <li {...props}>
+                    <Grid container alignItems="center">
+                      <Grid item sx={{ display: 'flex', width: 44 }}></Grid>
+                      <Grid
+                        item
+                        sx={{
+                          width: 'calc(100% - 44px)',
+                          wordWrap: 'break-word',
+                        }}
+                      >
+                      </Grid>
+                    </Grid>
+                  </li>
+                )
+              }}
+            /> */}
             <Autocomplete
               clearOnEscape
+              filterOptions={(x) => x}
               fullWidth
               id="clear-on-escape"
-              options={dropdownCenters}
+              options={options}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue)
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -163,21 +253,21 @@ const Centre = ({ centers }: Props) => {
 
 export default Centre
 
-export async function getStaticProps() {
-  const { data } = await client.query({
-    query: gql`
-      query GetAllCenters {
-        getAllCenters {
-          ECE_id
-          name
-        }
-      }
-    `,
-  })
+// export async function getServerSideProps() {
+//   const { data } = await client.query({
+//     query: gql`
+//       query GetAllCenters {
+//         getAllCenters {
+//           ECE_id
+//           name
+//         }
+//       }
+//     `,
+//   })
 
-  return {
-    props: {
-      centers: data.getAllCenters,
-    },
-  }
-}
+//   return {
+//     props: {
+//       centers: data.getAllCenters,
+//     },
+//   }
+// }
