@@ -25,7 +25,6 @@ export default function Login() {
         password: data.get('password'),
         redirect: false,
       })
-      console.log(res?.error);
       
       if (res?.error) {
         toast({

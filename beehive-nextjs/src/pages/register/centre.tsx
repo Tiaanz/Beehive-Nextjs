@@ -17,6 +17,7 @@ interface Props {
   name: string
 }
 
+//Define query
 const GET_FILTERED_CENTER = gql`
   query GetFilteredCenters($input: String!) {
     getFilteredCenters(input: $input) {
