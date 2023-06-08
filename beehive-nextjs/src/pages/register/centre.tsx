@@ -4,10 +4,34 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { Autocomplete} from '@mui/material'
-import { gql, useLazyQuery } from '@apollo/client'
+import { Autocomplete } from '@mui/material'
+import { gql, useLazyQuery, useMutation } from '@apollo/client'
+import { toast } from '@/components/ui/Toast'
+import { useRouter } from 'next/router'
 
-
+// Define mutation
+const ADD_MANAGER = gql`
+  mutation AddManager(
+    $firstName: String!
+    $lastName: String!
+    $phone: String!
+    $email: String!
+    $eceId: Int!
+    $password: String!
+  ) {
+    addManager(
+      first_name: $firstName
+      last_name: $lastName
+      phone: $phone
+      email: $email
+      ECE_id: $eceId
+      password: $password
+    ) {
+      id
+      email
+    }
+  }
+`
 
 const theme = createTheme()
 const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
@@ -30,8 +54,11 @@ const GET_FILTERED_CENTER = gql`
 const Centre = () => {
   const [inputValue, setInputValue] = React.useState('')
   const [options, setOptions] = React.useState([])
+  const router = useRouter()
 
   const [getCenters] = useLazyQuery(GET_FILTERED_CENTER)
+
+  const [addManager, { data, loading, error }] = useMutation(ADD_MANAGER)
 
   React.useEffect(() => {
     // Set a debounce delay (e.g., 500 milliseconds)
@@ -73,11 +100,41 @@ const Centre = () => {
 
     const password = data.get('password') as any
     if (password?.match(validPasswordRegex)) {
-      console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-        centreName: data.get('centreName'),
-      })
+      // console.log({
+      //   email: data.get('email'),
+      //   password: data.get('password'),
+      //   centreName: data.get('centreName'),
+      // })
+      try {
+        const res = await addManager({
+          variables: {
+            firstName: data.get('firstName'),
+            lastName: data.get('lastName'),
+            phone: data.get('phone'),
+            email: data.get('email'),
+            eceId: Number(data.get('centreName')?.slice(0, 5)),
+            password: data.get('password'),
+          },
+        })
+
+        toast({
+          title: 'successfully registered',
+          message: 'You have been registered as a centre manager.',
+          type: 'success',  
+        })
+        setTimeout(() => {
+          router.push('/login')
+        }, 1000);
+       
+      } catch (error) {
+      
+        const typedError = error as Error; 
+        toast({
+          title: 'Invalid input',
+          message: typedError.message,
+          type: 'error',
+        })
+      }
     } else {
       setPswMessage(
         () =>
@@ -175,8 +232,8 @@ const Centre = () => {
             <TextField
               margin="normal"
               inputProps={{
-                pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$',
-                maxLength: '40',
+                pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$',
+                maxlength: '40',
                 title:
                   'Email address must be in valid format and not longer than 40 characters',
               }}
@@ -213,5 +270,3 @@ const Centre = () => {
 }
 
 export default Centre
-
-
