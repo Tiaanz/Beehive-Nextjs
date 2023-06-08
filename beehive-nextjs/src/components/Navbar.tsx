@@ -7,7 +7,7 @@ import SignOutButton from './SignOutButton'
 
 const Navbar = () => {
   const { data: session } = useSession()
-  console.log(session)
+
 
   return (
     <div className="fixed backdrop-blur-sm bg-white z-50 top-0 left-0 right-0 h-20 border-b border-slate-300 shadow-sm flex items-center justify-between">
