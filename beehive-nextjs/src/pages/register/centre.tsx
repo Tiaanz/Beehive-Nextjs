@@ -33,14 +33,6 @@ const ADD_MANAGER = gql`
   }
 `
 
-const theme = createTheme()
-const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
-
-interface Props {
-  ECE_id: number
-  name: string
-}
-
 //Define query
 const GET_FILTERED_CENTER = gql`
   query GetFilteredCenters($input: String!) {
@@ -50,6 +42,16 @@ const GET_FILTERED_CENTER = gql`
     }
   }
 `
+
+const theme = createTheme()
+const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
+
+interface Props {
+  ECE_id: number
+  name: string
+}
+
+
 
 const Centre = () => {
   const [inputValue, setInputValue] = React.useState('')
@@ -100,11 +102,6 @@ const Centre = () => {
 
     const password = data.get('password') as any
     if (password?.match(validPasswordRegex)) {
-      // console.log({
-      //   email: data.get('email'),
-      //   password: data.get('password'),
-      //   centreName: data.get('centreName'),
-      // })
       try {
         const res = await addManager({
           variables: {

@@ -34,7 +34,7 @@ const theme = createTheme()
 const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
 
 const Teacher = ({}) => {
-  const [addReliever, { data, loading, error }] = useMutation(ADD_RELIEVER)
+  const [addReliever] = useMutation(ADD_RELIEVER)
 
   const router = useRouter()
   const [passwordMessage, setPswMessage] = React.useState('')
