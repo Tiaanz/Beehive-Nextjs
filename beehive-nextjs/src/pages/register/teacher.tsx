@@ -23,9 +23,10 @@ const ADD_RELIEVER = gql`
       phone: $phone
       email: $email
       password: $password
-    )
-    id
-    email
+    ) {
+      id
+      email
+    }
   }
 `
 
@@ -48,8 +49,8 @@ const Teacher = ({}) => {
 
       addReliever({
         variables: {
-          first_name: data.get('firstName'),
-          last_name: data.get('lastName'),
+          firstName: data.get('firstName'),
+          lastName: data.get('lastName'),
           phone: data.get('phone'),
           email: data.get('email'),
           password: data.get('password'),
