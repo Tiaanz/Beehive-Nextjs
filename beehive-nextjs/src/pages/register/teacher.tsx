@@ -45,24 +45,33 @@ const Teacher = ({}) => {
 
     const password = data.get('password') as any
     if (password?.match(validPasswordRegex)) {
-      // console.log({ email: data.get('email'), password: data.get('password') })
+      try {
+        await addReliever({
+          variables: {
+            firstName: data.get('firstName'),
+            lastName: data.get('lastName'),
+            phone: data.get('phone'),
+            email: data.get('email'),
+            password: data.get('password'),
+          },
+        })
 
-      addReliever({
-        variables: {
-          firstName: data.get('firstName'),
-          lastName: data.get('lastName'),
-          phone: data.get('phone'),
-          email: data.get('email'),
-          password: data.get('password'),
-        },
-      })
-
-      toast({
-        title: 'successfully registered',
-        message: 'You have been registered as a reliever.',
-        type: 'success',
-      })
-      router.push('/login')
+        toast({
+          title: 'successfully registered',
+          message: 'You have been registered as a reliever.',
+          type: 'success',
+        })
+        setTimeout(() => {
+          router.push('/login')
+        }, 1000)
+      } catch (error) {
+        const typedError = error as Error
+        toast({
+          title: 'Invalid input',
+          message: typedError.message,
+          type: 'error',
+        })
+      }
     } else {
       setPswMessage(
         () =>
@@ -71,8 +80,7 @@ const Teacher = ({}) => {
     }
   }
 
-  if (loading) return 'Submitting...'
-  if (error) return `Submission error! ${error.message}`
+ 
 
   return (
     <ThemeProvider theme={theme}>
