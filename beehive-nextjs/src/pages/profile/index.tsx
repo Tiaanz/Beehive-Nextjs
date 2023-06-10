@@ -5,8 +5,11 @@ import Paragraph from '@/components/ui/Paragraph'
 import Button from '@/components/ui/Button'
 import Avatar from '@mui/material/Avatar'
 import Meta from '@/components/Meta'
+import LinearProgress from '@mui/material/LinearProgress'
+import Box from '@mui/material/Box'
+import { toast } from '@/components/ui/Toast'
 import { AiFillCamera } from 'react-icons/ai'
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 //Define query
@@ -37,7 +40,8 @@ const page = () => {
     variables: { email: session?.user?.email },
   })
 
-  const [updateReliever] = useMutation(UPDATE_RELIEVER)
+  const [updateReliever, { loading: mutationLoading }] =
+    useMutation(UPDATE_RELIEVER)
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [bio, setBio] = useState<string>('')
@@ -52,15 +56,24 @@ const page = () => {
 
   async function handleSave(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    const res=await updateReliever({
-      variables: {
-        email: session?.user?.email,
-        bio: data.get('bio'),
-      },
-    })
-    setIsEditing(false)
-    setBio(res.data.updateReliever.bio)
+    try {
+      const data = new FormData(event.currentTarget)
+      const res = await updateReliever({
+        variables: {
+          email: session?.user?.email,
+          bio: data.get('bio'),
+        },
+      })
+      setIsEditing(false)
+      setBio(res.data.updateReliever.bio)
+    } catch (error) {
+      const typedError = error as Error
+      toast({
+        title: 'Invalid input',
+        message: typedError.message,
+        type: 'error',
+      })
+    }
   }
 
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
@@ -69,13 +82,12 @@ const page = () => {
       const reader = new FileReader()
 
       reader.onloadend = async () => {
-        const res=await updateReliever({
+        const res = await updateReliever({
           variables: {
             email: session?.user?.email,
             photoUrl: reader.result as string,
           },
         })
-        // setImageUrl(reader.result as string)
         setImageUrl(res.data.updateReliever.photo_url)
       }
 
@@ -91,19 +103,26 @@ const page = () => {
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
-      <div className="pt-20">
-        <div className=" flex flex-col items-center mt-40 sm:mt-12 w-4/5 mx-auto md:items-center relative">
-          {/* <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
+
+      <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto items-center md:justify-start flex-col md:flex-row">
+        {/* <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
             Welcome {session?.user?.name}
           </LargeHeading> */}
-
+        <div className="basis-1/3 flex flex-col items-center">
           <Avatar
             alt="profile photo"
-            src={imageUrl ? imageUrl : './default_avatar.jpeg'}
-            sx={{ width: 150, height: 150 }}
+            src={
+              mutationLoading
+                ? './Loading.gif'
+                : imageUrl
+                ? imageUrl
+                : './default_avatar.jpeg'
+            }
+            sx={{ width: 120, height: 120 }}
+     
           />
-          <label htmlFor="upload-image">
-            <AiFillCamera className="w-6 h-6 absolute top-40" />
+          <label htmlFor="upload-image" className="my-2">
+            <AiFillCamera className="w-6 h-6 " />
             <input
               id="upload-image"
               hidden
@@ -113,20 +132,24 @@ const page = () => {
             />
           </label>
 
-          <p className="mt-10">{session?.user?.email}</p>
-          <p>{data?.getOneReliever.phone}</p>
-          <h3 className="my-4 font-bold text-lg">Biography</h3>
+          <p className="text-sm md:text-base">{session?.user?.email}</p>
+          <p className="text-sm md:text-base">{data?.getOneReliever.phone}</p>
+        </div>
+        <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
+          <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">
+            Biography
+          </h3>
           {bio && !loading && !isEditing ? (
             <>
-              <div className="w-4/5 my-2 lg:w-1/2 border-2 border-slate-300 rounded-lg p-4 flex justify-center h-56">
-                <Paragraph size="sm" className="overflow-y-scroll">
+              <div className="w-full my-2 lg:w-4/5  border-2 border-slate-300 rounded-lg p-6 flex md:h-72 h-44">
+                <Paragraph size="sm" className="overflow-y-scroll text-left ">
                   {bio}
                 </Paragraph>
               </div>
               <Button
                 size="sm"
                 variant="subtle"
-                className="mt-2"
+                className="mt-2 w-10"
                 onClick={() => setIsEditing(true)}
               >
                 Edit
@@ -142,22 +165,26 @@ const page = () => {
           )}
           {isEditing && (
             <>
-              <form
-                onSubmit={handleSave}
-                className="w-full flex flex-col items-center"
-              >
-                <textarea
-                  rows={8}
-                  name="bio"
-                  defaultValue={bio}
-                  className="block p-2.5 lg:w-1/2 md:w-3/4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Write your bio here..."
-                  overflow-y="scroll"
-                ></textarea>
+              <form onSubmit={handleSave} className="w-full flex flex-col">
+                {mutationLoading ? (
+                  <Box className="lg:w-2/3 md:w-3/4 w-full h-72 flex flex-col justify-center">
+                    <LinearProgress />
+                  </Box>
+                ) : (
+                  <textarea
+                    rows={15}
+                    name="bio"
+                    defaultValue={bio}
+                    className="block p-2.5 lg:w-2/3 md:w-3/4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Write your bio here..."
+                    overflow-y="scroll"
+                  ></textarea>
+                )}
+
                 <Button
                   size="sm"
                   variant="subtle"
-                  className="mt-2"
+                  className="mt-2 w-10"
                   type="submit"
                 >
                   Save
