@@ -60,7 +60,7 @@ const Centre = () => {
 
   const [getCenters] = useLazyQuery(GET_FILTERED_CENTER)
 
-  const [addManager, { data, loading, error }] = useMutation(ADD_MANAGER)
+  const [addManager] = useMutation(ADD_MANAGER)
 
   React.useEffect(() => {
     // Set a debounce delay (e.g., 500 milliseconds)
