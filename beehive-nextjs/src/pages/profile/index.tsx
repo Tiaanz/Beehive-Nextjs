@@ -15,14 +15,16 @@ const GET_RELIEVER = gql`
     getOneReliever(email: $email) {
       phone
       bio
+      photo_url
     }
   }
 `
 //Define mutation
 const UPDATE_RELIEVER = gql`
-  mutation UpdateReliever($email: String!, $bio: String) {
-    updateReliever(email: $email, bio: $bio) {
+  mutation UpdateReliever($email: String!, $bio: String, $photoUrl: String) {
+    updateReliever(email: $email, bio: $bio, photo_url: $photoUrl) {
       bio
+      photo_url
     }
   }
 `
@@ -39,30 +41,46 @@ const page = () => {
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [bio, setBio] = useState<string>('')
+  const [imageUrl, setImageUrl] = useState<string>()
 
   useEffect(() => {
     if (!loading) {
       setBio(data?.getOneReliever.bio)
+      setImageUrl(data?.getOneReliever.photo_url)
     }
   }, [loading])
 
-  function handleSave(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSave(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    updateReliever({
+    const res=await updateReliever({
       variables: {
         email: session?.user?.email,
         bio: data.get('bio'),
       },
     })
     setIsEditing(false)
-    setBio(data.get('bio') as string)
+    setBio(res.data.updateReliever.bio)
   }
 
-  function handleEditing() {
-    
-    setIsEditing(true)
+  function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
 
+      reader.onloadend = async () => {
+        const res=await updateReliever({
+          variables: {
+            email: session?.user?.email,
+            photoUrl: reader.result as string,
+          },
+        })
+        // setImageUrl(reader.result as string)
+        setImageUrl(res.data.updateReliever.photo_url)
+      }
+
+      reader.readAsDataURL(file)
+    }
   }
 
   if (error) {
@@ -78,21 +96,39 @@ const page = () => {
           {/* <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
             Welcome {session?.user?.name}
           </LargeHeading> */}
+
           <Avatar
             alt="profile photo"
-            src="/avatar.jpg"
+            src={imageUrl ? imageUrl : './default_avatar.jpeg'}
             sx={{ width: 150, height: 150 }}
           />
-          <AiFillCamera className="w-6 h-6 absolute top-40" />
+          <label htmlFor="upload-image">
+            <AiFillCamera className="w-6 h-6 absolute top-40" />
+            <input
+              id="upload-image"
+              hidden
+              accept="image/*"
+              type="file"
+              onChange={handleFileUpload}
+            />
+          </label>
+
           <p className="mt-10">{session?.user?.email}</p>
           <p>{data?.getOneReliever.phone}</p>
           <h3 className="my-4 font-bold text-lg">Biography</h3>
           {bio && !loading && !isEditing ? (
             <>
               <div className="w-4/5 my-2 lg:w-1/2 border-2 border-slate-300 rounded-lg p-4 flex justify-center h-56">
-                <Paragraph size="sm" className='overflow-y-scroll'>{bio}</Paragraph>
+                <Paragraph size="sm" className="overflow-y-scroll">
+                  {bio}
+                </Paragraph>
               </div>
-              <Button size="sm" variant="subtle" className="mt-2" onClick={handleEditing}>
+              <Button
+                size="sm"
+                variant="subtle"
+                className="mt-2"
+                onClick={() => setIsEditing(true)}
+              >
                 Edit
               </Button>
             </>
