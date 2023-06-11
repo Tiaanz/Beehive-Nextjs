@@ -34,7 +34,7 @@ export default function Login() {
         })
       }
       if (res?.error === null) {
-        window.location.href = '/profile'
+        window.location.href = '/notifications'
       }
     } catch (error) {
       toast({

@@ -10,7 +10,6 @@ export const GET_FILTERED_CENTER = gql`
   }
 `
 
-
 //Define get a reliever query
 export const GET_RELIEVER = gql`
   query GetOneReliever($email: String!) {
@@ -23,18 +22,31 @@ export const GET_RELIEVER = gql`
   }
 `
 
-
 //Define get a manager query
 export const GET_MANAGER = gql`
   query GetOneManager($email: String!) {
     getOneManager(email: $email) {
+      ECE_id
       phone
       role
     }
   }
 `
 
-
+//Define get a center query
+export const GET_CENTER = gql`
+  query GetOneCenter($ECE_id: Int!) {
+    getOneCenter(ECE_id: $ECE_id) {
+      name
+      address
+      description
+      photo_url
+      manager {
+        first_name
+      }
+    }
+  }
+`
 
 // Define add relievers mutation
 export const ADD_RELIEVER = gql`
@@ -58,7 +70,7 @@ export const ADD_RELIEVER = gql`
   }
 `
 
-//Define mutation
+//Define update reliever mutation
 export const UPDATE_RELIEVER = gql`
   mutation UpdateReliever($email: String!, $bio: String, $photoUrl: String) {
     updateReliever(email: $email, bio: $bio, photo_url: $photoUrl) {
@@ -68,6 +80,19 @@ export const UPDATE_RELIEVER = gql`
   }
 `
 
+//Define update center mutation
+export const UPDATE_CENTER = gql`
+  mutation UpdateCenter($eceId: Int!, $description: String, $photoUrl: String) {
+    updateCenter(
+      ECE_id: $eceId
+      description: $description
+      photo_url: $photoUrl
+    ) {
+      description
+      photo_url
+    }
+  }
+`
 
 // Define add managers mutation
 export const ADD_MANAGER = gql`

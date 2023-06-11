@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
             id: manager.data.getOneManager.id,
             name: manager.data.getOneManager.first_name,
             email: manager.data.getOneManager.email,
-            image: 'somephotourl',
+           
           }
         }
 
@@ -101,7 +101,7 @@ export const authOptions: NextAuthOptions = {
           id: reliever.data.getOneReliever.id,
           name: reliever.data.getOneReliever.first_name,
           email: reliever.data.getOneReliever.email,
-          image: 'somephotourl',
+         
         }
       },
     }),

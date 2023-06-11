@@ -68,12 +68,24 @@ const Navbar = () => {
                   </li>
                   <li>
                     {' '}
-                    <Link
-                      className={buttonVariants({ variant: 'link' })}
-                      href="/my-jobs"
-                    >
-                      MY JOBS
-                    </Link>
+                    {relieverData?.getOneReliever?.role === 'RELIEVER' && (
+                      <Link
+                        className={buttonVariants({ variant: 'link' })}
+                        href="/my-jobs"
+                      >
+                        MY JOBS
+                      </Link>
+                    )}
+                  </li>
+                  <li>
+                    {managerData?.getOneManager?.role === 'MANAGER' && (
+                      <Link
+                        className={buttonVariants({ variant: 'link' })}
+                        href="/my-posts"
+                      >
+                        MY POSTS
+                      </Link>
+                    )}
                   </li>
                   <li>
                     {' '}
@@ -114,13 +126,20 @@ const Navbar = () => {
                     MY POSTS
                   </Link>
                 )}
-
-                <Link
-                  className={buttonVariants({ variant: 'link' })}
-                  href="/profile"
-                >
-                  PROFILE
-                </Link>
+                {relieverData?.getOneReliever?.role === 'RELIEVER' && (
+                  <Link
+                    className={buttonVariants({ variant: 'link' })}
+                    href="/profile"
+                  >
+                    PROFILE
+                  </Link>
+                )}
+                {managerData?.getOneManager?.role === 'MANAGER' && <Link
+                    className={buttonVariants({ variant: 'link' })}
+                    href="/my-centre"
+                  >
+                    MY CENTRE
+                  </Link>}
                 <SignOutButton />
               </nav>
             </>
