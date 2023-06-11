@@ -4,31 +4,12 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { toast } from '@/components/ui/Toast'
 import { useRouter } from 'next/router'
+import { ADD_RELIEVER } from '@/GraphQL_API'
 
-// Define mutation
-const ADD_RELIEVER = gql`
-  mutation AddReliever(
-    $firstName: String!
-    $lastName: String!
-    $phone: String!
-    $email: String!
-    $password: String!
-  ) {
-    addReliever(
-      first_name: $firstName
-      last_name: $lastName
-      phone: $phone
-      email: $email
-      password: $password
-    ) {
-      id
-      email
-    }
-  }
-`
+
 
 const theme = createTheme()
 const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/

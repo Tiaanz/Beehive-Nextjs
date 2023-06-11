@@ -5,43 +5,10 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Autocomplete } from '@mui/material'
-import { gql, useLazyQuery, useMutation } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { toast } from '@/components/ui/Toast'
 import { useRouter } from 'next/router'
-
-// Define mutation
-const ADD_MANAGER = gql`
-  mutation AddManager(
-    $firstName: String!
-    $lastName: String!
-    $phone: String!
-    $email: String!
-    $eceId: Int!
-    $password: String!
-  ) {
-    addManager(
-      first_name: $firstName
-      last_name: $lastName
-      phone: $phone
-      email: $email
-      ECE_id: $eceId
-      password: $password
-    ) {
-      id
-      email
-    }
-  }
-`
-
-//Define query
-const GET_FILTERED_CENTER = gql`
-  query GetFilteredCenters($input: String!) {
-    getFilteredCenters(input: $input) {
-      ECE_id
-      name
-    }
-  }
-`
+import { ADD_MANAGER,GET_FILTERED_CENTER } from '@/GraphQL_API'
 
 const theme = createTheme()
 const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/

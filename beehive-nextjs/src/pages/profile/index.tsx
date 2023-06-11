@@ -9,28 +9,9 @@ import LinearProgress from '@mui/material/LinearProgress'
 import Box from '@mui/material/Box'
 import { toast } from '@/components/ui/Toast'
 import { AiFillCamera } from 'react-icons/ai'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
-
-//Define query
-const GET_RELIEVER = gql`
-  query GetOneReliever($email: String!) {
-    getOneReliever(email: $email) {
-      phone
-      bio
-      photo_url
-    }
-  }
-`
-//Define mutation
-const UPDATE_RELIEVER = gql`
-  mutation UpdateReliever($email: String!, $bio: String, $photoUrl: String) {
-    updateReliever(email: $email, bio: $bio, photo_url: $photoUrl) {
-      bio
-      photo_url
-    }
-  }
-`
+import { GET_RELIEVER, UPDATE_RELIEVER } from '@/GraphQL_API'
 
 const page = () => {
   const { data: session } = useSession()
@@ -111,15 +92,8 @@ const page = () => {
         <div className="basis-1/3 flex flex-col items-center">
           <Avatar
             alt="profile photo"
-            src={
-              mutationLoading
-                ? './Loading.gif'
-                : imageUrl
-                ? imageUrl
-                : './default_avatar.jpeg'
-            }
+            src={imageUrl ? imageUrl : './default_avatar.jpeg'}
             sx={{ width: 120, height: 120 }}
-     
           />
           <label htmlFor="upload-image" className="my-2">
             <AiFillCamera className="w-6 h-6 " />
@@ -139,6 +113,11 @@ const page = () => {
           <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">
             Biography
           </h3>
+          {loading && (
+            <Box className="lg:w-2/3 md:w-3/4 w-full h-72 flex flex-col justify-center">
+              <LinearProgress />
+            </Box>
+          )}
           {bio && !loading && !isEditing ? (
             <>
               <div className="w-full my-2 lg:w-4/5  border-2 border-slate-300 rounded-lg p-6 flex md:h-72 h-44">
@@ -156,7 +135,8 @@ const page = () => {
               </Button>
             </>
           ) : (
-            !isEditing && (
+            !isEditing &&
+            !loading && (
               <AiOutlinePlusCircle
                 className="w-6 h-6"
                 onClick={() => setIsEditing(true)}
