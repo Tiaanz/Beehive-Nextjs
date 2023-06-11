@@ -18,6 +18,18 @@ export const GET_RELIEVER = gql`
       phone
       bio
       photo_url
+      role
+    }
+  }
+`
+
+
+//Define get a manager query
+export const GET_MANAGER = gql`
+  query GetOneManager($email: String!) {
+    getOneManager(email: $email) {
+      phone
+      role
     }
   }
 `

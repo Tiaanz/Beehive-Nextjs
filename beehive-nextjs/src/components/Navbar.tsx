@@ -5,10 +5,20 @@ import { buttonVariants } from './ui/Button'
 import SignInButton from './SignInButton'
 import SignOutButton from './SignOutButton'
 import { useState } from 'react'
+import { GET_RELIEVER, GET_MANAGER } from '@/GraphQL_API'
+import { useQuery } from '@apollo/client'
 
 const Navbar = () => {
   const { data: session } = useSession()
   const [showHamburger, setShowHamburger] = useState(false)
+
+  const { data: relieverData } = useQuery(GET_RELIEVER, {
+    variables: { email: session?.user?.email },
+  })
+
+  const { data: managerData } = useQuery(GET_MANAGER, {
+    variables: { email: session?.user?.email },
+  })
 
   function handleHamburgerDisplay() {
     setShowHamburger((preState) => !preState)
@@ -88,7 +98,7 @@ const Navbar = () => {
                 >
                   NOTIFICATION
                 </Link>
-                {1 !== 1 && (
+                {relieverData?.getOneReliever?.role === 'RELIEVER' && (
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-jobs"
@@ -96,12 +106,15 @@ const Navbar = () => {
                     MY JOBS
                   </Link>
                 )}
-                <Link
-                  className={buttonVariants({ variant: 'link' })}
-                  href="/my-posts"
-                >
-                  MY POSTS
-                </Link>
+                {managerData?.getOneManager?.role === 'MANAGER' && (
+                  <Link
+                    className={buttonVariants({ variant: 'link' })}
+                    href="/my-posts"
+                  >
+                    MY POSTS
+                  </Link>
+                )}
+
                 <Link
                   className={buttonVariants({ variant: 'link' })}
                   href="/profile"

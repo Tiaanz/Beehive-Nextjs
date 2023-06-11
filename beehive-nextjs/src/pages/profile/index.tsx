@@ -30,8 +30,8 @@ const page = () => {
 
   useEffect(() => {
     if (!loading) {
-      setBio(data?.getOneReliever.bio)
-      setImageUrl(data?.getOneReliever.photo_url)
+      setBio(data?.getOneReliever?.bio)
+      setImageUrl(data?.getOneReliever?.photo_url)
     }
   }, [loading])
 
@@ -107,7 +107,7 @@ const page = () => {
           </label>
 
           <p className="text-sm md:text-base">{session?.user?.email}</p>
-          <p className="text-sm md:text-base">{data?.getOneReliever.phone}</p>
+          <p className="text-sm md:text-base">{data?.getOneReliever?.phone}</p>
         </div>
         <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
           <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">
