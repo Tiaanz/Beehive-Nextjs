@@ -61,7 +61,8 @@ const Navbar = () => {
                   <li>
                     <Link
                       className={buttonVariants({ variant: 'link' })}
-                      href="/profile"
+                      href="/notifications"
+                      onClick={handleHamburgerDisplay}
                     >
                       NOTIFICATION
                     </Link>
@@ -72,6 +73,7 @@ const Navbar = () => {
                       <Link
                         className={buttonVariants({ variant: 'link' })}
                         href="/my-jobs"
+                        onClick={handleHamburgerDisplay}
                       >
                         MY JOBS
                       </Link>
@@ -82,19 +84,33 @@ const Navbar = () => {
                       <Link
                         className={buttonVariants({ variant: 'link' })}
                         href="/my-posts"
+                        onClick={handleHamburgerDisplay}
                       >
                         MY POSTS
                       </Link>
                     )}
                   </li>
                   <li>
-                    {' '}
-                    <Link
-                      className={buttonVariants({ variant: 'link' })}
-                      href="/profile"
-                    >
-                      PROFILE
-                    </Link>
+                    {relieverData?.getOneReliever?.role === 'RELIEVER' && (
+                      <Link
+                        className={buttonVariants({ variant: 'link' })}
+                        href="/profile"
+                        onClick={handleHamburgerDisplay}
+                      >
+                        PROFILE
+                      </Link>
+                    )}
+                  </li>
+                  <li>
+                    {managerData?.getOneManager?.role === 'MANAGER' && (
+                      <Link
+                        className={buttonVariants({ variant: 'link' })}
+                        href="/my-centre"
+                        onClick={handleHamburgerDisplay}
+                      >
+                        MY CENTRE
+                      </Link>
+                    )}
                   </li>
                   <li>
                     {' '}
@@ -106,7 +122,8 @@ const Navbar = () => {
               <nav className="hidden sm:block">
                 <Link
                   className={buttonVariants({ variant: 'link' })}
-                  href="/profile"
+                  href="/notifications"
+                  onClick={handleHamburgerDisplay}
                 >
                   NOTIFICATION
                 </Link>
@@ -114,6 +131,7 @@ const Navbar = () => {
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-jobs"
+                    onClick={handleHamburgerDisplay}
                   >
                     MY JOBS
                   </Link>
@@ -122,6 +140,7 @@ const Navbar = () => {
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-posts"
+                    onClick={handleHamburgerDisplay}
                   >
                     MY POSTS
                   </Link>
@@ -130,16 +149,20 @@ const Navbar = () => {
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/profile"
+                    onClick={handleHamburgerDisplay}
                   >
                     PROFILE
                   </Link>
                 )}
-                {managerData?.getOneManager?.role === 'MANAGER' && <Link
+                {managerData?.getOneManager?.role === 'MANAGER' && (
+                  <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-centre"
+                    onClick={handleHamburgerDisplay}
                   >
                     MY CENTRE
-                  </Link>}
+                  </Link>
+                )}
                 <SignOutButton />
               </nav>
             </>
