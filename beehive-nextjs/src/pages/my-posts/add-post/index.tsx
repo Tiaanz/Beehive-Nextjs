@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Meta from '@/components/Meta'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { GET_MANAGER,ADD_POST } from '@/GraphQL_API'
+import { GET_MANAGER, ADD_POST } from '@/GraphQL_API'
 import { useMutation, useQuery } from '@apollo/client'
 import { useSession } from 'next-auth/react'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -26,7 +26,9 @@ const index = ({}) => {
     variables: { email: session?.user?.email },
   })
 
-  const [addPost]=useMutation(ADD_POST)
+
+
+  const [addPost] = useMutation(ADD_POST)
 
   const [validationError, setValidationError] = React.useState('')
   const router = useRouter()
@@ -35,39 +37,36 @@ const index = ({}) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     if (!dateFrom || !dateTo || !timeFrom || !timeTo) {
-      setValidationError("Please complete all the fields")
+      setValidationError('Please complete all the fields')
     } else {
       addPost({
         variables: {
           centerId: Number(data.get('centerId')),
           dateFrom: dateFrom?.format('DD/MM/YYYY'),
-          dateTo:dateTo?.format('DD/MM/YYYY'),
-          time: timeFrom?.format('hh:mm A') + "-" + timeTo?.format('hh:mm A'),
-          qualified:data.get('qualified')==="Yes"
-        }
+          dateTo: dateTo?.format('DD/MM/YYYY'),
+          time: timeFrom?.format('hh:mm A') + '-' + timeTo?.format('hh:mm A'),
+          qualified: data.get('qualified') === 'Yes',
+        },
       })
-      
+
       toast({
         title: 'Success',
         message: 'You have added a post.',
         type: 'success',
       })
 
-      setTimeout(() => {  
+      setTimeout(() => {
         router.push('/my-posts')
       }, 1000)
-    
     }
-
-   
   }
 
-
   const minDate = dayjs()
-  const minTime=dayjs('2022-04-17T07:00')
+  const minTime = dayjs('2022-04-17T07:00')
   const maxTime = dayjs('2022-04-17T19:00')
-  
-  const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(null)
+
+
+  const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(dayjs())
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(null)
   const [timeFrom, setTimeFrom] = React.useState<Dayjs | null>(null)
   const [timeTo, setTimeTo] = React.useState<Dayjs | null>(null)
@@ -97,7 +96,7 @@ const index = ({}) => {
                 <h1 className="text-xl">Add a post</h1>{' '}
                 <TextField
                   margin="normal"
-                  value={managerData?.getOneManager?.ECE_id}
+                  value={managerData?.getOneManager?.ECE_id || ""}
                   required
                   fullWidth
                   id="centerId"
@@ -113,7 +112,9 @@ const index = ({}) => {
                   minDate={minDate}
                   maxDate={dateTo}
                   value={dateFrom}
-                  onChange={(newValue) => { setDateFrom(newValue) ,setValidationError('') }}
+                  onChange={(newValue) => {
+                    setDateFrom(newValue), setValidationError('')
+                  }}
                 />
                 <DatePicker
                   className="w-full"
@@ -121,7 +122,9 @@ const index = ({}) => {
                   format="DD/MM/YYYY"
                   minDate={dateFrom}
                   value={dateTo}
-                  onChange={(newValue) => { setDateTo(newValue),setValidationError('')}}
+                  onChange={(newValue) => {
+                    setDateTo(newValue), setValidationError('')
+                  }}
                 />
                 <TimePicker
                   label="Start time"
@@ -129,7 +132,9 @@ const index = ({}) => {
                   value={timeFrom}
                   minTime={minTime}
                   maxTime={maxTime}
-                  onChange={(newValue) => { setTimeFrom(newValue),setValidationError('') }}
+                  onChange={(newValue) => {
+                    setTimeFrom(newValue), setValidationError('')
+                  }}
                 />
                 <TimePicker
                   label="Finish time"
@@ -137,7 +142,9 @@ const index = ({}) => {
                   minTime={timeFrom}
                   maxTime={maxTime}
                   value={timeTo}
-                  onChange={(newValue) => { setTimeTo(newValue),setValidationError('') }}
+                  onChange={(newValue) => {
+                    setTimeTo(newValue), setValidationError('')
+                  }}
                 />
                 <TextField
                   margin="normal"
@@ -148,12 +155,12 @@ const index = ({}) => {
                   name="qualified"
                   select
                   variant="outlined"
-                  helperText="Please select"
+                  defaultValue={''}
                 >
                   <MenuItem value="Yes">Yes</MenuItem>
                   <MenuItem value="No">No</MenuItem>
                 </TextField>
-                <p className='text-red-500'>{validationError}</p>
+                <p className="text-red-500">{validationError}</p>
                 <button
                   className="bg-amber-500 hover:bg-amber-400 w-11/12 mx-2 mt-6 p-2 rounded text-white"
                   type="submit"
