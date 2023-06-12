@@ -1,6 +1,5 @@
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
-import LargeHeading from '@/components/ui/LargeHeading'
 import Paragraph from '@/components/ui/Paragraph'
 import Button from '@/components/ui/Button'
 import Avatar from '@mui/material/Avatar'
@@ -15,7 +14,7 @@ import { GET_RELIEVER, UPDATE_RELIEVER } from '@/GraphQL_API'
 
 const page = () => {
   const { data: session } = useSession()
-  console.log(session?.user)
+
 
   const { data, loading, error } = useQuery(GET_RELIEVER, {
     variables: { email: session?.user?.email },

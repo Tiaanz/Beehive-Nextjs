@@ -123,7 +123,6 @@ const Navbar = () => {
                 <Link
                   className={buttonVariants({ variant: 'link' })}
                   href="/notifications"
-                  onClick={handleHamburgerDisplay}
                 >
                   NOTIFICATION
                 </Link>
@@ -131,7 +130,6 @@ const Navbar = () => {
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-jobs"
-                    onClick={handleHamburgerDisplay}
                   >
                     MY JOBS
                   </Link>
@@ -140,7 +138,6 @@ const Navbar = () => {
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-posts"
-                    onClick={handleHamburgerDisplay}
                   >
                     MY POSTS
                   </Link>
@@ -149,7 +146,6 @@ const Navbar = () => {
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/profile"
-                    onClick={handleHamburgerDisplay}
                   >
                     PROFILE
                   </Link>
@@ -158,7 +154,6 @@ const Navbar = () => {
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-centre"
-                    onClick={handleHamburgerDisplay}
                   >
                     MY CENTRE
                   </Link>

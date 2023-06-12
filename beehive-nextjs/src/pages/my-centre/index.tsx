@@ -14,7 +14,7 @@ import {GET_MANAGER,GET_CENTER,UPDATE_CENTER } from '@/GraphQL_API'
 
 const page = () => {
   const { data: session } = useSession()
-  console.log(session?.user)
+ 
 
   const { data:managerData } = useQuery(GET_MANAGER, {
     variables: { email: session?.user?.email },

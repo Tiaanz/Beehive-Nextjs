@@ -117,3 +117,24 @@ export const ADD_MANAGER = gql`
     }
   }
 `
+
+// Define add managers mutation
+export const ADD_POST = gql`
+  mutation AddPost(
+    $centerId: Int!
+    $time: String!
+    $dateFrom: String!
+    $dateTo: String!
+    $qualified: Boolean!
+  ) {
+    addPost(
+      center_id: $centerId
+      time: $time
+      qualified: $qualified
+      date_from: $dateFrom
+      date_to: $dateTo
+    ) {
+      id
+    }
+  }
+`
