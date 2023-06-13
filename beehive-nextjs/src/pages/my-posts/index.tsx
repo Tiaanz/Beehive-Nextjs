@@ -10,12 +10,10 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import dayjs, { Dayjs } from 'dayjs'
 import { GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
-import { format } from 'path'
+
 
 const index = () => {
   const { data: session } = useSession()
-
-  const [textColor, setTextColor] = React.useState('')
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
   const [posts, setPosts] = React.useState<Post[]>([])
@@ -33,20 +31,29 @@ const index = () => {
     status: string
   }
 
+  async function fetchPosts() {
+    const res = await getPosts({
+      variables: {
+        centerId: managerData?.getOneManager?.ECE_id,
+        dateFrom: selectedDate?.format('DD/MM/YYYY'),
+        dateTo: selectedDate?.format('DD/MM/YYYY'),
+      },
+    })
+
+    
+    setPosts(res?.data?.getPostsByCenter || [])
+  }
+
+function handleDateChange(value:Dayjs|null) {
+  setSelectedDate(value)
+
+}
+
+
   React.useEffect(() => {
-    async function fetchPosts() {
-      const res = await getPosts({
-        variables: {
-          centerId: managerData?.getOneManager?.ECE_id,
-          dateFrom: selectedDate?.format('DD/MM/YYYY'),
-          dateTo: selectedDate?.format('DD/MM/YYYY'),
-        },
-      })
-      setPosts(res?.data?.getPostsByCenter)
-    }
 
     fetchPosts()
-  }, [selectedDate])
+  }, [selectedDate,posts])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -64,8 +71,8 @@ const index = () => {
             <DateCalendar
               sx={{ margin: 0 }}
               value={selectedDate}
-              onChange={(newValue) => setSelectedDate(newValue)}
-              className="mr-6"
+              onChange={(newValue) =>handleDateChange(newValue) }
+              className="mr-6 min-w-fit"
             />
             <div className="flex flex-wrap">
               {posts?.map((post) => (

@@ -44,7 +44,7 @@ const index = ({}) => {
           centerId: Number(data.get('centerId')),
           dateFrom: dateFrom?.format('DD/MM/YYYY'),
           dateTo: dateTo?.format('DD/MM/YYYY'),
-          time: timeFrom?.format('hh:mm A') + '-' + timeTo?.format('hh:mm A'),
+          time: timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A'),
           qualified: data.get('qualified') === 'Yes',
         },
       })

@@ -67,6 +67,22 @@ export const GET_POSTS = gql`
     }
   }
 `
+//define get All "OPEN" JOBS query
+export const GET_JOBS = gql`
+  query GetOpenJobs($status: String!) {
+    getOpenJobs(status: $status) {
+      center {
+        name
+        address
+      }
+      id
+      qualified
+      date_from
+      date_to
+      time
+    }
+  }
+`
 
 // Define add relievers mutation
 export const ADD_RELIEVER = gql`
