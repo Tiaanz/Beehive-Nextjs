@@ -81,6 +81,7 @@ export const GET_JOBS = gql`
       date_from
       date_to
       time
+      relieverIDs
     }
   }
 `
@@ -171,6 +172,15 @@ export const ADD_POST = gql`
       date_from: $dateFrom
       date_to: $dateTo
     ) {
+      id
+    }
+  }
+`
+
+// Define apply job mutation
+export const APPLY_JOB = gql`
+  mutation ApplyJob($applyJobId: String!, $relieverId: String!) {
+    applyJob(id: $applyJobId, relieverID: $relieverId) {
       id
     }
   }
