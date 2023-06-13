@@ -46,65 +46,65 @@ const index= ({}) => {
         {relieverData?.getOneReliever?.id && jobsData?.getOpenJobs?.map((job: any, index: number) => (
           <div
             key={job.id}
-            className={`p-4 flex w-full ${
+            className={`p-4 flex sm:flex-row flex-col w-full ${
               index === jobsData.getOpenJobs.length - 1 ? '' : 'border-b-2'
             }`}
           >
-            <div className="flex items-center basis-2/5 ">
+            <div className="flex items-center sm:justify-start basis-2/5 ">
               <IoBriefcase className="w-6 h-6 mr-3" />
               <div className="mr-4">
                 <h4>{job.center.name}</h4>
                 <span className="text-sm text-slate-500">
                   {job.center.address}
                 </span>
-                <p className="font-bold">
+                <p className="font-bold text-sm sm:text-base">
                   {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}
                 </p>
               </div>
             </div>
             <div className=" w-1 bg-amber-400"></div>
-            <div className="flex ml-12 space-x-10 items-center justify-between basis-3/5">
+            <div className="flex sm:ml-12 items-center ml-8 sm:justify-between  basis-3/5">
               {job.date_from === job.date_to ? (
-                <div>
-                  <span>
+                <div className='border-2 p-2 border-amber-400 rounded-md sm:border-0 sm:p-0'>
+                  <span className='text-sm sm:text-base'>
                     {dayjs(convertDate(job.date_from))
                       .format('dddd')
                       .toUpperCase()}
                   </span>
-                  <h3 className="font-bold">
+                  <h3 className="font-bold text-sm sm:text-base">
                     {dayjs(convertDate(job.date_from)).format('DD MMM YYYY')}
                   </h3>
-                  <span>{job.time}</span>
+                  <span className='text-sm sm:text-base'>{job.time}</span>
                 </div>
               ) : (
-                <>
-                  <div>
-                    <span>
+                <div className='flex items-center border-2 p-2 border-amber-400 rounded-md sm:border-0 sm:p-0'>
+                  <div className='mx-2'>
+                    <span className='text-sm sm:text-base'>
                       {dayjs(convertDate(job.date_from))
                         .format('dddd')
                         .toUpperCase()}
                     </span>
-                    <h3 className="font-bold">
+                    <h3 className="font-bold text-sm sm:text-base">
                       {dayjs(convertDate(job.date_from)).format('DD MMM YYYY')}
                     </h3>
-                    <span>{job.time.slice(0, 8)}</span>
+                    <span className='text-sm sm:text-base'>{job.time.slice(0, 8)}</span>
                   </div>
                   <BsArrowRight className="font-extrabold" />
-                  <div>
-                    <span>
+                  <div className='mx-2'>
+                    <span className='text-sm sm:text-base'>
                       {dayjs(convertDate(job.date_to))
                         .format('dddd')
                         .toUpperCase()}
                     </span>
-                    <h3 className="font-bold">
+                    <h3 className="font-bold text-sm sm:text-base">
                       {dayjs(convertDate(job.date_to)).format('DD MMM YYYY')}
                     </h3>
-                    <span>{job.time.slice(10)}</span>
+                    <span className='text-sm sm:text-base'>{job.time.slice(10)}</span>
                   </div>
-                </>
-              )}
-              <div className="space-x-4">
-                <button className="px-6 py-1 bg-green-500 text-white uppercase rounded shadow-lg hover:bg-green-400">
+                </div>
+              )}  
+              <div className="lg:space-x-4 hidden sm:flex flex-col lg:flex-row">
+                <button className="px-6 py-1 my-4 lg:my-0 bg-green-500 text-white uppercase rounded shadow-lg hover:bg-green-400">
                   Apply
                 </button>
                 <button className="px-6 py-1 bg-rose-500 text-white uppercase rounded shadow-lg hover:bg-rose-400">
@@ -112,6 +112,14 @@ const index= ({}) => {
                 </button>
               </div>
             </div>
+            <div className="sm:hidden space-x-10 flex justify-center">
+                <button className="px-6 py-1 my-4 lg:my-0 bg-green-500 text-white uppercase rounded shadow-lg hover:bg-green-400">
+                  Apply
+                </button>
+                <button className="px-6 py-1 my-4 lg:my-0 bg-rose-500 text-white uppercase rounded shadow-lg hover:bg-rose-400">
+                  Decline
+                </button>
+              </div>
           </div>
         ))}
       </div>
