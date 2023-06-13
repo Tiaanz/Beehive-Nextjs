@@ -48,6 +48,26 @@ export const GET_CENTER = gql`
   }
 `
 
+//Define get posts query
+export const GET_POSTS = gql`
+  query GetPostsByCenter(
+    $centerId: Int!
+    $dateFrom: String!
+    $dateTo: String!
+  ) {
+    getPostsByCenter(
+      center_id: $centerId
+      date_from: $dateFrom
+      date_to: $dateTo
+    ) {
+      id
+      time
+      qualified
+      status
+    }
+  }
+`
+
 // Define add relievers mutation
 export const ADD_RELIEVER = gql`
   mutation AddReliever(
