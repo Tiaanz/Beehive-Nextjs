@@ -1,10 +1,10 @@
 import { useSession } from 'next-auth/react'
-import { useState, useEffect } from 'react'
 import LargeHeading from '@/components/ui/LargeHeading'
 import Meta from '@/components/Meta'
 import { GET_JOBS, GET_RELIEVER, APPLY_JOB } from '@/GraphQL_API'
 import { useMutation, useQuery } from '@apollo/client'
 import JobCard from '@/components/JobCard'
+import { useEffect, useState } from 'react'
 
 interface Job {
   center: {
@@ -22,30 +22,28 @@ interface Job {
 const index = () => {
   const { data: session } = useSession()
 
-  const { data: jobsData } = useQuery(GET_JOBS, {
+  const [refetchJobs, setRefetchJobs] = useState(false)
+
+  const { data: jobsData,loading  } = useQuery(GET_JOBS, {
     variables: { status: 'OPEN' },
+   
   })
 
   const { data: relieverData } = useQuery(GET_RELIEVER, {
     variables: { email: session?.user?.email },
   })
 
-  const [applyJob] = useMutation(APPLY_JOB)
+
 
   //get jobs that the reliever has not applied
   const filteredJobs = jobsData?.getOpenJobs?.filter(
     (job: Job) => !job.relieverIDs.includes(relieverData?.getOneReliever?.id)
   )
 
+  
 
 
-  function handleApply() {
-    // applyJob({
-    //   variables: {
-    //     applyJobId:
-    //    }
-    //  })
-  }
+
 
   return (
     <>
@@ -55,36 +53,20 @@ const index = () => {
         <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
           Welcome {session?.user?.name} !
         </LargeHeading>
-
         {relieverData?.getOneReliever?.id &&
           filteredJobs?.map((job: Job, index: number) => (
-            <JobCard job={job} index={index} lastChildIndex={filteredJobs.length-1} />
+            <JobCard
+              key={job.id}
+              job={job}
+              index={index}
+              lastChildIndex={filteredJobs.length - 1}
+              relieverId={relieverData?.getOneReliever?.id}
+              
+            />
           ))}
-       
       </div>
     </>
   )
 }
 
 export default index
-
-{
-  /* <div>
-<Dialog
-  open={open}
-  onClose={() => setOpen(false)}
-  aria-labelledby="alert-dialog-title"
-  aria-describedby="alert-dialog-description"
->
-  <DialogTitle id="alert-dialog-title">
-    {'Are you sure you want to apply this job?'}
-  </DialogTitle>
-  <DialogActions>
-    <Button onClick={() => setOpen(false)}>No</Button>
-    <Button onClick={() => handleApply()} autoFocus>
-      Yes
-    </Button>
-  </DialogActions>
-</Dialog>
-</div> */
-}

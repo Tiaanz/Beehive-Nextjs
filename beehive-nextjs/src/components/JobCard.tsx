@@ -1,5 +1,7 @@
 import { FC } from 'react'
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
+import { useMutation } from '@apollo/client'
+import { APPLY_JOB } from '@/GraphQL_API'
 import { IoBriefcase } from 'react-icons/io5'
 import { BsArrowRight } from 'react-icons/bs'
 import dayjs, { Dayjs } from 'dayjs'
@@ -26,18 +28,24 @@ interface JobCardProps {
   job: Job
   index: number
   lastChildIndex: number
+  relieverId: string
+ 
 }
 
-const JobCard: FC<JobCardProps> = ({ job, index, lastChildIndex }) => {
+const JobCard: FC<JobCardProps> = ({ job, index, lastChildIndex,relieverId}) => {
   const [open, setOpen] = useState(false)
 
+  const [applyJob] = useMutation(APPLY_JOB)
 
-  function handleApply() {
-    // applyJob({
-    //   variables: {
-    //     applyJobId:
-    //    }
-    //  })
+  async function handleApply() {
+    await applyJob({
+      variables: {
+        applyJobId: job.id,
+        relieverId
+       }
+    })
+
+    setOpen(false)
   }
 
   return (
@@ -129,7 +137,7 @@ const JobCard: FC<JobCardProps> = ({ job, index, lastChildIndex }) => {
           </DialogTitle>
           <DialogActions>
             <Button onClick={() => setOpen(false)}>No</Button>
-            <Button onClick={() => handleApply()} autoFocus>
+            <Button onClick={handleApply} autoFocus>
               Yes
             </Button>
           </DialogActions>

@@ -182,6 +182,7 @@ export const APPLY_JOB = gql`
   mutation ApplyJob($applyJobId: String!, $relieverId: String!) {
     applyJob(id: $applyJobId, relieverID: $relieverId) {
       id
+      relieverIDs
     }
   }
 `
