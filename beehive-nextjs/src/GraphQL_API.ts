@@ -82,6 +82,7 @@ export const GET_JOBS = gql`
       date_to
       time
       relieverIDs
+      declined_relieverIDs
     }
   }
 `
@@ -183,6 +184,16 @@ export const APPLY_JOB = gql`
     applyJob(id: $applyJobId, relieverID: $relieverId) {
       id
       relieverIDs
+    }
+  }
+`
+
+// Define decline job mutation
+export const DECLINE_JOB = gql`
+  mutation DeclineJob($declineJobId: String!, $relieverId: String!) {
+    declineJob(id: $declineJobId, relieverID: $relieverId) {
+      id
+      declined_relieverIDs
     }
   }
 `

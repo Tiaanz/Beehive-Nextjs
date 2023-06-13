@@ -1,7 +1,7 @@
 import { FC } from 'react'
-import { useState} from 'react'
+import { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { APPLY_JOB } from '@/GraphQL_API'
+import { APPLY_JOB, DECLINE_JOB } from '@/GraphQL_API'
 import { IoBriefcase } from 'react-icons/io5'
 import { BsArrowRight } from 'react-icons/bs'
 import dayjs, { Dayjs } from 'dayjs'
@@ -29,23 +29,40 @@ interface JobCardProps {
   index: number
   lastChildIndex: number
   relieverId: string
- 
 }
 
-const JobCard: FC<JobCardProps> = ({ job, index, lastChildIndex,relieverId}) => {
-  const [open, setOpen] = useState(false)
+const JobCard: FC<JobCardProps> = ({
+  job,
+  index,
+  lastChildIndex,
+  relieverId,
+}) => {
+  const [applyAlert, setApplyAlert] = useState(false)
+  const [declineAlert, setDeclineAlert] = useState(false)
 
   const [applyJob] = useMutation(APPLY_JOB)
+  const [declineJob] = useMutation(DECLINE_JOB)
 
   async function handleApply() {
     await applyJob({
       variables: {
         applyJobId: job.id,
-        relieverId
-       }
+        relieverId,
+      },
     })
 
-    setOpen(false)
+    setApplyAlert(false)
+  }
+
+  async function handleDecline() {
+    await declineJob({
+      variables: {
+        declineJobId: job.id,
+        relieverId,
+      },
+    })
+
+    setDeclineAlert(false)
   }
 
   return (
@@ -104,40 +121,58 @@ const JobCard: FC<JobCardProps> = ({ job, index, lastChildIndex,relieverId}) => 
         )}
         <div className="lg:space-x-4 hidden sm:flex flex-col lg:flex-row">
           <button
-            onClick={() => setOpen(true)}
+            onClick={() => setApplyAlert(true)}
             className="px-6 py-1 my-4 lg:my-0 bg-green-500 text-white uppercase rounded shadow-lg hover:bg-green-400"
           >
             Apply
           </button>
-          <button className="px-6 py-1 bg-rose-500 text-white uppercase rounded shadow-lg hover:bg-rose-400">
+          <button onClick={() => setDeclineAlert(true)} className="px-6 py-1 bg-rose-500 text-white uppercase rounded shadow-lg hover:bg-rose-400">
             Decline
           </button>
         </div>
       </div>
       <div className="sm:hidden space-x-10 flex justify-center">
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => setApplyAlert(true)}
           className="px-6 py-1 my-4 lg:my-0 bg-green-500 text-white uppercase rounded shadow-lg hover:bg-green-400"
         >
           Apply
         </button>
-        <button className="px-6 py-1 my-4 lg:my-0 bg-rose-500 text-white uppercase rounded shadow-lg hover:bg-rose-400">
+        <button onClick={() => setDeclineAlert(true)} className="px-6 py-1 my-4 lg:my-0 bg-rose-500 text-white uppercase rounded shadow-lg hover:bg-rose-400">
           Decline
         </button>
       </div>
       <div>
         <Dialog
-          open={open}
-          onClose={() => setOpen(false)}
+          open={applyAlert}
+          onClose={() => setApplyAlert(false)}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {'Are you sure you want to apply this job?'}
+            {`Are you sure you want to apply this job at ${job.center.name} ?`}
           </DialogTitle>
           <DialogActions>
-            <Button onClick={() => setOpen(false)}>No</Button>
+            <Button onClick={() => setApplyAlert(false)}>No</Button>
             <Button onClick={handleApply} autoFocus>
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+      <div>
+        <Dialog
+          open={declineAlert}
+          onClose={() => setDeclineAlert(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {`Are you sure you want to decline this job at ${job.center.name}?`}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={() => setDeclineAlert(false)}>No</Button>
+            <Button onClick={handleDecline} autoFocus>
               Yes
             </Button>
           </DialogActions>

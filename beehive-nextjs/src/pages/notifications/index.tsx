@@ -17,6 +17,7 @@ interface Job {
   date_to: string
   time: string
   relieverIDs: string[]
+  declined_relieverIDs:string[]
 }
 
 const index = () => {
@@ -24,7 +25,7 @@ const index = () => {
 
   const [refetchJobs, setRefetchJobs] = useState(false)
 
-  const { data: jobsData,loading  } = useQuery(GET_JOBS, {
+  const { data: jobsData } = useQuery(GET_JOBS, {
     variables: { status: 'OPEN' },
    
   })
@@ -35,16 +36,12 @@ const index = () => {
 
 
 
-  //get jobs that the reliever has not applied
+  //get jobs that the reliever has not applied and declined
   const filteredJobs = jobsData?.getOpenJobs?.filter(
-    (job: Job) => !job.relieverIDs.includes(relieverData?.getOneReliever?.id)
+    (job: Job) => (!job.relieverIDs.includes(relieverData?.getOneReliever?.id) && !job.declined_relieverIDs.includes(relieverData?.getOneReliever?.id))
   )
 
   
-
-
-
-
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
