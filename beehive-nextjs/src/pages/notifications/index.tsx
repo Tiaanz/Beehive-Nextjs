@@ -23,8 +23,6 @@ interface Job {
 const index = () => {
   const { data: session } = useSession()
 
-  const [refetchJobs, setRefetchJobs] = useState(false)
-
   const { data: jobsData } = useQuery(GET_JOBS, {
     variables: { status: 'OPEN' },
    

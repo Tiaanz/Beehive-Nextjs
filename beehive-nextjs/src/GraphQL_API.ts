@@ -87,6 +87,22 @@ export const GET_JOBS = gql`
   }
 `
 
+//define get JOBS by reliever query
+export const GET_RELIEVER_JOBS = gql`
+  query GetJobsByReliever($dateFrom: String!, $dateTo: String!) {
+    getJobsByReliever(date_from: $dateFrom, date_to: $dateTo) {
+      center {
+        name
+      }
+      id
+      time
+      qualified
+      relieverIDs
+      status
+    }
+  }
+`
+
 // Define add relievers mutation
 export const ADD_RELIEVER = gql`
   mutation AddReliever(

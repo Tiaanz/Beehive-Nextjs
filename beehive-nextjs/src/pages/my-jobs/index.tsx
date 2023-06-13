@@ -1,59 +1,64 @@
 import * as React from 'react'
 import { useSession } from 'next-auth/react'
 import Meta from '@/components/Meta'
-import { AiOutlinePlusCircle } from 'react-icons/ai'
-import Button from '@/components/ui/Button'
-import Link from 'next/link'
+import LargeHeading from '@/components/ui/LargeHeading'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import dayjs, { Dayjs } from 'dayjs'
-import { GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
+import { GET_RELIEVER_JOBS, GET_RELIEVER } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
-
 
 const index = () => {
   const { data: session } = useSession()
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
-  const [posts, setPosts] = React.useState<Post[]>([])
+  const [jobs, setJobs] = React.useState<Job[]>([])
 
-  const { data: managerData } = useQuery(GET_MANAGER, {
+  const { data: relieverData } = useQuery(GET_RELIEVER, {
     variables: { email: session?.user?.email },
   })
 
-  const [getPosts] = useLazyQuery(GET_POSTS)
+  const [getJobs] = useLazyQuery(GET_RELIEVER_JOBS)
 
-  interface Post {
+  interface Job {
+    center: {
+      name: string
+      address: string
+    }
     id: string
+    qualified: boolean
+    date_from: string
+    date_to: string
     time: string
-    qualified: string
-    status: string
+    relieverIDs: string[]
+    declined_relieverIDs: string[]
+    status:string
   }
 
-  async function fetchPosts() {
-    const res = await getPosts({
+  async function fetchJobs() {
+    const res = await getJobs({
       variables: {
-        centerId: managerData?.getOneManager?.ECE_id,
         dateFrom: selectedDate?.format('DD/MM/YYYY'),
         dateTo: selectedDate?.format('DD/MM/YYYY'),
       },
     })
 
-    
-    setPosts(res?.data?.getPostsByCenter || [])
+   
+    setJobs(res?.data?.getJobsByReliever || [])
   }
 
-function handleDateChange(value:Dayjs|null) {
-  setSelectedDate(value)
+  const filteredJobs = jobs.filter((job: Job) =>
+  job.relieverIDs.includes(relieverData?.getOneReliever?.id)
+)
 
-}
-
+  function handleDateChange(value: Dayjs | null) {
+    setSelectedDate(value)
+  }
 
   React.useEffect(() => {
-
-    fetchPosts()
-  }, [selectedDate,posts])
+    fetchJobs()
+  }, [selectedDate, jobs])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -61,35 +66,33 @@ function handleDateChange(value:Dayjs|null) {
         <Meta title="Early childhood Relief teachers | Beehive" />
 
         <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto flex-col items-start">
-          <div className="flex mb-8">
-            <AiOutlinePlusCircle className="w-10 h-10 mx-1" />
-            <Link href="/my-posts/add-post">
-              <Button>Add a post</Button>
-            </Link>
-          </div>
+          <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
+            My Jobs
+          </LargeHeading>
           <div className="flex">
             <DateCalendar
               sx={{ margin: 0 }}
               value={selectedDate}
-              onChange={(newValue) =>handleDateChange(newValue) }
+              onChange={(newValue) => handleDateChange(newValue)}
               className="mr-6 min-w-fit"
             />
             <div className="flex flex-wrap">
-              {posts?.map((post) => (
+              {filteredJobs?.map((job) => (
                 <ul
-                  key={post.id}
+                  key={job.id}
                   className="space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md mr-4"
                 >
-                  <li>Time: {post.time}</li>
-                  <li className='text-sm text-slate-600'> {post.qualified ? 'Qualified' : 'Qualified, Unqualified'}</li>
+                  <li className='font-bold'>{ job.center.name}</li>
+                  <li>Time: {job.time}</li>
+                  <li className='text-sm text-slate-600'> {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}</li>
                   <li>
                     Status:{' '}
                     <span
                       style={{
-                        color: post.status === 'OPEN' ? 'green' : 'inherit',
+                        color: job.status === 'OPEN' ? 'orange' : 'green',
                       }}
                     >
-                      {post.status}
+                      {job.status==="OPEN"?"Awaiting center confirmation":"CONFIRMED"}
                     </span>
                   </li>
                 </ul>
