@@ -124,7 +124,7 @@ const Navbar = () => {
                   className={buttonVariants({ variant: 'link' })}
                   href="/notifications"
                 >
-                  NOTIFICATION
+                  NOTIFICATIONS
                 </Link>
                 {relieverData?.getOneReliever?.role === 'RELIEVER' && (
                   <Link

@@ -2,7 +2,7 @@
 import { useSession } from 'next-auth/react'
 import LargeHeading from '@/components/ui/LargeHeading'
 import Meta from '@/components/Meta'
-import { GET_JOBS } from '@/GraphQL_API'
+import { GET_JOBS,GET_RELIEVER } from '@/GraphQL_API'
 import { useQuery } from '@apollo/client'
 import { IoBriefcase } from 'react-icons/io5'
 import { BsArrowRight } from 'react-icons/bs'
@@ -29,6 +29,11 @@ const index= ({}) => {
     variables: { status: 'OPEN' },
   })
 
+  const { data: relieverData } = useQuery(GET_RELIEVER, {
+    variables:{email:session?.user?.email}
+  })
+
+
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
@@ -37,8 +42,8 @@ const index= ({}) => {
         <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
           Welcome {session?.user?.name} !
         </LargeHeading>
-
-        {jobsData?.getOpenJobs?.map((job: any, index: number) => (
+        
+        {relieverData?.getOneReliever?.id && jobsData?.getOpenJobs?.map((job: any, index: number) => (
           <div
             key={job.id}
             className={`p-4 flex w-full ${

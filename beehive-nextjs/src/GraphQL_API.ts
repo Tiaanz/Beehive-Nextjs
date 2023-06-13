@@ -14,6 +14,7 @@ export const GET_FILTERED_CENTER = gql`
 export const GET_RELIEVER = gql`
   query GetOneReliever($email: String!) {
     getOneReliever(email: $email) {
+      id
       phone
       bio
       photo_url
