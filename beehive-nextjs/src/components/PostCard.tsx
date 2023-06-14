@@ -54,7 +54,7 @@ const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
             </p>
           </div>
           {post.date_from === post.date_to ? (
-            <div className="border-2 p-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
+            <div className="border-2 py-2 px-4 border-amber-400 rounded-md sm:border-0 sm:p-0">
               <span className="text-sm sm:text-base">
                 {dayjs(convertDate(post.date_from))
                   .format('dddd')
@@ -66,7 +66,7 @@ const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
               <span className="text-sm sm:text-base">{post.time}</span>
             </div>
           ) : (
-            <div className="flex items-center border-2 p-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
+            <div className="flex items-center border-2 py-2 px-4 border-amber-400 rounded-md sm:border-0 sm:p-0">
               <div className="mr-2">
                 <span className="text-sm sm:text-base">
                   {dayjs(convertDate(post.date_from))
@@ -99,7 +99,7 @@ const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
         </div>
       </div>
       <div className=" w-1 bg-amber-400"></div>
-      <div className="flex flex-col  ml-8  basis-3/5">
+      <div className="flex flex-col ml-8 basis-3/5">
         {post.relievers.map((reliever) => (
         
           <RelieverCard reliever={reliever} key={reliever.id} jobId={post.id} />

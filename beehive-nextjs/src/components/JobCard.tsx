@@ -85,7 +85,7 @@ const JobCard: FC<JobCardProps> = ({
       <div className=" w-1 bg-amber-400"></div>
       <div className="flex sm:ml-12 items-center ml-8 sm:justify-between  basis-3/5">
         {job.date_from === job.date_to ? (
-          <div className="border-2 p-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
+          <div className="border-2 px-4 py-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
             <span className="text-sm sm:text-base">
               {dayjs(convertDate(job.date_from)).format('dddd').toUpperCase()}
             </span>
@@ -95,7 +95,7 @@ const JobCard: FC<JobCardProps> = ({
             <span className="text-sm sm:text-base">{job.time}</span>
           </div>
         ) : (
-          <div className="flex items-center border-2 p-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
+          <div className="flex items-center border-2 px-4 py-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
             <div className="mr-2">
               <span className="text-sm sm:text-base">
                 {dayjs(convertDate(job.date_from)).format('dddd').toUpperCase()}

@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 import Link from 'next/link'
-import {ACCEPT_JOB} from '@/GraphQL_API'
+import { ACCEPT_JOB } from '@/GraphQL_API'
 import { useMutation } from '@apollo/client'
 
 interface Reliever {
@@ -15,48 +15,47 @@ interface Reliever {
   id: string
 }
 
-
 interface RelieverCardProps {
   reliever: Reliever
-  jobId:string
+  jobId: string
 }
 
-const RelieverCard: FC<RelieverCardProps> = ({ reliever,jobId}) => {
-  
-
+const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
   const [acceptAlert, setAcceptAlert] = useState(false)
 
-  const[acceptJob]=useMutation(ACCEPT_JOB)
+  const [acceptJob] = useMutation(ACCEPT_JOB)
 
   async function handleAccept() {
     await acceptJob({
       variables: {
         relieverId: reliever.id,
-        acceptJobId:jobId
-        
-     }
-   })
+        acceptJobId: jobId,
+      },
+    })
     setAcceptAlert(false)
   }
 
   return (
-    <div className="flex items-center justify-between" >
-      <div className="flex">
-        <Link className="text-lg hover:underline" href="">
-          {reliever.first_name} {reliever.last_name}
-        </Link>
-        <span className="font-bold ml-1 text-lg">
-          {' '}
-          ({reliever.qualified ? 'Qualified' : 'Unqualified'})
-        </span>
+    <>
+      <div className="flex ml-6 sm:items-center justify-between sm:flex-row flex-col">
+        <div className="flex mt-2 ">
+          <Link className="sm:text-lg hover:underline" href="">
+            {reliever.first_name} {reliever.last_name}
+          </Link>
+          <span className="font-bold ml-1 sm:text-lg">
+            {' '}
+            ({reliever.qualified ? 'Qualified' : 'Unqualified'})
+          </span>
+        </div>
+        <div>
+          <button
+            onClick={() => setAcceptAlert(true)}
+            className="px-6 py-1 my-2 bg-green-500 text-white uppercase rounded shadow-lg hover:bg-green-400"
+          >
+            Accept
+          </button>
+        </div>
       </div>
-
-      <button
-        onClick={() => setAcceptAlert(true)}
-        className="px-6 py-1 my-4 bg-green-500 text-white uppercase rounded shadow-lg hover:bg-green-400"
-      >
-        Accept
-      </button>
       <div>
         <Dialog
           open={acceptAlert}
@@ -75,7 +74,7 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever,jobId}) => {
           </DialogActions>
         </Dialog>
       </div>
-    </div>
+    </>
   )
 }
 
