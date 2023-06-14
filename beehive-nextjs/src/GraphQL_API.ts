@@ -66,8 +66,11 @@ export const GET_POSTS = gql`
       date_to
       relieverIDs
       relievers {
+        id
         first_name
+        last_name
         email
+        qualified
       }
     }
   }
@@ -81,12 +84,17 @@ export const GET_JOBS = gql`
         address
       }
       id
+      status
       qualified
       date_from
       date_to
       time
       relieverIDs
       declined_relieverIDs
+      relievers {
+      id
+      qualified
+    }
     }
   }
 `
@@ -227,6 +235,17 @@ export const DECLINE_JOB = gql`
     declineJob(id: $declineJobId, relieverID: $relieverId) {
       id
       declined_relieverIDs
+    }
+  }
+`
+
+// Define accpet job mutation
+export const ACCEPT_JOB = gql`
+  mutation AcceptJob($acceptJobId: String!, $relieverId: String!) {
+    acceptJob(id: $acceptJobId, relieverID: $relieverId) {
+      id
+      relieverIDs
+      status
     }
   }
 `
