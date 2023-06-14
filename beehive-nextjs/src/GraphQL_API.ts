@@ -27,6 +27,7 @@ export const GET_RELIEVER = gql`
 export const GET_MANAGER = gql`
   query GetOneManager($email: String!) {
     getOneManager(email: $email) {
+      id
       ECE_id
       phone
       role
@@ -51,11 +52,7 @@ export const GET_CENTER = gql`
 
 //Define get posts query
 export const GET_POSTS = gql`
-  query GetPostsByCenter(
-    $centerId: Int!
-    $dateFrom: String!
-    $dateTo: String!
-  ) {
+  query GetPostsByCenter($centerId: Int!, $dateFrom: String, $dateTo: String) {
     getPostsByCenter(
       center_id: $centerId
       date_from: $dateFrom
@@ -65,13 +62,20 @@ export const GET_POSTS = gql`
       time
       qualified
       status
+      date_from
+      date_to
+      relieverIDs
+      relievers {
+        first_name
+        email
+      }
     }
   }
 `
 //define get All "OPEN" JOBS query
 export const GET_JOBS = gql`
-  query GetOpenJobs($status: String!) {
-    getOpenJobs(status: $status) {
+  query GetOpenJobs {
+    getOpenJobs {
       center {
         name
         address
@@ -111,6 +115,7 @@ export const ADD_RELIEVER = gql`
     $phone: String!
     $email: String!
     $password: String!
+    $qualified: Boolean!
   ) {
     addReliever(
       first_name: $firstName
@@ -118,6 +123,7 @@ export const ADD_RELIEVER = gql`
       phone: $phone
       email: $email
       password: $password
+      qualified: $qualified
     ) {
       id
       email
@@ -127,10 +133,21 @@ export const ADD_RELIEVER = gql`
 
 //Define update reliever mutation
 export const UPDATE_RELIEVER = gql`
-  mutation UpdateReliever($email: String!, $bio: String, $photoUrl: String) {
-    updateReliever(email: $email, bio: $bio, photo_url: $photoUrl) {
+  mutation UpdateReliever(
+    $email: String!
+    $bio: String
+    $photoUrl: String
+    $qualified: Boolean
+  ) {
+    updateReliever(
+      email: $email
+      bio: $bio
+      photo_url: $photoUrl
+      qualified: $qualified
+    ) {
       bio
       photo_url
+      qualified
     }
   }
 `

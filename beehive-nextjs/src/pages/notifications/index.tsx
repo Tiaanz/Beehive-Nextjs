@@ -1,10 +1,11 @@
 import { useSession } from 'next-auth/react'
 import LargeHeading from '@/components/ui/LargeHeading'
 import Meta from '@/components/Meta'
-import { GET_JOBS, GET_RELIEVER, APPLY_JOB } from '@/GraphQL_API'
+import { GET_JOBS, GET_RELIEVER,GET_POSTS,GET_MANAGER } from '@/GraphQL_API'
 import { useMutation, useQuery } from '@apollo/client'
 import JobCard from '@/components/JobCard'
 import { useEffect, useState } from 'react'
+import PostCard from '@/components/PostCard'
 
 interface Job {
   center: {
@@ -17,16 +18,32 @@ interface Job {
   date_to: string
   time: string
   relieverIDs: string[]
-  declined_relieverIDs:string[]
+  declined_relieverIDs: string[]
+  relievers: {
+    first_name:string
+    email:string
+  }
 }
 
 const index = () => {
   const { data: session } = useSession()
 
+
   const { data: jobsData } = useQuery(GET_JOBS, {
     variables: { status: 'OPEN' },
    
   })
+
+  const { data: managerData } = useQuery(GET_MANAGER, {
+    variables:{email:session?.user?.email}
+  })
+
+  const { data: postsData } = useQuery(GET_POSTS, {
+    variables: { centerId: managerData?.getOneManager?.ECE_id },
+   
+  })
+
+
 
   const { data: relieverData } = useQuery(GET_RELIEVER, {
     variables: { email: session?.user?.email },
@@ -38,6 +55,9 @@ const index = () => {
   const filteredJobs = jobsData?.getOpenJobs?.filter(
     (job: Job) => (!job.relieverIDs.includes(relieverData?.getOneReliever?.id) && !job.declined_relieverIDs.includes(relieverData?.getOneReliever?.id))
   )
+
+  //get posts that the reliever has applied
+  const filteredPosts=postsData?.getPostsByCenter?.filter((post:Job)=>post.relieverIDs.length!==0)
 
   
   return (
@@ -56,6 +76,17 @@ const index = () => {
               index={index}
               lastChildIndex={filteredJobs.length - 1}
               relieverId={relieverData?.getOneReliever?.id}
+              
+            />
+          ))}
+        {managerData?.getOneManager?.id &&
+          filteredPosts?.map((post: Job, index: number) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              index={index}
+              lastChildIndex={filteredPosts.length - 1}
+             
               
             />
           ))}

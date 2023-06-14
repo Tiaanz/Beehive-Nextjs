@@ -8,8 +8,7 @@ import { useMutation } from '@apollo/client'
 import { toast } from '@/components/ui/Toast'
 import { useRouter } from 'next/router'
 import { ADD_RELIEVER } from '@/GraphQL_API'
-
-
+import { MenuItem } from '@mui/material'
 
 const theme = createTheme()
 const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/
@@ -23,7 +22,7 @@ const Teacher = ({}) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-
+    const qualified = data.get('qualified') === 'Yes' ? true : false
     const password = data.get('password') as any
     if (password?.match(validPasswordRegex)) {
       try {
@@ -31,6 +30,7 @@ const Teacher = ({}) => {
           variables: {
             firstName: data.get('firstName'),
             lastName: data.get('lastName'),
+            qualified,
             phone: data.get('phone'),
             email: data.get('email'),
             password: data.get('password'),
@@ -60,8 +60,6 @@ const Teacher = ({}) => {
       )
     }
   }
-
- 
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,6 +113,20 @@ const Teacher = ({}) => {
             />
             <TextField
               margin="normal"
+              required
+              fullWidth
+              id="qualified"
+              label="Qualified"
+              name="qualified"
+              select
+              variant="standard"
+              defaultValue={''}
+            >
+              <MenuItem value="Yes">Yes</MenuItem>
+              <MenuItem value="No">No</MenuItem>
+            </TextField>
+            <TextField
+              margin="normal"
               inputProps={{
                 inputMode: 'numeric',
                 pattern: '[0-9]*',
@@ -132,7 +144,7 @@ const Teacher = ({}) => {
             <TextField
               margin="normal"
               inputProps={{
-                pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$',
+                pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}$',
                 maxlength: '40',
                 title:
                   'Email address must be in valid format and not longer than 40 characters',
