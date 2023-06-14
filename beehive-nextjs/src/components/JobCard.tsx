@@ -10,6 +10,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
+import { toast } from './ui/Toast'
 
 interface Job {
   center: {
@@ -52,6 +53,12 @@ const JobCard: FC<JobCardProps> = ({
     })
 
     setApplyAlert(false)
+    
+    toast({
+      title: 'Success',
+      message: 'You have successfully applied this job.',
+      type: 'success',
+    })
   }
 
   async function handleDecline() {
@@ -63,6 +70,11 @@ const JobCard: FC<JobCardProps> = ({
     })
 
     setDeclineAlert(false)
+    toast({
+      title: 'Alert',
+      message: 'You have declined this job.',
+      type: 'alert',
+    })
   }
 
   return (
