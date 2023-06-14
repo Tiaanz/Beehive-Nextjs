@@ -6,6 +6,8 @@ import { useMutation, useQuery } from '@apollo/client'
 import JobCard from '@/components/JobCard'
 import { useEffect, useState } from 'react'
 import PostCard from '@/components/PostCard'
+import dayjs from 'dayjs'
+import { convertDate } from '@/helper'
 
 interface Reliever {
   id: string
@@ -24,7 +26,7 @@ interface Job {
   date_from: string
   date_to: string
   time: string
-  status:string
+  status: string
   relieverIDs: string[]
   declined_relieverIDs: string[]
   relievers: Reliever[]
@@ -50,17 +52,27 @@ const index = () => {
   })
 
   //get jobs that the reliever has not applied and declined and meets qualification requirement
-  const filteredJobs = jobsData?.getOpenJobs?.filter((job: Job) =>
-    !job.relieverIDs.includes(relieverData?.getOneReliever?.id) &&
-    !job.declined_relieverIDs.includes(relieverData?.getOneReliever?.id) &&
-    job.qualified
-      ? relieverData?.getOneReliever?.qualified === true
-      : true
+  const filteredJobs = jobsData?.getOpenJobs?.filter(
+    (job: Job) =>
+      !job.relieverIDs.includes(relieverData?.getOneReliever?.id) &&
+      !job.declined_relieverIDs.includes(relieverData?.getOneReliever?.id) &&
+      (job.qualified
+        ? relieverData?.getOneReliever?.qualified === true
+        : true) &&
+      !relieverData?.getOneReliever?.not_available_dates.includes(
+        job.date_from
+      ) &&
+      !relieverData?.getOneReliever?.not_available_dates.includes(
+        job.date_to
+      ) &&
+      !relieverData?.getOneReliever?.not_available_dates.some((date: string) =>
+       ( dayjs(convertDate(date)).isBefore(job.date_to)&& dayjs(convertDate(date)).isAfter(job.date_from))
+      )
   )
 
   //get posts that the reliever has applied
   const filteredPosts = postsData?.getPostsByCenter?.filter(
-    (post: Job) => (post.relieverIDs.length !== 0 && post.status==="OPEN" )
+    (post: Job) => post.relieverIDs.length !== 0 && post.status === 'OPEN'
   )
 
   return (

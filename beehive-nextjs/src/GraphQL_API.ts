@@ -19,6 +19,8 @@ export const GET_RELIEVER = gql`
       bio
       photo_url
       role
+      qualified
+      not_available_dates
     }
   }
 `
