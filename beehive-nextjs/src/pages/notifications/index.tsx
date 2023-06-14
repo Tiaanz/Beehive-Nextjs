@@ -2,9 +2,8 @@ import { useSession } from 'next-auth/react'
 import LargeHeading from '@/components/ui/LargeHeading'
 import Meta from '@/components/Meta'
 import { GET_JOBS, GET_RELIEVER, GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import JobCard from '@/components/JobCard'
-import { useEffect, useState } from 'react'
 import PostCard from '@/components/PostCard'
 import dayjs from 'dayjs'
 import { convertDate } from '@/helper'
@@ -51,7 +50,8 @@ const index = () => {
     variables: { email: session?.user?.email },
   })
 
-  //get jobs that the reliever has not applied and declined and meets qualification requirement
+  //show jobs that the reliever has not applied and declined and meets qualification requirement
+  // and jobs that are in reliever's available dates
   const filteredJobs = jobsData?.getOpenJobs?.filter(
     (job: Job) =>
       !job.relieverIDs.includes(relieverData?.getOneReliever?.id) &&
@@ -69,9 +69,6 @@ const index = () => {
        ( dayjs(convertDate(date)).isBefore(convertDate(job.date_to))&& dayjs(convertDate(date)).isAfter(convertDate(job.date_from)))
       )
   )
-
-
-  
 
   //get posts that the reliever has applied
   const filteredPosts = postsData?.getPostsByCenter?.filter(
@@ -105,6 +102,7 @@ const index = () => {
               lastChildIndex={filteredPosts.length - 1}
             />
           ))}
+        {(filteredPosts?.length===0 || filteredJobs?.length===0) && <h1 className='p-6 text-lg'>You don't have any notifications.</h1>}
       </div>
     </>
   )

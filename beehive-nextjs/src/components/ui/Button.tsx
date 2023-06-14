@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 
 export const buttonVariants = cva(
-  'active:scale-95 inline-flex items-center justify-center rounded-md text-base font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none',
+  'active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none',
   {
     variants: {
       variant: {

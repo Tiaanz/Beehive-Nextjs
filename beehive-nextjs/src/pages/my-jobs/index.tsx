@@ -65,22 +65,22 @@ const index = () => {
       <>
         <Meta title="Early childhood Relief teachers | Beehive" />
 
-        <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto flex-col items-start">
+        <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto flex-col xl:items-start items-center">
           <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
             My Jobs
           </LargeHeading>
-          <div className="flex">
+          <div className="flex xl:flex-row flex-col items-center">
             <DateCalendar
               sx={{ margin: 0 }}
               value={selectedDate}
               onChange={(newValue) => handleDateChange(newValue)}
-              className="mr-6 min-w-fit"
+              className="sm:mr-6 min-w-fit"
             />
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap xl:justify-start justify-center ">
               {filteredJobs?.map((job) => (
                 <ul
                   key={job.id}
-                  className="space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md mr-4"
+                  className="space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md sm:mr-4 mb-4"
                 >
                   <li className='font-bold'>{ job.center.name}</li>
                   <li>Time: {job.time}</li>
@@ -96,7 +96,7 @@ const index = () => {
                     </span>
                   </li>
                 </ul>
-              ))}
+              ))}    
             </div>
           </div>
         </div>
