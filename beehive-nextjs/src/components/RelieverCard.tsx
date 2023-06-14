@@ -4,7 +4,7 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 import Link from 'next/link'
-import { ACCEPT_JOB } from '@/GraphQL_API'
+import { ACCEPT_JOB,GET_JOB } from '@/GraphQL_API'
 import { useMutation } from '@apollo/client'
 
 interface Reliever {
@@ -24,6 +24,7 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
   const [acceptAlert, setAcceptAlert] = useState(false)
 
   const [acceptJob] = useMutation(ACCEPT_JOB)
+  const [getJob]=useMutation(GET_JOB)
 
   async function handleAccept() {
     await acceptJob({
@@ -32,6 +33,14 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
         acceptJobId: jobId,
       },
     })
+    
+    await getJob({
+      variables: {
+        getJobId: reliever.id,
+        jobId
+      }
+    })
+    
     setAcceptAlert(false)
   }
 
