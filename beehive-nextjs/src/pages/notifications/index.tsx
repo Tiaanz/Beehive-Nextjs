@@ -66,9 +66,12 @@ const index = () => {
         job.date_to
       ) &&
       !relieverData?.getOneReliever?.not_available_dates.some((date: string) =>
-       ( dayjs(convertDate(date)).isBefore(job.date_to)&& dayjs(convertDate(date)).isAfter(job.date_from))
+       ( dayjs(convertDate(date)).isBefore(convertDate(job.date_to))&& dayjs(convertDate(date)).isAfter(convertDate(job.date_from)))
       )
   )
+
+
+  
 
   //get posts that the reliever has applied
   const filteredPosts = postsData?.getPostsByCenter?.filter(
