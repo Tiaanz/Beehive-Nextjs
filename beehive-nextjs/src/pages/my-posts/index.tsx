@@ -78,11 +78,11 @@ const index = () => {
               onChange={(newValue) => handleDateChange(newValue)}
               className="mr-6 min-w-fit"
             />
-            <div className="flex flex-wrap xl:justify-start justify-center">
+            <div className="flex flex-wrap sm:flex-row flex-col xl:justify-start justify-center">
               {posts?.map((post) => (
                 <ul
                   key={post.id}
-                  className="space-y-2 border-2 p-4 border-amber-400 rounded-md sm:mr-4 mb-4"
+                  className="flex:1 space-y-2 border-2 p-4 border-amber-400 rounded-md sm:mr-4 mb-4"
                 >
                
                   <li>Time: {post.time}</li>
