@@ -135,6 +135,27 @@ export const GET_RELIEVER_JOBS = gql`
   }
 `
 
+//define get job by ID
+export const GET_JOB_BY_ID = gql`
+  query GetJobById($jobId: String!) {
+    getJobById(job_id: $jobId) {
+      date_from
+      date_to
+      time
+      qualified
+      center {
+        name
+        address
+        manager {
+          first_name
+          last_name
+          phone
+        }
+      }
+    }
+  }
+`
+
 // Define add relievers mutation
 export const ADD_RELIEVER = gql`
   mutation AddReliever(
