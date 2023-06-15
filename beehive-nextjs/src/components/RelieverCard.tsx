@@ -48,7 +48,7 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
     <>
       <div className="flex ml-6 sm:items-center justify-between sm:flex-row flex-col">
         <div className="flex mt-2 ">
-          <Link className="sm:text-lg hover:underline" href={`/profile/${reliever.id}`}>
+          <Link className="sm:text-lg hover:underline" href={`/profile/reliever-profile/${reliever.id}`}>
             {reliever.first_name} {reliever.last_name}
           </Link>
           <span className="font-bold ml-1 sm:text-lg">
