@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { toast } from '@/components/ui/Toast'
+import Meta from '@/components/Meta'
 
 const theme = createTheme()
 
@@ -47,6 +48,7 @@ export default function Login() {
 
   return (
     <ThemeProvider theme={theme}>
+       <Meta title="Log in | Beehive" />
       <Container component="main" maxWidth="xs" className='pt-20'>
         <CssBaseline />
         <Box
