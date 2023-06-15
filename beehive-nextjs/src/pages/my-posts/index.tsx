@@ -10,6 +10,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import dayjs, { Dayjs } from 'dayjs'
 import { GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
+import { FiEdit } from 'react-icons/fi'
 
 const index = () => {
   const { data: session } = useSession()
@@ -29,7 +30,6 @@ const index = () => {
     email: string
     qualified: boolean
   }
-
 
   interface Post {
     id: string
@@ -59,6 +59,9 @@ const index = () => {
     fetchPosts()
   }, [selectedDate, posts])
 
+
+
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <>
@@ -82,9 +85,8 @@ const index = () => {
               {posts?.map((post) => (
                 <ul
                   key={post.id}
-                  className="flex:1 space-y-2 border-2 p-4 border-amber-400 rounded-md sm:mr-4 mb-4"
+                  className="flex:1 flex flex-col space-y-2 border-2 p-4 border-amber-400 rounded-md sm:mr-4 mb-4 "
                 >
-               
                   <li>Time: {post.time}</li>
                   <li className="text-sm text-slate-600">
                     {' '}
@@ -105,7 +107,21 @@ const index = () => {
                       {post.status}
                     </span>
                   </li>
-                    {post.status === "FUFILLED" && <Link href={`/profile/reliever-profile/${post.relievers[0].id}`}><li className='hover:underline mt-2'>Reliever: {post.relievers[0].first_name} {post.relievers[0].last_name} ({post.relievers[0].qualified ? "Qualified" : "Unqualified"})</li></Link>}                   
+                  {post.status === 'FUFILLED' && (
+                    <Link
+                      href={`/profile/reliever-profile/${post.relievers[0].id}`}
+                    >
+                      <li className="hover:underline mt-2">
+                        Reliever: {post.relievers[0].first_name}{' '}
+                        {post.relievers[0].last_name} (
+                        {post.relievers[0].qualified
+                          ? 'Qualified'
+                          : 'Unqualified'}
+                        )
+                      </li>
+                    </Link>
+                  )}
+                 <li className='last:self-end text-2xl text-orange-500 hover:text-orange-400 hover:cursor-pointer'><Link href={`/my-posts/edit-post/${post.id}`}><FiEdit/></Link></li> 
                 </ul>
               ))}
             </div>

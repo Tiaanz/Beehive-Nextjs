@@ -158,7 +158,7 @@ const page = () => {
                     rows={15}
                     name="description"
                     defaultValue={description}
-                    className="block p-2.5 lg:w-2/3 md:w-3/4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    className="block p-2.5 lg:w-4/5 md:w-3/4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Write your bio here..."
                     overflow-y="scroll"
                   ></textarea>

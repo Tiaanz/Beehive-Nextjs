@@ -146,6 +146,7 @@ export const GET_JOB_BY_ID = gql`
       center {
         name
         address
+        ECE_id
         manager {
           first_name
           last_name
