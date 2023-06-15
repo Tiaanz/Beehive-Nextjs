@@ -105,8 +105,7 @@ const index = () => {
                       {post.status}
                     </span>
                   </li>
-                    {post.status === "FUFILLED" && <Link href={''}><li className='hover:underline mt-2'>Reliever: {post.relievers[0].first_name} {post.relievers[0].last_name} ({post.relievers[0].qualified ? "Qualified" : "Unqualified"})</li></Link>}
-                    
+                    {post.status === "FUFILLED" && <Link href={`/profile/${post.relievers[0].id}`}><li className='hover:underline mt-2'>Reliever: {post.relievers[0].first_name} {post.relievers[0].last_name} ({post.relievers[0].qualified ? "Qualified" : "Unqualified"})</li></Link>}                   
                 </ul>
               ))}
             </div>

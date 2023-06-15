@@ -25,6 +25,21 @@ export const GET_RELIEVER = gql`
   }
 `
 
+//Define get a reliever by ID
+export const GET_RELIEVER_BY_ID = gql`
+  query GetRelieverById($relieverId: String!) {
+    getRelieverById(reliever_id: $relieverId) {
+      first_name
+      last_name
+      bio
+      email
+      phone
+      qualified
+      photo_url
+    }
+  }
+`
+
 //Define get a manager query
 export const GET_MANAGER = gql`
   query GetOneManager($email: String!) {
