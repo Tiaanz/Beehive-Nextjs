@@ -19,6 +19,7 @@ interface Job {
   center: {
     name: string
     address: string
+    ECE_id:number
   }
   id: string
   qualified: boolean

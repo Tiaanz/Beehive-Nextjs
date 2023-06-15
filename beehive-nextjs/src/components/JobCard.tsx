@@ -11,9 +11,11 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 import { toast } from './ui/Toast'
+import Link from 'next/link'
 
 interface Job {
   center: {
+    ECE_id:number
     name: string
     address: string
   }
@@ -87,7 +89,7 @@ const JobCard: FC<JobCardProps> = ({
       <div className="flex items-center sm:justify-start basis-2/5 ">
         <IoBriefcase className="w-6 h-6 mr-3" />
         <div className="mr-4">
-          <h4>{job.center.name}</h4>
+         <Link href={`/profile/centre-profile/${job.center.ECE_id}`}> <h4 className='hover:underline'>{job.center.name}</h4></Link>
           <span className="text-sm text-slate-500">{job.center.address}</span>
           <p className="font-bold text-sm sm:text-base">
             {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}

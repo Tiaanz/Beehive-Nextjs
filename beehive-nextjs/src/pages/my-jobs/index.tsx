@@ -8,6 +8,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import dayjs, { Dayjs } from 'dayjs'
 import { GET_RELIEVER_JOBS, GET_RELIEVER } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
+import Link from 'next/link'
 
 const index = () => {
   const { data: session } = useSession()
@@ -23,6 +24,7 @@ const index = () => {
 
   interface Job {
     center: {
+      ECE_id:number
       name: string
       address: string
     }
@@ -82,7 +84,7 @@ const index = () => {
                   key={job.id}
                   className="space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md sm:mr-4 mb-4"
                 >
-                  <li className='font-bold'>{ job.center.name}</li>
+                  <li className='font-bold hover:underline'><Link href={`/profile/centre-profile/${job.center.ECE_id}`}>{ job.center.name}</Link></li>
                   <li>Time: {job.time}</li>
                   <li className='text-sm text-slate-600'> {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}</li>
                   <li>

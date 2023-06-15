@@ -97,6 +97,7 @@ export const GET_JOBS = gql`
   query GetOpenJobs {
     getOpenJobs {
       center {
+        ECE_id
         name
         address
       }
@@ -121,6 +122,7 @@ export const GET_RELIEVER_JOBS = gql`
   query GetJobsByReliever($dateFrom: String!, $dateTo: String!) {
     getJobsByReliever(date_from: $dateFrom, date_to: $dateTo) {
       center {
+        ECE_id
         name
       }
       id
