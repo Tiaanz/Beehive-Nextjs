@@ -62,6 +62,7 @@ export const GET_CENTER = gql`
       photo_url
       manager {
         first_name
+        phone
       }
     }
   }

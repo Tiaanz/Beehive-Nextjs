@@ -84,7 +84,7 @@ const index = () => {
                   key={job.id}
                   className="space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md sm:mr-4 mb-4"
                 >
-                  <li className='font-bold hover:underline'><Link href={`/profile/centre-profile/${job.center.ECE_id}`}>{ job.center.name}</Link></li>
+                  <li className='font-bold hover:underline'><Link href={job.status==="FUFILLED"?`/job-info/${job.id}`:`/profile/centre-profile/${job.center.ECE_id}`}>{ job.center.name}</Link></li>
                   <li>Time: {job.time}</li>
                   <li className='text-sm text-slate-600'> {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}</li>
                   <li>

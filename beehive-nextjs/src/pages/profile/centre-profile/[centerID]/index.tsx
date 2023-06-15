@@ -41,6 +41,8 @@ const page = () => {
           <p className="text-sm md:text-base italic">
             {centerData?.getOneCenter?.address}
           </p>
+          <p className="text-sm md:text-base"><b>Center Manager: </b>{centerData?.getOneCenter?.manager.first_name}</p>
+          <p className="text-sm md:text-base"> {centerData?.getOneCenter?.manager.phone}</p>
         </div>
         <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
           <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">
