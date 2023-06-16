@@ -17,6 +17,11 @@ const index = () => {
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
+      {loading && (
+        <Box className="mx-auto w-1/2 pt-80">
+          <LinearProgress />
+        </Box>
+      )}
       {data ? (
         <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto items-center md:justify-start flex-col md:flex-row">
           <div className="basis-1/3 flex flex-col items-center">
@@ -58,7 +63,7 @@ const index = () => {
             )}
           </div>
         </div>
-      ) : (
+      ) : !loading && (
         <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
           Page not found!
         </h1>

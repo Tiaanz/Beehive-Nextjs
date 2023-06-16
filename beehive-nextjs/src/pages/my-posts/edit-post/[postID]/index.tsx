@@ -17,6 +17,7 @@ import { toast } from '@/components/ui/Toast'
 import { useRouter } from 'next/router'
 import { convertDate } from '@/helper'
 import LargeHeading from '@/components/ui/LargeHeading'
+import { LinearProgress } from '@mui/material'
 
 const theme = createTheme()
 
@@ -24,7 +25,7 @@ const index = () => {
   const router = useRouter()
   const id = router.query.postID
 
-  const { data: postData } = useQuery(GET_JOB_BY_ID, {
+  const { data: postData, loading } = useQuery(GET_JOB_BY_ID, {
     variables: { jobId: id },
   })
 
@@ -108,6 +109,12 @@ const index = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <>
         <Meta title="Early childhood Relief teachers | Beehive" />
+        {loading && (
+          <Box className="mx-auto w-1/2 pt-80">
+            <LinearProgress />
+          </Box>
+        )}
+
         {postData ? (
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs" className="pt-20">
@@ -226,7 +233,11 @@ const index = () => {
             </Container>
           </ThemeProvider>
         ) : (
-         <h1 className='text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto'>Page not found!</h1>
+          !loading && (
+            <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+              Page not found!
+            </h1>
+          )
         )}
       </>
     </LocalizationProvider>
