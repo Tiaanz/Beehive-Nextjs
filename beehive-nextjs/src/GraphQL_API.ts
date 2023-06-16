@@ -139,9 +139,11 @@ export const GET_RELIEVER_JOBS = gql`
 export const GET_JOB_BY_ID = gql`
   query GetJobById($jobId: String!) {
     getJobById(job_id: $jobId) {
+      id
       date_from
       date_to
       time
+      status
       qualified
       center {
         name
@@ -240,7 +242,7 @@ export const ADD_MANAGER = gql`
   }
 `
 
-// Define add managers mutation
+// Define add posts mutation
 export const ADD_POST = gql`
   mutation AddPost(
     $centerId: Int!
@@ -255,6 +257,29 @@ export const ADD_POST = gql`
       qualified: $qualified
       date_from: $dateFrom
       date_to: $dateTo
+    ) {
+      id
+    }
+  }
+`
+
+// Define update posts mutation
+export const UPDATE_POST = gql`
+  mutation UpdatePost(
+    $postId: String!
+    $dateFrom: String
+    $dateTo: String
+    $time: String
+    $qualified: Boolean
+    $status: String
+  ) {
+    updatePost(
+      post_id: $postId
+      date_from: $dateFrom
+      date_to: $dateTo
+      time: $time
+      qualified: $qualified
+      status: $status
     ) {
       id
     }
