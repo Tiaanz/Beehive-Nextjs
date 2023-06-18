@@ -1,5 +1,3 @@
-
-
 import * as React from 'react'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
@@ -11,12 +9,17 @@ import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { toast } from '@/components/ui/Toast'
 import Meta from '@/components/Meta'
+import { useRouter } from 'next/router';
 
 const theme = createTheme()
 
+
+
 export default function Login() {
 
-
+  const router = useRouter()
+  const message = router.query.message
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -26,7 +29,7 @@ export default function Login() {
         password: data.get('password'),
         redirect: false,
       })
-      
+
       if (res?.error) {
         toast({
           title: 'Error signing in',
@@ -48,8 +51,8 @@ export default function Login() {
 
   return (
     <ThemeProvider theme={theme}>
-       <Meta title="Log in | Beehive" />
-      <Container component="main" maxWidth="xs" className='pt-20'>
+      <Meta title="Log in | Beehive" />
+      <Container component="main" maxWidth="xs" className="pt-20">
         <CssBaseline />
         <Box
           sx={{
@@ -75,6 +78,11 @@ export default function Login() {
             sx={{ mt: 4 }}
             className="flex flex-col items-center w-full"
           >
+            {message && (
+              <p className="text-red-700 bg-red-100 py-2 px-5 rounded-md">
+                {message}
+              </p>
+            )}
             <TextField
               margin="normal"
               required
@@ -83,7 +91,7 @@ export default function Login() {
               label="Email Address"
               name="email"
               autoFocus
-              variant='standard'
+              variant="standard"
             />
             <TextField
               margin="normal"
@@ -93,7 +101,7 @@ export default function Login() {
               label="Password"
               type="password"
               id="password"
-              variant='standard'
+              variant="standard"
             />
 
             <button
