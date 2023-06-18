@@ -4,8 +4,7 @@ import { useMutation } from '@apollo/client'
 import { APPLY_JOB, DECLINE_JOB } from '@/GraphQL_API'
 import { IoBriefcase } from 'react-icons/io5'
 import { BsArrowRight } from 'react-icons/bs'
-import dayjs, { Dayjs } from 'dayjs'
-import { convertDate } from '@/helper'
+import dayjs from 'dayjs'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -90,10 +89,10 @@ const JobCard: FC<JobCardProps> = ({
         {job.date_from === job.date_to ? (
           <div className="border-2 px-4 py-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
             <span className="text-sm sm:text-base">
-              {dayjs(convertDate(job.date_from)).format('dddd').toUpperCase()}
+              {dayjs(job.date_from).format('dddd').toUpperCase()}
             </span>
             <h3 className="font-bold text-sm sm:text-base">
-              {dayjs(convertDate(job.date_from)).format('DD MMM YYYY')}
+              {dayjs(job.date_from).format('DD MMM YYYY')}
             </h3>
             <span className="text-sm sm:text-base">{job.time}</span>
           </div>
@@ -101,10 +100,10 @@ const JobCard: FC<JobCardProps> = ({
           <div className="flex items-center border-2 px-4 py-2 border-amber-400 rounded-md sm:border-0 sm:p-0">
             <div className="mr-2">
               <span className="text-sm sm:text-base">
-                {dayjs(convertDate(job.date_from)).format('dddd').toUpperCase()}
+                {dayjs(job.date_from).format('dddd').toUpperCase()}
               </span>
               <h3 className="font-bold text-sm sm:text-base">
-                {dayjs(convertDate(job.date_from)).format('DD MMM YYYY')}
+                {dayjs(job.date_from).format('DD MMM YYYY')}
               </h3>
               <span className="text-sm sm:text-base">
                 {job.time.slice(0, 8)}
@@ -113,10 +112,10 @@ const JobCard: FC<JobCardProps> = ({
             <BsArrowRight className="font-extrabold" />
             <div className="mx-2">
               <span className="text-sm sm:text-base">
-                {dayjs(convertDate(job.date_to)).format('dddd').toUpperCase()}
+                {dayjs(job.date_to).format('dddd').toUpperCase()}
               </span>
               <h3 className="font-bold text-sm sm:text-base">
-                {dayjs(convertDate(job.date_to)).format('DD MMM YYYY')}
+                {dayjs(job.date_to).format('DD MMM YYYY')}
               </h3>
               <span className="text-sm sm:text-base">{job.time.slice(10)}</span>
             </div>

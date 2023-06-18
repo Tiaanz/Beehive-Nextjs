@@ -29,8 +29,8 @@ const index = () => {
     const res = await getPosts({
       variables: {
         centerId: managerData?.getOneManager?.ECE_id,
-        dateFrom: selectedDate?.format('DD/MM/YYYY'),
-        dateTo: selectedDate?.format('DD/MM/YYYY'),
+        dateFrom: selectedDate?.format('YYYY/MM/DD'),
+        dateTo: selectedDate?.format('YYYY/MM/DD'),
       },
     })
 

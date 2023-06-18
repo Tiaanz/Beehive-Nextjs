@@ -7,13 +7,12 @@ import { FaGraduationCap } from 'react-icons/fa'
 import { useQuery } from '@apollo/client'
 import { GET_JOB_BY_ID } from '@/GraphQL_API'
 import dayjs from 'dayjs'
-import { convertDate } from '@/helper'
 import { BsArrowRight } from 'react-icons/bs'
 import { Box, LinearProgress } from '@mui/material'
 import { BiTimeFive } from 'react-icons/bi'
 import { ImCancelCircle } from 'react-icons/im'
 
-const index = ({}) => {
+const index = () => {
   const router = useRouter()
   const id = router.query.jobID
 
@@ -67,12 +66,12 @@ const index = ({}) => {
               <div className="flex flex-col items-center mt-2 p-2 shadow-md mb-6 rounded">
                 <p>
                   {' '}
-                  {dayjs(convertDate(data?.getJobById?.date_from))
+                  {dayjs(data?.getJobById?.date_from)
                     .format('dddd')
                     .toUpperCase()}
                 </p>
                 <p className="font-bold">
-                  {dayjs(convertDate(data?.getJobById?.date_from)).format(
+                  {dayjs(data?.getJobById?.date_from).format(
                     'DD MMM YYYY'
                   )}
                 </p>
@@ -82,12 +81,12 @@ const index = ({}) => {
               <div className="flex items-center justify-center px-4 py-2 shadow-md mb-6 rounded">
                 <div className="mr-2">
                   <span className="text-sm sm:text-base">
-                    {dayjs(convertDate(data?.getJobById?.date_from))
+                    {dayjs(data?.getJobById?.date_from)
                       .format('dddd')
                       .toUpperCase()}
                   </span>
                   <h3 className="font-bold text-sm sm:text-base">
-                    {dayjs(convertDate(data?.getJobById?.date_from)).format(
+                    {dayjs(data?.getJobById?.date_from).format(
                       'DD MMM YYYY'
                     )}
                   </h3>
@@ -98,12 +97,12 @@ const index = ({}) => {
                 <BsArrowRight className="font-extrabold" />
                 <div className="mx-2">
                   <span className="text-sm sm:text-base">
-                    {dayjs(convertDate(data?.getJobById?.date_to))
+                    {dayjs(data?.getJobById?.date_to)
                       .format('dddd')
                       .toUpperCase()}
                   </span>
                   <h3 className="font-bold text-sm sm:text-base">
-                    {dayjs(convertDate(data?.getJobById?.date_to)).format(
+                    {dayjs(data?.getJobById?.date_to).format(
                       'DD MMM YYYY'
                     )}
                   </h3>

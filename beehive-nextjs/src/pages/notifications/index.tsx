@@ -6,7 +6,6 @@ import { useQuery } from '@apollo/client'
 import JobCard from '@/components/JobCard'
 import PostCard from '@/components/PostCard'
 import dayjs from 'dayjs'
-import { convertDate } from '@/helper'
 import { Box, LinearProgress } from '@mui/material'
 import {Job } from '@/model'
 
@@ -54,15 +53,15 @@ const index = () => {
       ) &&
       !relieverData?.getOneReliever?.not_available_dates.some(
         (date: string) =>
-          dayjs(convertDate(date)).isBefore(convertDate(job.date_to)) &&
-          dayjs(convertDate(date)).isAfter(convertDate(job.date_from))
+          dayjs(date).isBefore(job.date_to) &&
+          dayjs(date).isAfter(job.date_from)
       ) &&
-      dayjs(convertDate(job.date_from)).isAfter(dayjs(), 'day')
+      dayjs(job.date_from).isAfter(dayjs(), 'day')
   )
 
   //get posts that the reliever has applied
   const filteredPosts = postsData?.getPostsByCenter?.filter(
-    (post: Job) => post.relieverIDs.length !== 0 && post.status === 'OPEN' && dayjs(convertDate(post.date_from)).isAfter(dayjs(), 'day')
+    (post: Job) => post.relieverIDs.length !== 0 && post.status === 'OPEN' && dayjs(post.date_from).isAfter(dayjs(), 'day')
   )
 
   return (

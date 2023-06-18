@@ -26,14 +26,15 @@ const index = () => {
   async function fetchJobs() {
     const res = await getJobs({
       variables: {
-        dateFrom: selectedDate?.format('DD/MM/YYYY'),
-        dateTo: selectedDate?.format('DD/MM/YYYY'),
+        dateFrom: selectedDate?.format('YYYY/MM/DD'),
+        dateTo: selectedDate?.format('YYYY/MM/DD'),
       },
     })
 
     setJobs(res?.data?.getJobsByReliever || [])
   }
 
+  //only show the jobs that the reliever has applied 
   const filteredJobs = jobs.filter((job: Job) =>
     job.relieverIDs.includes(relieverData?.getOneReliever?.id)
   )

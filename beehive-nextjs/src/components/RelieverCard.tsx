@@ -22,6 +22,8 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
   const [getJob]=useMutation(GET_JOB)
 
   async function handleAccept() {
+
+    //change status to "FUFILLED" and make the relieverIDs array contains only this reliever's ID
     await acceptJob({
       variables: {
         relieverId: reliever.id,
@@ -29,12 +31,15 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
       },
     })
     
+    //set not available dates for the reliever
     await getJob({
       variables: {
         getJobId: reliever.id,
         jobId
       }
     })
+
+    //remove the reliever from other jobs' relieverIDs array
     
     setAcceptAlert(false)
   }

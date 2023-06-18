@@ -40,8 +40,8 @@ const index = ({}) => {
       !dateTo ||
       !timeFrom ||
       !timeTo ||
-      dateFrom?.format('DD/MM/YYYY') === 'Invalid Date' ||
-      dateTo?.format('DD/MM/YYYY') === 'Invalid Date' ||
+      dateFrom?.format('YYYY/MM/DD') === 'Invalid Date' ||
+      dateTo?.format('YYYY/MM/DD') === 'Invalid Date' ||
       timeFrom?.format('hh:mm A') === 'Invalid Date' ||
       timeTo?.format('hh:mm A') === 'Invalid Date' 
 
@@ -54,8 +54,8 @@ const index = ({}) => {
       addPost({
         variables: {
           centerId: Number(data.get('centerId')),
-          dateFrom: dateFrom?.format('DD/MM/YYYY'),
-          dateTo: dateTo?.format('DD/MM/YYYY'),
+          dateFrom: dateFrom?.format('YYYY/MM/DD'),
+          dateTo: dateTo?.format('YYYY/MM/DD'),
           time: timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A'),
           qualified: data.get('qualified') === 'Yes',
         },

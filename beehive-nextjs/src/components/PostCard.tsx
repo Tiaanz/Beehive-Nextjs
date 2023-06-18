@@ -2,13 +2,8 @@ import { FC } from 'react'
 import { IoBriefcase } from 'react-icons/io5'
 import { BsArrowRight } from 'react-icons/bs'
 import dayjs from 'dayjs'
-import { convertDate } from '@/helper'
 import RelieverCard from './RelieverCard'
-import { Job,Reliever } from '@/model'
-
-
-
-
+import { Job} from '@/model'
 
 
 interface JobCardProps {
@@ -38,12 +33,12 @@ const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
           {post.date_from === post.date_to ? (
             <div className="border-2 py-2 px-4 border-amber-400 rounded-md sm:border-0 sm:p-0">
               <span className="text-sm sm:text-base">
-                {dayjs(convertDate(post.date_from))
+                {dayjs(post.date_from)
                   .format('dddd')
                   .toUpperCase()}
               </span>
               <h3 className="font-bold text-sm sm:text-base">
-                {dayjs(convertDate(post.date_from)).format('DD MMM YYYY')}
+                {dayjs(post.date_from).format('DD MMM YYYY')}
               </h3>
               <span className="text-sm sm:text-base">{post.time}</span>
             </div>
@@ -51,12 +46,12 @@ const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
             <div className="flex items-center border-2 py-2 px-4 border-amber-400 rounded-md sm:border-0 sm:p-0">
               <div className="mr-2">
                 <span className="text-sm sm:text-base">
-                  {dayjs(convertDate(post.date_from))
+                  {dayjs(post.date_from)
                     .format('dddd')
                     .toUpperCase()}
                 </span>
                 <h3 className="font-bold text-sm sm:text-base">
-                  {dayjs(convertDate(post.date_from)).format('DD MMM YYYY')}
+                  {dayjs(post.date_from).format('DD MMM YYYY')}
                 </h3>
                 <span className="text-sm sm:text-base">
                   {post.time.slice(0, 8)}
@@ -65,12 +60,12 @@ const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
               <BsArrowRight className="font-extrabold" />
               <div className="mx-2">
                 <span className="text-sm sm:text-base">
-                  {dayjs(convertDate(post.date_to))
+                  {dayjs(post.date_to)
                     .format('dddd')
                     .toUpperCase()}
                 </span>
                 <h3 className="font-bold text-sm sm:text-base">
-                  {dayjs(convertDate(post.date_to)).format('DD MMM YYYY')}
+                  {dayjs(post.date_to).format('DD MMM YYYY')}
                 </h3>
                 <span className="text-sm sm:text-base">
                   {post.time.slice(10)}

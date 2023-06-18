@@ -15,7 +15,6 @@ import MenuItem from '@mui/material/MenuItem'
 import dayjs, { Dayjs } from 'dayjs'
 import { toast } from '@/components/ui/Toast'
 import { useRouter } from 'next/router'
-import { convertDate } from '@/helper'
 import { LinearProgress } from '@mui/material'
 
 const theme = createTheme()
@@ -99,8 +98,8 @@ const index = () => {
     if (postData) {
       setTimeFrom(dayjs(postData?.getJobById?.time?.slice(0, 8), 'hh:mm A'))
       setTimeTo(dayjs(postData?.getJobById?.time?.slice(10), 'hh:mm A'))
-      setDateFrom(dayjs(convertDate(postData?.getJobById?.date_from)))
-      setDateTo(dayjs(convertDate(postData?.getJobById?.date_to)))
+      setDateFrom(dayjs(postData?.getJobById?.date_from))
+      setDateTo(dayjs(postData?.getJobById?.date_to))
     }
   }, [postData])
 
