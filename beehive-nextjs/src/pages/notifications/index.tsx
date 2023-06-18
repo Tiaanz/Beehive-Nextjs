@@ -77,7 +77,8 @@ const index = () => {
         (date: string) =>
           dayjs(convertDate(date)).isBefore(convertDate(job.date_to)) &&
           dayjs(convertDate(date)).isAfter(convertDate(job.date_from))
-      )
+      ) &&
+      dayjs(convertDate(job.date_from)).isAfter(dayjs(), 'day')
   )
 
   //get posts that the reliever has applied
