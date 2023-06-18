@@ -16,7 +16,6 @@ import dayjs, { Dayjs } from 'dayjs'
 import { toast } from '@/components/ui/Toast'
 import { useRouter } from 'next/router'
 import { convertDate } from '@/helper'
-import LargeHeading from '@/components/ui/LargeHeading'
 import { LinearProgress } from '@mui/material'
 
 const theme = createTheme()
