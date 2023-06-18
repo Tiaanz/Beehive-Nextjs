@@ -35,9 +35,23 @@ const index = ({}) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    if (!dateFrom || !dateTo || !timeFrom || !timeTo) {
-      setValidationError('Please complete all the fields')
+    if (
+      !dateFrom ||
+      !dateTo ||
+      !timeFrom ||
+      !timeTo ||
+      dateFrom?.format('DD/MM/YYYY') === 'Invalid Date' ||
+      dateTo?.format('DD/MM/YYYY') === 'Invalid Date' ||
+      timeFrom?.format('hh:mm A') === 'Invalid Date' ||
+      timeTo?.format('hh:mm A') === 'Invalid Date' ||
+      dateFrom.isBefore(dayjs(), 'day') ||
+      dateFrom.isAfter(dateTo)
+    ) {
+      setValidationError(
+        'Please complete all the fields and ensure they are valid input.'
+      )
     } else {
+     
       addPost({
         variables: {
           centerId: Number(data.get('centerId')),
