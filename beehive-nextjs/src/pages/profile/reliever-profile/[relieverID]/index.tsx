@@ -14,6 +14,8 @@ const index = () => {
     variables: { relieverId: id },
   })
 
+
+
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />

@@ -14,6 +14,7 @@ import { FiEdit } from 'react-icons/fi'
 
 const index = () => {
   const { data: session } = useSession()
+ 
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
   const [posts, setPosts] = React.useState<Post[]>([])
@@ -58,9 +59,6 @@ const index = () => {
   React.useEffect(() => {
     fetchPosts()
   }, [selectedDate, posts])
-
-
-
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -121,7 +119,11 @@ const index = () => {
                       </li>
                     </Link>
                   )}
-                 <li className='last:self-end text-2xl text-orange-500 hover:text-orange-400 hover:cursor-pointer'><Link href={`/my-posts/edit-post/${post.id}`}><FiEdit/></Link></li> 
+                  <li className="last:self-end text-2xl text-orange-500 hover:text-orange-400 hover:cursor-pointer">
+                    <Link href={`/my-posts/edit-post/${post.id}`}>
+                      <FiEdit />
+                    </Link>
+                  </li>
                 </ul>
               ))}
             </div>

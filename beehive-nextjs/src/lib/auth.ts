@@ -68,7 +68,7 @@ export const authOptions: NextAuthOptions = {
         const manager = await getOneManager()
 
     
-
+       //if the user log in as a manager
         if (
           reliever.data.getOneReliever === null ||
           email !== reliever.data.getOneReliever.email ||
@@ -91,50 +91,28 @@ export const authOptions: NextAuthOptions = {
             id: manager.data.getOneManager.id,
             name: manager.data.getOneManager.first_name,
             email: manager.data.getOneManager.email,
-           
+            role:manager.data.getOneManager.role
           }
         }
 
-        //if everything is fine
+        //if the user log in as a reliever
 
         return {
           id: reliever.data.getOneReliever.id,
           name: reliever.data.getOneReliever.first_name,
           email: reliever.data.getOneReliever.email,
-         
+          role:reliever.data.getOneReliever.role
         }
       },
     }),
   ],
-  // callbacks: {
-  //   session({ token, session }) {
-  //     console.log(token)
-  // if (token) {
-  //        session.user.id=token.id
-  //        session.user.name=token.name
-  //        session.user.email=token.email
-  //       //  session.user.image=token.picture
-  //     }
-  //     return session
-  //   },
-  //   async jwt({token,user}) {
-  //     // const dbUser = await db.user.findFirst({
-  //     //   where: {
-  //     //     email:token.email
-  //     //   }
-  //     // })
-  //     // if (!dbUser) {
-  //     //   token.id = user!.id
-  //     //   return token
-  //     // }
-  //     return {
-  //       id: user.id,
-  //       name: user.name,
-  //       email: user.email,
-  //       // picture:dbUser.image
-
-  //     }
-  //   },
-
-  // }
+  callbacks: {
+    async jwt({token,user}) {
+      return ({...token,...user})
+    },
+    async session({ session, token, user }) {
+      session.user = token
+      return session
+    }
+  }
 }
