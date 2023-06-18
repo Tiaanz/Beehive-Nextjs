@@ -12,20 +12,9 @@ import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 import { toast } from './ui/Toast'
 import Link from 'next/link'
+import { Job } from '@/model'
 
-interface Job {
-  center: {
-    ECE_id:number
-    name: string
-    address: string
-  }
-  id: string
-  qualified: boolean
-  date_from: string
-  date_to: string
-  time: string
-  relieverIDs: string[]
-}
+
 
 interface JobCardProps {
   job: Job

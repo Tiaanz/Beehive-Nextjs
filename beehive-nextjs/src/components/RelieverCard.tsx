@@ -6,14 +6,9 @@ import Button from '@mui/material/Button'
 import Link from 'next/link'
 import { ACCEPT_JOB,GET_JOB } from '@/GraphQL_API'
 import { useMutation } from '@apollo/client'
+import { Reliever } from '@/model'
 
-interface Reliever {
-  first_name: string
-  last_name: string
-  email: string
-  qualified: boolean
-  id: string
-}
+
 
 interface RelieverCardProps {
   reliever: Reliever

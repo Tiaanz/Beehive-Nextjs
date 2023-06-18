@@ -11,34 +11,21 @@ import dayjs, { Dayjs } from 'dayjs'
 import { GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { FiEdit } from 'react-icons/fi'
+import { Reliever,Job } from '@/model'
 
 const index = () => {
   const { data: session } = useSession()
  
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
-  const [posts, setPosts] = React.useState<Post[]>([])
+  const [posts, setPosts] = React.useState<Job[]>([])
 
   const { data: managerData } = useQuery(GET_MANAGER, {
     variables: { email: session?.user?.email },
   })
 
   const [getPosts] = useLazyQuery(GET_POSTS)
-  interface Reliever {
-    id: string
-    first_name: string
-    last_name: string
-    email: string
-    qualified: boolean
-  }
 
-  interface Post {
-    id: string
-    time: string
-    qualified: string
-    status: string
-    relievers: Reliever[]
-  }
 
   async function fetchPosts() {
     const res = await getPosts({

@@ -4,30 +4,12 @@ import { BsArrowRight } from 'react-icons/bs'
 import dayjs from 'dayjs'
 import { convertDate } from '@/helper'
 import RelieverCard from './RelieverCard'
+import { Job,Reliever } from '@/model'
 
 
 
 
-interface Reliever {
-  first_name: string
-  last_name: string
-  email: string
-  qualified: boolean
-  id: string
-}
-interface Job {
-  center: {
-    name: string
-    address: string
-  }
-  id: string
-  qualified: boolean
-  date_from: string
-  date_to: string
-  status:string
-  time: string
-  relievers: Reliever[]
-}
+
 
 interface JobCardProps {
   post: Job

@@ -9,6 +9,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import { GET_RELIEVER_JOBS, GET_RELIEVER } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import Link from 'next/link'
+import { Job } from '@/model'
 
 const index = () => {
   const { data: session } = useSession()
@@ -22,21 +23,7 @@ const index = () => {
 
   const [getJobs] = useLazyQuery(GET_RELIEVER_JOBS)
 
-  interface Job {
-    center: {
-      ECE_id:number
-      name: string
-      address: string
-    }
-    id: string
-    qualified: boolean
-    date_from: string
-    date_to: string
-    time: string
-    relieverIDs: string[]
-    declined_relieverIDs: string[]
-    status:string
-  }
+
 
   async function fetchJobs() {
     const res = await getJobs({
