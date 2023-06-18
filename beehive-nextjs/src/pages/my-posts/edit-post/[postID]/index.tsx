@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Meta from '@/components/Meta'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { UPDATE_POST, GET_JOB_BY_ID } from '@/GraphQL_API'
+import { UPDATE_POST, GET_JOB_BY_ID, UPDATE_NOT_AVAILABLE_DATE } from '@/GraphQL_API'
 import { useMutation, useQuery } from '@apollo/client'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -28,6 +28,8 @@ const index = () => {
     variables: { jobId: id },
   })
 
+  const [updateNotAvailableDates] = useMutation(UPDATE_NOT_AVAILABLE_DATE)
+
   const [updatePost] = useMutation(UPDATE_POST)
 
   const [validationError, setValidationError] = React.useState('')
@@ -36,16 +38,10 @@ const index = () => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     if (
-      !dateFrom ||
-      !dateTo ||
       !timeFrom ||
       !timeTo ||
-      dateFrom?.format('DD/MM/YYYY') === 'Invalid Date' ||
-      dateTo?.format('DD/MM/YYYY') === 'Invalid Date' ||
       timeFrom?.format('hh:mm A') === 'Invalid Date' ||
-      timeTo?.format('hh:mm A') === 'Invalid Date' ||
-      dateFrom.isBefore(dayjs(), 'day') ||
-      dateFrom.isAfter(dateTo)
+      timeTo?.format('hh:mm A') === 'Invalid Date' 
     ) {
       setValidationError(
         'Please complete all the fields and ensure they are valid input.'
@@ -60,16 +56,23 @@ const index = () => {
       // console.log(data.get('qualified') === 'Yes')
       // console.log(data.get('status'))
 
-      updatePost({
+      const res=await updatePost({
         variables: {
           postId: postData?.getJobById?.id,
-          dateFrom: dateFrom?.format('DD/MM/YYYY'),
-          dateTo: dateTo?.format('DD/MM/YYYY'),
           time: timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A'),
-          qualified: data.get('qualified') === 'Yes',
           status: data.get('status'),
         },
       })
+      console.log(res?.data?.updatePost?.status);
+      
+      if (res?.data?.updatePost?.status === "CANCELLED") {
+        await  updateNotAvailableDates({
+            variables: {
+              relieverId: postData?.getJobById?.relieverIDs[0],
+              jobId:postData?.getJobById?.id
+            }
+          })
+       }    
 
       toast({
         title: 'Success',
@@ -87,20 +90,17 @@ const index = () => {
   const minTime = dayjs('2022-04-17T07:00')
   const maxTime = dayjs('2022-04-17T19:00')
 
-  const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(
-    dayjs(convertDate(postData?.getJobById?.date_from))
-  )
-  const [dateTo, setDateTo] = React.useState<Dayjs | null>(
-    dayjs(convertDate(postData?.getJobById?.date_to))
-  )
+  const [dateFrom, setDateFrom] = React.useState<Dayjs | null>(null)
+  const [dateTo, setDateTo] = React.useState<Dayjs | null>(null)
   const [timeFrom, setTimeFrom] = React.useState<Dayjs | null>(null)
-
   const [timeTo, setTimeTo] = React.useState<Dayjs | null>(null)
 
   React.useEffect(() => {
     if (postData) {
       setTimeFrom(dayjs(postData?.getJobById?.time?.slice(0, 8), 'hh:mm A'))
       setTimeTo(dayjs(postData?.getJobById?.time?.slice(10), 'hh:mm A'))
+      setDateFrom(dayjs(convertDate(postData?.getJobById?.date_from)))
+      setDateTo(dayjs(convertDate(postData?.getJobById?.date_to)))
     }
   }, [postData])
 
@@ -114,7 +114,7 @@ const index = () => {
           </Box>
         )}
 
-        {postData ? (
+        {postData?.getJobById?.status === 'FUFILLED' && !loading ? (
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs" className="pt-20">
               <CssBaseline />
@@ -145,6 +145,7 @@ const index = () => {
                     variant="outlined"
                   />
                   <DatePicker
+                    readOnly
                     className="w-full"
                     label="Start date"
                     format="DD/MM/YYYY"
@@ -156,6 +157,7 @@ const index = () => {
                     }}
                   />
                   <DatePicker
+                    readOnly
                     className="w-full"
                     label="End date"
                     format="DD/MM/YYYY"
@@ -188,21 +190,16 @@ const index = () => {
                   {postData && (
                     <>
                       <TextField
+                        aria-readonly
                         margin="normal"
                         required
                         fullWidth
                         id="qualified"
                         label="Qualified"
                         name="qualified"
-                        select
                         variant="outlined"
-                        defaultValue={
-                          postData?.getJobById?.qualified ? 'Yes' : 'No'
-                        }
-                      >
-                        <MenuItem value="Yes">Yes</MenuItem>
-                        <MenuItem value="No">No</MenuItem>
-                      </TextField>
+                        value={postData?.getJobById?.qualified ? 'Yes' : 'No'}
+                      ></TextField>
                       <TextField
                         margin="normal"
                         required
@@ -214,7 +211,6 @@ const index = () => {
                         variant="outlined"
                         defaultValue={postData?.getJobById?.status}
                       >
-                        <MenuItem value="OPEN">OPEN</MenuItem>
                         <MenuItem value="FUFILLED">FUFILLED</MenuItem>
                         <MenuItem value="CANCELLED">CANCELLED</MenuItem>
                       </TextField>

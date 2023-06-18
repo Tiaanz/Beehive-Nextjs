@@ -43,10 +43,9 @@ const index = ({}) => {
       dateFrom?.format('DD/MM/YYYY') === 'Invalid Date' ||
       dateTo?.format('DD/MM/YYYY') === 'Invalid Date' ||
       timeFrom?.format('hh:mm A') === 'Invalid Date' ||
-      timeTo?.format('hh:mm A') === 'Invalid Date' ||
-      dateFrom.isBefore(dayjs(), 'day') ||
-      dateFrom.isAfter(dateTo)
-    ) {
+      timeTo?.format('hh:mm A') === 'Invalid Date' 
+
+    ) {    
       setValidationError(
         'Please complete all the fields and ensure they are valid input.'
       )

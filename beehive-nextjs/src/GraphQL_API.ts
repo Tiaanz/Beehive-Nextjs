@@ -145,6 +145,7 @@ export const GET_JOB_BY_ID = gql`
       time
       status
       qualified
+      relieverIDs
       center {
         name
         address
@@ -282,6 +283,7 @@ export const UPDATE_POST = gql`
       status: $status
     ) {
       id
+      status
     }
   }
 `
@@ -327,6 +329,15 @@ export const GET_JOB = gql`
         date_from
         date_to
       }
+    }
+  }
+`
+
+// Define update not_available_dates mutation
+export const UPDATE_NOT_AVAILABLE_DATE = gql`
+  mutation UpdateUnavailableDates($relieverId: String!, $jobId: String!) {
+    updateUnavailableDates(relieverID: $relieverId, jobID: $jobId) {
+      id
     }
   }
 `

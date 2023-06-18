@@ -10,12 +10,11 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import dayjs, { Dayjs } from 'dayjs'
 import { GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
-import { FiEdit } from 'react-icons/fi'
-import { Reliever,Job } from '@/model'
+import { Job } from '@/model'
+import PostByDay from '@/components/PostByDay'
 
 const index = () => {
   const { data: session } = useSession()
- 
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
   const [posts, setPosts] = React.useState<Job[]>([])
@@ -25,7 +24,6 @@ const index = () => {
   })
 
   const [getPosts] = useLazyQuery(GET_POSTS)
-
 
   async function fetchPosts() {
     const res = await getPosts({
@@ -68,50 +66,7 @@ const index = () => {
             />
             <div className="flex flex-wrap sm:flex-row flex-col xl:justify-start justify-center">
               {posts?.map((post) => (
-                <ul
-                  key={post.id}
-                  className="flex:1 flex flex-col space-y-2 border-2 p-4 border-amber-400 rounded-md sm:mr-4 mb-4 "
-                >
-                  <li>Time: {post.time}</li>
-                  <li className="text-sm text-slate-600">
-                    {' '}
-                    {post.qualified ? 'Qualified' : 'Qualified, Unqualified'}
-                  </li>
-                  <li>
-                    Status:{' '}
-                    <span
-                      style={{
-                        color:
-                          post.status === 'OPEN'
-                            ? 'green'
-                            : 'FUFILLED'
-                            ? 'orange'
-                            : 'red',
-                      }}
-                    >
-                      {post.status}
-                    </span>
-                  </li>
-                  {post.status === 'FUFILLED' && (
-                    <Link
-                      href={`/profile/reliever-profile/${post.relievers[0].id}`}
-                    >
-                      <li className="hover:underline mt-2">
-                        Reliever: {post.relievers[0].first_name}{' '}
-                        {post.relievers[0].last_name} (
-                        {post.relievers[0].qualified
-                          ? 'Qualified'
-                          : 'Unqualified'}
-                        )
-                      </li>
-                    </Link>
-                  )}
-                  <li className="last:self-end text-2xl text-orange-500 hover:text-orange-400 hover:cursor-pointer">
-                    <Link href={`/my-posts/edit-post/${post.id}`}>
-                      <FiEdit />
-                    </Link>
-                  </li>
-                </ul>
+                <PostByDay key={post.id} post={post} fetchPosts={fetchPosts} />
               ))}
             </div>
           </div>

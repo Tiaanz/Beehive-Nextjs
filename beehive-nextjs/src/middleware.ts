@@ -37,5 +37,6 @@ export const config = {
     '/notifications',
     '/my-posts/:path*',
     '/my-centre',
+    '/job-info'
   ],
 }
