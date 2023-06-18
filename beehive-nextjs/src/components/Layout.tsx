@@ -17,7 +17,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     //   lang="en"
     //   className={cn('bg-white text-slate-900 antialiased', inter.className)}
     // >
-      <div className="relative min-h-screen pb-20 text-slate-900 bg-slate-50 antialiased">
+      <div className="relative min-h-screen pb-20 text-slate-900 antialiased">
         <Toaster position="bottom-right" />
         <Navbar />
         {children}

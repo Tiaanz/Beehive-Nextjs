@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <div className="fixed backdrop-blur-sm bg-white z-50 top-0 left-0 right-0 h-20 border-b border-slate-300 shadow-sm flex items-center justify-between">
       <div className="w-11/12 mx-auto flex justify-between items-center">
-        <Link href="/" as="image" rel="preload">
+        <Link href="/">
           <Image
             priority
             src="/logo.png"

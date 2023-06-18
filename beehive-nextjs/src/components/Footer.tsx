@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="bg-white flex items-center justify-center w-full font-light absolute bottom-0 sm:h-16 h-10 sm:text-base text-sm">
+    <footer className="bg-white flex items-center justify-center w-full font-light absolute bottom-0 sm:h-16 h-10 sm:text-base text-sm border-t border-slate-300 shadow-sm">
       Copyright © Beehive 2023
     </footer>
   )
