@@ -83,7 +83,7 @@ const index = () => {
 
   //get posts that the reliever has applied
   const filteredPosts = postsData?.getPostsByCenter?.filter(
-    (post: Job) => post.relieverIDs.length !== 0 && post.status === 'OPEN'
+    (post: Job) => post.relieverIDs.length !== 0 && post.status === 'OPEN' && dayjs(convertDate(post.date_from)).isAfter(dayjs(), 'day')
   )
 
   return (
