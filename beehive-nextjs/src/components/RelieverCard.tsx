@@ -4,11 +4,9 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import Button from '@mui/material/Button'
 import Link from 'next/link'
-import { ACCEPT_JOB,GET_JOB } from '@/GraphQL_API'
+import { ACCEPT_JOB, GET_JOB, UPDATE_RELIEVERIDS } from '@/GraphQL_API'
 import { useMutation } from '@apollo/client'
 import { Reliever } from '@/model'
-
-
 
 interface RelieverCardProps {
   reliever: Reliever
@@ -19,10 +17,10 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
   const [acceptAlert, setAcceptAlert] = useState(false)
 
   const [acceptJob] = useMutation(ACCEPT_JOB)
-  const [getJob]=useMutation(GET_JOB)
+  const [getJob] = useMutation(GET_JOB)
+  const [updateRelieverIDs] = useMutation(UPDATE_RELIEVERIDS)
 
   async function handleAccept() {
-
     //change status to "FUFILLED" and make the relieverIDs array contains only this reliever's ID
     await acceptJob({
       variables: {
@@ -30,17 +28,23 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
         acceptJobId: jobId,
       },
     })
-    
+
     //set not available dates for the reliever
     await getJob({
       variables: {
         getJobId: reliever.id,
-        jobId
-      }
+        jobId,
+      },
     })
 
     //remove the reliever from other jobs' relieverIDs array
-    
+    await updateRelieverIDs({
+      variables: {
+        relieverId: reliever.id,
+        jobId,
+      },
+    })
+
     setAcceptAlert(false)
   }
 
@@ -48,7 +52,10 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
     <>
       <div className="flex ml-6 sm:items-center justify-between sm:flex-row flex-col">
         <div className="flex mt-2 ">
-          <Link className="sm:text-lg hover:underline" href={`/profile/reliever-profile/${reliever.id}`}>
+          <Link
+            className="sm:text-lg hover:underline"
+            href={`/profile/reliever-profile/${reliever.id}`}
+          >
             {reliever.first_name} {reliever.last_name}
           </Link>
           <span className="font-bold ml-1 sm:text-lg">

@@ -341,3 +341,12 @@ export const UPDATE_NOT_AVAILABLE_DATE = gql`
     }
   }
 `
+
+// Define update relieverIDs mutation
+export const UPDATE_RELIEVERIDS = gql`
+  mutation UpdateRelieverIDs($relieverId: String!, $jobId: String!) {
+  updateRelieverIDs(relieverID: $relieverId, jobID: $jobId) {
+    relieverIDs
+  }
+}
+`
