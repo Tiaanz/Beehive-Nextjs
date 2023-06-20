@@ -49,7 +49,7 @@ const index = () => {
               {data?.getRelieverById?.qualified ? 'Qualified' : 'Unqualified'}
             </p>
           </div>
-          <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
+          <div className="w-11/12 sm:w-4/5 md:basis-2/3 flex flex-col justify-start items-start">
             <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">
               Biography
             </h3>
