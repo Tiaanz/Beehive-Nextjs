@@ -16,6 +16,7 @@ export interface Job {
     ECE_id: number
   }
   id: string
+  center_id:number
   qualified: boolean
   date_from: string
   date_to: string

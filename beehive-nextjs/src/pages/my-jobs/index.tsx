@@ -5,23 +5,99 @@ import LargeHeading from '@/components/ui/LargeHeading'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
+import Badge from '@mui/material/Badge'
+import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import dayjs, { Dayjs } from 'dayjs'
-import { GET_RELIEVER_JOBS, GET_RELIEVER } from '@/GraphQL_API'
+import {
+  GET_RELIEVER_JOBS,
+  GET_RELIEVER,
+  GET_POSTS_BY_MONTH,
+} from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { Job } from '@/model'
+import { formatHighlightedDatesFromArray,extractDatesFromArray } from '@/helper'
+
+// function ServerDay(
+//   props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
+// ) {
+//   const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props
+
+//   const isSelected =
+//     !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0
+
+//   return (
+//     <Badge
+//       key={props.day.toString()}
+//       overlap="circular"
+//       badgeContent={isSelected ? '🟢' : undefined}
+//     >
+//       <PickersDay
+//         {...other}
+//         outsideCurrentMonth={outsideCurrentMonth}
+//         day={day}
+//       />
+//     </Badge>
+//   )
+// }
+
+function ServerDay(
+  props: PickersDayProps<Dayjs> & {
+    highlightedDays?: {
+      date: number
+      badgeContent: React.ReactNode
+    }[]
+  }
+) {
+  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props
+
+  const matchedDay = highlightedDays.find((item) => item.date === day.date())
+  const isSelected = !outsideCurrentMonth && matchedDay
+
+  return (
+    <Badge
+      key={day.toString()}
+      overlap="circular"
+      badgeContent={isSelected ? matchedDay?.badgeContent : undefined}
+    >
+      <PickersDay
+        {...other}
+        outsideCurrentMonth={outsideCurrentMonth}
+        day={day}
+      />
+    </Badge>
+  )
+}
+
+interface Post {
+  date_from: string
+  date_to: string
+  relieverIDs: string[]
+  status: string
+}
 
 const index = () => {
   const { data: session } = useSession()
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
   const [jobs, setJobs] = React.useState<Job[]>([])
-
+  // const [highlightedDays, setHighlightedDays] = React.useState<number[]>([])
+  const [highlightedDays, setHighlightedDays] = React.useState<
+    { date: number; badgeContent: React.ReactNode }[]
+  >([])
   const { data: relieverData, error } = useQuery(GET_RELIEVER, {
     variables: { email: session?.user?.email },
   })
 
+  const { data } = useQuery(GET_POSTS_BY_MONTH, {
+    variables: {
+      dateFrom: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/01`,
+      dateTo: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/31`,
+    },
+  })
+
   const [getJobs] = useLazyQuery(GET_RELIEVER_JOBS)
+  const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
 
   async function fetchJobs() {
     const res = await getJobs({
@@ -43,9 +119,63 @@ const index = () => {
     setSelectedDate(value)
   }
 
+  async function handleMonthChange(month: Dayjs | null) {
+    const res = await getPostsByMonth({
+      variables: {
+        dateFrom: `${dayjs(month).format('YYYY')}/${dayjs(month).format(
+          'MM'
+        )}/01`,
+        dateTo: `${dayjs(month).format('YYYY')}/${dayjs(month).format(
+          'MM'
+        )}/31`,
+      },
+    })
+    
+    setHighlightedDays(formatHighlightedDatesFromArray(
+      res?.data?.getPostsByMonth?.filter(
+        (post: Post) =>
+          post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
+      )
+    ));
+
+  }
+
+  async function handleYearChange(year: Dayjs | null) {
+    const res = await getPostsByMonth({
+      variables: {
+        dateFrom: `${dayjs(year).format('YYYY')}/${dayjs(year).format(
+          'MM'
+        )}/01`,
+        dateTo: `${dayjs(year).format('YYYY')}/${dayjs(year).format('MM')}/31`,
+      },
+    })
+
+    setHighlightedDays(formatHighlightedDatesFromArray(
+      res?.data?.getPostsByMonth?.filter(
+        (post: Post) =>
+          post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
+      )
+    ));
+  }
+
   React.useEffect(() => {
     fetchJobs()
   }, [selectedDate, jobs])
+
+  React.useEffect(() => {
+    
+    setHighlightedDays(formatHighlightedDatesFromArray(
+      data?.getPostsByMonth?.filter(
+        (post: Post) =>
+          post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
+      )
+    ));
+      
+    // setHighlightedDays([
+    //   { date: 1, badgeContent: '🟢' },
+    //   { date: 15, badgeContent: '🔴' },
+    // ])
+  }, [data?.getPostsByMonth])
 
   if (error) {
     return (
@@ -69,7 +199,17 @@ const index = () => {
               sx={{ margin: 0 }}
               value={selectedDate}
               onChange={(newValue) => handleDateChange(newValue)}
-              className="sm:mr-6 min-w-fit"
+              onYearChange={(newYear) => handleYearChange(newYear)}
+              onMonthChange={(newMonth) => handleMonthChange(newMonth)}
+              className="mr-6 min-w-fit"
+              slots={{
+                day: ServerDay,
+              }}
+              slotProps={{
+                day: {
+                  highlightedDays,
+                } as any,
+              }}
             />
             <div className="flex flex-wrap xl:justify-start justify-center ">
               {filteredJobs?.map((job) => (
@@ -93,13 +233,13 @@ const index = () => {
                       style={{
                         color:
                           job.status === 'OPEN'
-                            ? 'green'
-                            : job.status === 'FUFILLED'
                             ? 'orange'
+                            : job.status === 'FUFILLED'
+                            ? 'green'
                             : 'red',
                       }}
                     >
-                      {/* {job.status} */}
+                    
                       {job.status === 'OPEN'
                         ? 'Awaiting center confirmation'
                         : job.status === 'FUFILLED'

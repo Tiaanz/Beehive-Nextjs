@@ -7,12 +7,14 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
 import { UPDATE_POST,UPDATE_NOT_AVAILABLE_DATE } from '@/GraphQL_API'
-import { useMutation } from '@apollo/client'
+import { OperationVariables, QueryResult, useMutation } from '@apollo/client'
 import { toast } from './ui/Toast'
+import dayjs from 'dayjs'
 
 interface PostByDayProps {
   post: Job
   fetchPosts: () => Promise<void>
+ 
 }
 
 const PostByDay: FC<PostByDayProps> = ({ post, fetchPosts }) => {
@@ -39,6 +41,7 @@ const PostByDay: FC<PostByDayProps> = ({ post, fetchPosts }) => {
   
       setCancelPost(false)
       await fetchPosts()
+     
     } catch (error) {
       const typedError = error as Error
       toast({
@@ -65,7 +68,7 @@ const PostByDay: FC<PostByDayProps> = ({ post, fetchPosts }) => {
         <span
           style={{
             color:
-              post.status === 'OPEN' ? 'green' : 'FUFILLED' ? 'orange' : 'red',
+              post.status === 'OPEN' ? 'orange' : 'FUFILLED' ? 'green' : 'red',
           }}
         >
           {post.status}

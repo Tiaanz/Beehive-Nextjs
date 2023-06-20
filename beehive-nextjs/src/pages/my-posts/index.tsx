@@ -14,21 +14,26 @@ import { GET_POSTS, GET_MANAGER, GET_POSTS_BY_MONTH } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { Job } from '@/model'
 import PostByDay from '@/components/PostByDay'
-import { extractDatesFromArray } from '@/helper'
+import { formatHighlightedDatesFromArray } from '@/helper'
 
 function ServerDay(
-  props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
+  props: PickersDayProps<Dayjs> & {
+    highlightedDays?: {
+      date: number
+      badgeContent: React.ReactNode
+    }[]
+  }
 ) {
   const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props
 
-  const isSelected =
-    !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0
+  const matchedDay = highlightedDays.find((item) => item.date === day.date())
+  const isSelected = !outsideCurrentMonth && matchedDay
 
   return (
     <Badge
-      key={props.day.toString()}
+      key={day.toString()}
       overlap="circular"
-      badgeContent={isSelected ? '🟢' : undefined}
+      badgeContent={isSelected ? matchedDay?.badgeContent : undefined}
     >
       <PickersDay
         {...other}
@@ -43,10 +48,11 @@ const index = () => {
   const { data: session } = useSession()
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
-  const [selectedMonth, setSelectedMonth] = React.useState<string | null>(
-    dayjs().format('MM')
-  )
-  const [highlightedDays, setHighlightedDays] = React.useState<number[]>([])
+
+  const [highlightedDays, setHighlightedDays] = React.useState<
+    { date: number; badgeContent: React.ReactNode }[]
+  >([])
+
   const [posts, setPosts] = React.useState<Job[]>([])
 
   const { data: managerData, error } = useQuery(GET_MANAGER, {
@@ -84,22 +90,32 @@ const index = () => {
     const res = await getPostsByMonth({
       variables: {
         centerId: managerData?.getOneManager?.ECE_id,
-        dateFrom: `${dayjs(month).format('YYYY')}/${dayjs(month).format('MM')}/01`,
-        dateTo: `${dayjs(month).format('YYYY')}/${dayjs(month).format('MM')}/31`,
+        dateFrom: `${dayjs(month).format('YYYY')}/${dayjs(month).format(
+          'MM'
+        )}/01`,
+        dateTo: `${dayjs(month).format('YYYY')}/${dayjs(month).format(
+          'MM'
+        )}/31`,
       },
     })
-    setHighlightedDays(extractDatesFromArray(res?.data?.getPostsByMonth))
+    setHighlightedDays(
+      formatHighlightedDatesFromArray(res?.data?.getPostsByMonth)
+    )
   }
 
-  async function handleYearChange(year:Dayjs | null) {
+  async function handleYearChange(year: Dayjs | null) {
     const res = await getPostsByMonth({
       variables: {
         centerId: managerData?.getOneManager?.ECE_id,
-        dateFrom: `${dayjs(year).format('YYYY')}/${dayjs(year).format('MM')}/01`,
+        dateFrom: `${dayjs(year).format('YYYY')}/${dayjs(year).format(
+          'MM'
+        )}/01`,
         dateTo: `${dayjs(year).format('YYYY')}/${dayjs(year).format('MM')}/31`,
       },
     })
-    setHighlightedDays(extractDatesFromArray(res?.data?.getPostsByMonth))
+    setHighlightedDays(
+      formatHighlightedDatesFromArray(res?.data?.getPostsByMonth)
+    )
   }
 
   React.useEffect(() => {
@@ -107,10 +123,13 @@ const index = () => {
   }, [selectedDate, posts])
 
   React.useEffect(() => {
-    setHighlightedDays(extractDatesFromArray(data?.getPostsByMonth))
+    setHighlightedDays(formatHighlightedDatesFromArray(data?.getPostsByMonth))
+    //  setHighlightedDays([
+    //     { date: 1, badgeContent: '🟢' },
+    //     { date: 15, badgeContent: '🔴' },
+    //     { date: 15, badgeContent: '🟢' },
+    //   ])
   }, [data?.getPostsByMonth])
-
-
 
   if (error) {
     return (
@@ -137,7 +156,7 @@ const index = () => {
               sx={{ margin: 0 }}
               value={selectedDate}
               onChange={(newValue) => handleDateChange(newValue)}
-              onYearChange={(newYear)=>handleYearChange(newYear)}
+              onYearChange={(newYear) => handleYearChange(newYear)}
               onMonthChange={(newMonth) => handleMonthChange(newMonth)}
               className="mr-6 min-w-fit"
               slots={{
@@ -151,7 +170,12 @@ const index = () => {
             />
             <div className="flex flex-wrap sm:flex-row flex-col xl:justify-start justify-center">
               {posts?.map((post) => (
-                <PostByDay key={post.id} post={post} fetchPosts={fetchPosts} />
+                <PostByDay
+                  key={post.id}
+                  post={post}
+                  fetchPosts={fetchPosts}
+                 
+                />
               ))}
             </div>
           </div>

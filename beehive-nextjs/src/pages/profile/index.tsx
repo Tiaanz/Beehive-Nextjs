@@ -117,6 +117,9 @@ const page = () => {
             <p className="text-sm md:text-base">
               {data?.getOneReliever?.phone}
             </p>
+            <p className="text-sm md:text-base font-bold">
+              {data?.getOneReliever?.qualified?"Qualified":"Unqualified"}
+            </p>
           </div>
           <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
             <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">
