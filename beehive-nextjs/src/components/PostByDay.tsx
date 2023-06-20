@@ -6,14 +6,8 @@ import Button from './ui/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import {
-  UPDATE_POST,
-  GET_POSTS_BY_MONTH,
-} from '@/GraphQL_API'
-import {
-  useLazyQuery,
-  useMutation,
-} from '@apollo/client'
+import { UPDATE_POST, GET_POSTS_BY_MONTH } from '@/GraphQL_API'
+import { useLazyQuery, useMutation } from '@apollo/client'
 import { toast } from './ui/Toast'
 import dayjs from 'dayjs'
 import { formatHighlightedDatesFromArray } from '@/helper'
@@ -21,15 +15,20 @@ import { formatHighlightedDatesFromArray } from '@/helper'
 interface PostByDayProps {
   post: Job
   fetchPosts: () => Promise<void>
-  setHighlightedDays: any
-  highlightedDays: any
+  setHighlightedDays: React.Dispatch<
+    React.SetStateAction<
+      {
+        date: number
+        badgeContent: React.ReactNode
+      }[]
+    >
+  >
 }
 
 const PostByDay: FC<PostByDayProps> = ({
   post,
   fetchPosts,
   setHighlightedDays,
-  highlightedDays,
 }) => {
   const [cancelPost, setCancelPost] = useState(false)
   const [updatePost] = useMutation(UPDATE_POST)
