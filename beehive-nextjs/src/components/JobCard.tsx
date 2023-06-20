@@ -35,36 +35,57 @@ const JobCard: FC<JobCardProps> = ({
   const [declineJob] = useMutation(DECLINE_JOB)
 
   async function handleApply() {
-    await applyJob({
-      variables: {
-        applyJobId: job.id,
-        relieverId,
-      },
-    })
 
-    setApplyAlert(false)
+    try {
+      await applyJob({
+        variables: {
+          applyJobId: job.id,
+          relieverId,
+        },
+      })
+  
+      setApplyAlert(false)
+      
+      toast({
+        title: 'Success',
+        message: 'You have successfully applied this job.',
+        type: 'success',
+      })
+    } catch (error) {
+      const typedError = error as Error
+      toast({
+        title: 'Error',
+        message: `${typedError.message}, please try again later.`,
+        type: 'error',
+      })
+    }
     
-    toast({
-      title: 'Success',
-      message: 'You have successfully applied this job.',
-      type: 'success',
-    })
   }
 
   async function handleDecline() {
-    await declineJob({
-      variables: {
-        declineJobId: job.id,
-        relieverId,
-      },
-    })
-
-    setDeclineAlert(false)
-    toast({
-      title: 'Alert',
-      message: 'You have declined this job.',
-      type: 'alert',
-    })
+    try {
+      await declineJob({
+        variables: {
+          declineJobId: job.id,
+          relieverId,
+        },
+      })
+  
+      setDeclineAlert(false)
+      toast({
+        title: 'Alert',
+        message: 'You have declined this job.',
+        type: 'alert',
+      })
+    } catch (error) {
+      const typedError = error as Error
+      toast({
+        title: 'Error',
+        message: `${typedError.message}, please try again later.`,
+        type: 'error',
+      })
+    }
+    
   }
 
   return (

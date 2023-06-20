@@ -19,7 +19,6 @@ const page = () => {
     variables: { email: session?.user?.email },
   })
 
-
   const [updateReliever, { loading: mutationLoading }] =
     useMutation(UPDATE_RELIEVER)
 
@@ -49,7 +48,7 @@ const page = () => {
     } catch (error) {
       const typedError = error as Error
       toast({
-        title: 'Invalid input',
+        title: 'Error',
         message: typedError.message,
         type: 'error',
       })
@@ -57,27 +56,39 @@ const page = () => {
   }
 
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
+    try {
+      const file = event.target.files?.[0]
+      if (file) {
+        const reader = new FileReader()
 
-      reader.onloadend = async () => {
-        const res = await updateReliever({
-          variables: {
-            email: session?.user?.email,
-            photoUrl: reader.result as string,
-          },
-        })
-        setImageUrl(res.data.updateReliever.photo_url)
+        reader.onloadend = async () => {
+          const res = await updateReliever({
+            variables: {
+              email: session?.user?.email,
+              photoUrl: reader.result as string,
+            },
+          })
+          setImageUrl(res.data.updateReliever.photo_url)
+        }
+
+        reader.readAsDataURL(file)
       }
-
-      reader.readAsDataURL(file)
+    } catch (error) {
+      const typedError = error as Error
+      toast({
+        title: 'Error',
+        message: typedError.message,
+        type: 'error',
+      })
     }
   }
 
   if (error) {
-    console.error(error)
-    return <div>Error!</div>
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message}
+      </h1>
+    )
   }
 
   return (

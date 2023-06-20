@@ -25,7 +25,7 @@ const Centre = () => {
   const [options, setOptions] = React.useState([])
   const router = useRouter()
 
-  const [getCenters] = useLazyQuery(GET_FILTERED_CENTER)
+  const [getCenters,{error}] = useLazyQuery(GET_FILTERED_CENTER)
 
   const [addManager] = useMutation(ADD_MANAGER)
 
@@ -40,14 +40,24 @@ const Centre = () => {
       // Set a new debounce timeout
       debounceTimeout = setTimeout(async () => {
         if (inputValue !== '') {
-          const response = await getCenters({
-            variables: { input: inputValue },
-          })
-          setOptions(
-            response.data.getFilteredCenters.map(
-              (center: Props) => center.ECE_id + ' ' + center.name
+          try {
+            const response = await getCenters({
+              variables: { input: inputValue },
+            })
+            setOptions(
+              response.data.getFilteredCenters.map(
+                (center: Props) => center.ECE_id + ' ' + center.name
+              )
             )
-          )
+          } catch (error) {
+        
+            toast({
+              title: 'Failed to fetch',
+              message: "Please try again later",
+              type: 'error',
+            })
+          }
+         
         } else {
           setOptions([])
         }
@@ -94,8 +104,8 @@ const Centre = () => {
       
         const typedError = error as Error; 
         toast({
-          title: 'Invalid input',
-          message: typedError.message,
+          title: 'Error',
+          message: `${typedError.message}, please try again later.`,
           type: 'error',
         })
       }
@@ -106,6 +116,15 @@ const Centre = () => {
       )
     }
   }
+
+  if (error ) {
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message} 
+      </h1>
+    )
+  }
+
 
   return (
     <ThemeProvider theme={theme}>

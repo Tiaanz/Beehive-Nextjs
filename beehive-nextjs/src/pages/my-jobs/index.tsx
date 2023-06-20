@@ -17,7 +17,7 @@ const index = () => {
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
   const [jobs, setJobs] = React.useState<Job[]>([])
 
-  const { data: relieverData } = useQuery(GET_RELIEVER, {
+  const { data: relieverData, error } = useQuery(GET_RELIEVER, {
     variables: { email: session?.user?.email },
   })
 
@@ -34,7 +34,7 @@ const index = () => {
     setJobs(res?.data?.getJobsByReliever || [])
   }
 
-  //only show the jobs that the reliever has applied 
+  //only show the jobs that the reliever has applied
   const filteredJobs = jobs.filter((job: Job) =>
     job.relieverIDs.includes(relieverData?.getOneReliever?.id)
   )
@@ -46,6 +46,14 @@ const index = () => {
   React.useEffect(() => {
     fetchJobs()
   }, [selectedDate, jobs])
+
+  if (error) {
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message}
+      </h1>
+    )
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -70,13 +78,7 @@ const index = () => {
                   className="flex flex-col space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md sm:mr-4 mb-4"
                 >
                   <li className="font-bold hover:underline">
-                    <Link
-                      href={
-                        job.status === 'FUFILLED'
-                          ? `/job-info/${job.id}`
-                          : `/profile/centre-profile/${job.center.ECE_id}`
-                      }
-                    >
+                    <Link href={`/profile/centre-profile/${job.center.ECE_id}`}>
                       {job.center.name}
                     </Link>
                   </li>
@@ -89,22 +91,25 @@ const index = () => {
                     Status:{' '}
                     <span
                       style={{
-                        color: job.status === 'OPEN'
-                        ? 'green'
-                        : job.status==='FUFILLED'
-                        ? 'orange'
-                        : 'red',
+                        color:
+                          job.status === 'OPEN'
+                            ? 'green'
+                            : job.status === 'FUFILLED'
+                            ? 'orange'
+                            : 'red',
                       }}
                     >
                       {/* {job.status} */}
                       {job.status === 'OPEN'
                         ? 'Awaiting center confirmation'
-                        : job.status==='FUFILLED'
+                        : job.status === 'FUFILLED'
                         ? 'CONFIRMED'
                         : 'CANCELLED'}
                     </span>
                   </li>
-                  <li className='self-end text-amber-600 underline'><Link href={`/job-info/${job.id}`}>Detail...</Link></li>
+                  <li className="self-end text-amber-600 underline">
+                    <Link href={`/job-info/${job.id}`}>Detail...</Link>
+                  </li>
                 </ul>
               ))}
             </div>

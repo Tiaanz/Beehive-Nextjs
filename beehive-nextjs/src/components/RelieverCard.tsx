@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { ACCEPT_JOB, GET_JOB, UPDATE_RELIEVERIDS } from '@/GraphQL_API'
 import { useMutation } from '@apollo/client'
 import { Reliever } from '@/model'
+import { toast } from './ui/Toast'
 
 interface RelieverCardProps {
   reliever: Reliever
@@ -21,7 +22,8 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
   const [updateRelieverIDs] = useMutation(UPDATE_RELIEVERIDS)
 
   async function handleAccept() {
-    //change status to "FUFILLED" and make the relieverIDs array contains only this reliever's ID
+    try {
+       //change status to "FUFILLED" and make the relieverIDs array contains only this reliever's ID
     await acceptJob({
       variables: {
         relieverId: reliever.id,
@@ -46,6 +48,15 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
     })
 
     setAcceptAlert(false)
+    } catch (error) {
+      const typedError = error as Error
+      toast({
+        title: 'Error',
+        message: `${typedError.message}, please try again later.`,
+        type: 'error',
+      })
+    }
+   
   }
 
   return (

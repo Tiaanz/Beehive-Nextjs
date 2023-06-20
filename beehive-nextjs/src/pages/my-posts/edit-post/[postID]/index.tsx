@@ -5,7 +5,11 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Meta from '@/components/Meta'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { UPDATE_POST, GET_JOB_BY_ID, UPDATE_NOT_AVAILABLE_DATE } from '@/GraphQL_API'
+import {
+  UPDATE_POST,
+  GET_JOB_BY_ID,
+  UPDATE_NOT_AVAILABLE_DATE,
+} from '@/GraphQL_API'
 import { useMutation, useQuery } from '@apollo/client'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -23,7 +27,11 @@ const index = () => {
   const router = useRouter()
   const id = router.query.postID
 
-  const { data: postData, loading } = useQuery(GET_JOB_BY_ID, {
+  const {
+    data: postData,
+    loading,
+    error,
+  } = useQuery(GET_JOB_BY_ID, {
     variables: { jobId: id },
   })
 
@@ -40,7 +48,7 @@ const index = () => {
       !timeFrom ||
       !timeTo ||
       timeFrom?.format('hh:mm A') === 'Invalid Date' ||
-      timeTo?.format('hh:mm A') === 'Invalid Date' 
+      timeTo?.format('hh:mm A') === 'Invalid Date'
     ) {
       setValidationError(
         'Please complete all the fields and ensure they are valid input.'
@@ -54,34 +62,43 @@ const index = () => {
       // )
       // console.log(data.get('qualified') === 'Yes')
       // console.log(data.get('status'))
+      try {
+        const res = await updatePost({
+          variables: {
+            postId: postData?.getJobById?.id,
+            time:
+              timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A'),
+            status: data.get('status'),
+          },
+        })
+        console.log(res?.data?.updatePost?.status)
 
-      const res=await updatePost({
-        variables: {
-          postId: postData?.getJobById?.id,
-          time: timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A'),
-          status: data.get('status'),
-        },
-      })
-      console.log(res?.data?.updatePost?.status);
-      
-      if (res?.data?.updatePost?.status === "CANCELLED") {
-        await  updateNotAvailableDates({
+        if (res?.data?.updatePost?.status === 'CANCELLED') {
+          await updateNotAvailableDates({
             variables: {
               relieverId: postData?.getJobById?.relieverIDs[0],
-              jobId:postData?.getJobById?.id
-            }
+              jobId: postData?.getJobById?.id,
+            },
           })
-       }    
+        }
 
-      toast({
-        title: 'Success',
-        message: 'You have updated the post.',
-        type: 'success',
-      })
+        toast({
+          title: 'Success',
+          message: 'You have updated the post.',
+          type: 'success',
+        })
 
-      setTimeout(() => {
-        router.push('/my-posts')
-      }, 1000)
+        setTimeout(() => {
+          router.push('/my-posts')
+        }, 1000)
+      } catch (error) {
+        const typedError = error as Error
+        toast({
+          title: 'Error',
+          message: `${typedError.message}, please try again later.`,
+          type: 'error',
+        })
+      }
     }
   }
 
@@ -102,6 +119,14 @@ const index = () => {
       setDateTo(dayjs(postData?.getJobById?.date_to))
     }
   }, [postData])
+
+  if (error) {
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message}
+      </h1>
+    )
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -9,17 +9,14 @@ import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { toast } from '@/components/ui/Toast'
 import Meta from '@/components/Meta'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 
 const theme = createTheme()
 
-
-
 export default function Login() {
-
   const router = useRouter()
   const message = router.query.message
-  
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -29,8 +26,7 @@ export default function Login() {
         password: data.get('password'),
         redirect: false,
       })
-
-      if (res?.error) {
+      if (res?.error !== 'fetch failed' && res?.error !==null) {
         toast({
           title: 'Error signing in',
           message: 'The email or password is incorrect.',
@@ -40,12 +36,18 @@ export default function Login() {
       if (res?.error === null) {
         window.location.href = '/notifications'
       }
+      if (res?.error ==='fetch failed') {
+        toast({
+          title: 'Error signing in',
+          message: 'Please try agian later',
+          type: 'error',
+        })
+      }
+    
     } catch (error) {
-      toast({
-        title: 'Error signing in',
-        message: 'Please try agian later',
-        type: 'error',
-      })
+      const typedError = error as Error
+      console.log(typedError.message);
+      
     }
   }
 

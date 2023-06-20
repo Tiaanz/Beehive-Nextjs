@@ -10,21 +10,24 @@ import { toast } from '@/components/ui/Toast'
 import { AiFillCamera } from 'react-icons/ai'
 import { useMutation, useQuery } from '@apollo/client'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
-import {GET_MANAGER,GET_CENTER,UPDATE_CENTER } from '@/GraphQL_API'
+import { GET_MANAGER, GET_CENTER, UPDATE_CENTER } from '@/GraphQL_API'
 
 const page = () => {
   const { data: session } = useSession()
- 
 
-  const { data:managerData } = useQuery(GET_MANAGER, {
+  const { data: managerData } = useQuery(GET_MANAGER, {
     variables: { email: session?.user?.email },
   })
 
-  const { data:centerData, loading, error } = useQuery(GET_CENTER, {
-    variables: {ECE_id:managerData?.getOneManager?.ECE_id},
+  const {
+    data: centerData,
+    loading,
+    error,
+  } = useQuery(GET_CENTER, {
+    variables: { ECE_id: managerData?.getOneManager?.ECE_id },
   })
 
-  const [updateCenter, { loading: mutationLoading }] =
+  const [updateCenter, { loading: mutationLoading}] =
     useMutation(UPDATE_CENTER)
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -53,7 +56,7 @@ const page = () => {
     } catch (error) {
       const typedError = error as Error
       toast({
-        title: 'Invalid input',
+        title: 'Error',
         message: typedError.message,
         type: 'error',
       })
@@ -61,27 +64,40 @@ const page = () => {
   }
 
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-
-      reader.onloadend = async () => {
-        const res = await updateCenter({
-          variables: {
-            eceId: managerData?.getOneManager?.ECE_id,
-            photoUrl: reader.result as string,
-          },
-        })
-        setImageUrl(res.data.updateCenter.photo_url)
+    try {
+      const file = event.target.files?.[0]
+      if (file) {
+        const reader = new FileReader()
+  
+        reader.onloadend = async () => {
+          const res = await updateCenter({
+            variables: {
+              eceId: managerData?.getOneManager?.ECE_id,
+              photoUrl: reader.result as string,
+            },
+          })
+          setImageUrl(res.data.updateCenter.photo_url)
+        }
+  
+        reader.readAsDataURL(file)
       }
-
-      reader.readAsDataURL(file)
+    } catch (error) {
+      const typedError = error as Error
+      toast({
+        title: 'Error',
+        message: typedError.message,
+        type: 'error',
+      })
     }
+   
   }
 
   if (error) {
-    console.error(error)
-    return <div>Error!</div>
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message} 
+      </h1>
+    )
   }
 
   return (
@@ -89,7 +105,6 @@ const page = () => {
       <Meta title="Early childhood Relief teachers | Beehive" />
 
       <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto items-center md:justify-start flex-col md:flex-row">
-
         <div className="basis-1/3 flex flex-col items-center">
           <Avatar
             alt="profile photo"
@@ -106,11 +121,19 @@ const page = () => {
               onChange={handleFileUpload}
             />
           </label>
-          <p className="text-sm md:text-lg font-bold">{centerData?.getOneCenter?.name}</p>
-          <p className="text-sm md:text-base">Center Manager: {session?.user?.name}</p>
+          <p className="text-sm md:text-lg font-bold">
+            {centerData?.getOneCenter?.name}
+          </p>
+          <p className="text-sm md:text-base">
+            Center Manager: {session?.user?.name}
+          </p>
           <p className="text-sm md:text-base">{session?.user?.email}</p>
-          <p className="text-sm md:text-base">{managerData?.getOneManager?.phone}</p>
-          <p className="text-sm md:text-base italic">{centerData?.getOneCenter?.address}</p>
+          <p className="text-sm md:text-base">
+            {managerData?.getOneManager?.phone}
+          </p>
+          <p className="text-sm md:text-base italic">
+            {centerData?.getOneCenter?.address}
+          </p>
         </div>
         <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
           <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">

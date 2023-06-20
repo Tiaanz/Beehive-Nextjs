@@ -20,6 +20,15 @@ const page = () => {
     variables: { ECE_id: Number(id) },
   })
 
+
+  if (error ) {
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message} 
+      </h1>
+    )
+  }
+
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />

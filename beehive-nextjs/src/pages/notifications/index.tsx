@@ -14,7 +14,7 @@ import {Job } from '@/model'
 const index = () => {
   const { data: session } = useSession()
 
-  const { data: jobsData } = useQuery(GET_JOBS, {
+  const { data: jobsData,error } = useQuery(GET_JOBS, {
     variables: { status: 'OPEN' },
   })
 
@@ -63,6 +63,15 @@ const index = () => {
   const filteredPosts = postsData?.getPostsByCenter?.filter(
     (post: Job) => post.relieverIDs.length !== 0 && post.status === 'OPEN' && dayjs(post.date_from).isAfter(dayjs(), 'day')
   )
+
+
+  if (error ) {
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message} 
+      </h1>
+    )
+  }
 
   return (
     <>

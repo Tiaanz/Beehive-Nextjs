@@ -16,13 +16,18 @@ const index = () => {
   const router = useRouter()
   const id = router.query.jobID
 
-  const { data, loading } = useQuery(GET_JOB_BY_ID, {
+  const { data, loading, error } = useQuery(GET_JOB_BY_ID, {
     variables: { jobId: id },
   })
 
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
+      {error && (
+        <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+          ERROR: {error.message}
+        </h1>
+      )}
       {loading && (
         <Box className="mx-auto w-1/2 pt-80">
           <LinearProgress />
@@ -71,9 +76,7 @@ const index = () => {
                     .toUpperCase()}
                 </p>
                 <p className="font-bold">
-                  {dayjs(data?.getJobById?.date_from).format(
-                    'DD MMM YYYY'
-                  )}
+                  {dayjs(data?.getJobById?.date_from).format('DD MMM YYYY')}
                 </p>
                 <p>{data?.getJobById?.time}</p>
               </div>
@@ -86,9 +89,7 @@ const index = () => {
                       .toUpperCase()}
                   </span>
                   <h3 className="font-bold text-sm sm:text-base">
-                    {dayjs(data?.getJobById?.date_from).format(
-                      'DD MMM YYYY'
-                    )}
+                    {dayjs(data?.getJobById?.date_from).format('DD MMM YYYY')}
                   </h3>
                   <span className="text-sm sm:text-base">
                     {data?.getJobById?.time.slice(0, 8)}
@@ -102,9 +103,7 @@ const index = () => {
                       .toUpperCase()}
                   </span>
                   <h3 className="font-bold text-sm sm:text-base">
-                    {dayjs(data?.getJobById?.date_to).format(
-                      'DD MMM YYYY'
-                    )}
+                    {dayjs(data?.getJobById?.date_to).format('DD MMM YYYY')}
                   </h3>
                   <span className="text-sm sm:text-base">
                     {data?.getJobById?.time.slice(10)}
@@ -136,7 +135,7 @@ const index = () => {
           </div>
         </div>
       ) : (
-        !loading && (
+        !loading && !error && (
           <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
             Page not found!
           </h1>

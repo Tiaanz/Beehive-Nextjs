@@ -21,22 +21,33 @@ const PostByDay: FC<PostByDayProps> = ({ post, fetchPosts }) => {
   
 
   async function handleCancel() {
-  await updatePost({
-      variables: {
-        postId: post.id,
-        status: 'CANCELLED',
-      },
-   })
- 
-    
-    toast({
-      title: 'Success',
-      message: 'You have cancelled the post.',
-      type: 'success',
-    })
 
-    setCancelPost(false)
-    await fetchPosts()
+    try {
+      await updatePost({
+        variables: {
+          postId: post.id,
+          status: 'CANCELLED',
+        },
+     })
+   
+      
+      toast({
+        title: 'Success',
+        message: 'You have cancelled the post.',
+        type: 'success',
+      })
+  
+      setCancelPost(false)
+      await fetchPosts()
+    } catch (error) {
+      const typedError = error as Error
+      toast({
+        title: 'Error',
+        message: `${typedError.message}, please try again later.`,
+        type: 'error',
+      })
+    }
+  
   }
 
   return (

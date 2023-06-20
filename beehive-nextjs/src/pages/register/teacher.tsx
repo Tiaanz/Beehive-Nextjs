@@ -48,8 +48,8 @@ const Teacher = ({}) => {
       } catch (error) {
         const typedError = error as Error
         toast({
-          title: 'Invalid input',
-          message: typedError.message,
+          title: 'Error',
+          message: `${typedError.message}, please try again later.`,
           type: 'error',
         })
       }

@@ -19,7 +19,7 @@ const index = () => {
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
   const [posts, setPosts] = React.useState<Job[]>([])
 
-  const { data: managerData } = useQuery(GET_MANAGER, {
+  const { data: managerData,error } = useQuery(GET_MANAGER, {
     variables: { email: session?.user?.email },
   })
 
@@ -44,6 +44,15 @@ const index = () => {
   React.useEffect(() => {
     fetchPosts()
   }, [selectedDate, posts])
+
+
+  if (error ) {
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message} 
+      </h1>
+    )
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

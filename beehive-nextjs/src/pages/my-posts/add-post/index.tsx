@@ -23,7 +23,11 @@ const theme = createTheme()
 const index = ({}) => {
   const { data: session } = useSession()
 
-  const { data: managerData, loading } = useQuery(GET_MANAGER, {
+  const {
+    data: managerData,
+    loading,
+    error,
+  } = useQuery(GET_MANAGER, {
     variables: { email: session?.user?.email },
   })
 
@@ -43,33 +47,41 @@ const index = ({}) => {
       dateFrom?.format('YYYY/MM/DD') === 'Invalid Date' ||
       dateTo?.format('YYYY/MM/DD') === 'Invalid Date' ||
       timeFrom?.format('hh:mm A') === 'Invalid Date' ||
-      timeTo?.format('hh:mm A') === 'Invalid Date' 
-
-    ) {    
+      timeTo?.format('hh:mm A') === 'Invalid Date'
+    ) {
       setValidationError(
         'Please complete all the fields and ensure they are valid input.'
       )
     } else {
-     
-      addPost({
-        variables: {
-          centerId: Number(data.get('centerId')),
-          dateFrom: dateFrom?.format('YYYY/MM/DD'),
-          dateTo: dateTo?.format('YYYY/MM/DD'),
-          time: timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A'),
-          qualified: data.get('qualified') === 'Yes',
-        },
-      })
+      try {
+        addPost({
+          variables: {
+            centerId: Number(data.get('centerId')),
+            dateFrom: dateFrom?.format('YYYY/MM/DD'),
+            dateTo: dateTo?.format('YYYY/MM/DD'),
+            time:
+              timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A'),
+            qualified: data.get('qualified') === 'Yes',
+          },
+        })
 
-      toast({
-        title: 'Success',
-        message: 'You have added a post.',
-        type: 'success',
-      })
+        toast({
+          title: 'Success',
+          message: 'You have added a post.',
+          type: 'success',
+        })
 
-      setTimeout(() => {
-        router.push('/my-posts')
-      }, 1000)
+        setTimeout(() => {
+          router.push('/my-posts')
+        }, 1000)
+      } catch (error) {
+        const typedError = error as Error
+        toast({
+          title: 'Error',
+          message: `${typedError.message}, please try again later.`,
+          type: 'error',
+        })
+      }
     }
   }
 
@@ -81,6 +93,14 @@ const index = ({}) => {
   const [dateTo, setDateTo] = React.useState<Dayjs | null>(null)
   const [timeFrom, setTimeFrom] = React.useState<Dayjs | null>(null)
   const [timeTo, setTimeTo] = React.useState<Dayjs | null>(null)
+
+  if (error) {
+    return (
+      <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+        ERROR: {error?.message}
+      </h1>
+    )
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
