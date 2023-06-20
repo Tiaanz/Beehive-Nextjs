@@ -90,7 +90,7 @@ const index = () => {
 
         setTimeout(() => {
           router.push('/my-posts')
-        }, 1000)
+        }, 500)
       } catch (error) {
         const typedError = error as Error
         toast({

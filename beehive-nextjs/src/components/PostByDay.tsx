@@ -6,42 +6,63 @@ import Button from './ui/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogTitle from '@mui/material/DialogTitle'
-import { UPDATE_POST,UPDATE_NOT_AVAILABLE_DATE } from '@/GraphQL_API'
-import { OperationVariables, QueryResult, useMutation } from '@apollo/client'
+import {
+  UPDATE_POST,
+  GET_POSTS_BY_MONTH,
+} from '@/GraphQL_API'
+import {
+  useLazyQuery,
+  useMutation,
+} from '@apollo/client'
 import { toast } from './ui/Toast'
 import dayjs from 'dayjs'
+import { formatHighlightedDatesFromArray } from '@/helper'
 
 interface PostByDayProps {
   post: Job
   fetchPosts: () => Promise<void>
- 
+  setHighlightedDays: any
+  highlightedDays: any
 }
 
-const PostByDay: FC<PostByDayProps> = ({ post, fetchPosts }) => {
+const PostByDay: FC<PostByDayProps> = ({
+  post,
+  fetchPosts,
+  setHighlightedDays,
+  highlightedDays,
+}) => {
   const [cancelPost, setCancelPost] = useState(false)
   const [updatePost] = useMutation(UPDATE_POST)
-  
+
+  const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH, {
+    variables: {
+      centerId: post.center_id,
+      dateFrom: `${dayjs(post.date_from).format('YYYY')}/${dayjs(
+        post.date_from
+      ).format('MM')}/01`,
+      dateTo: `${dayjs(post.date_from).format('YYYY')}/${dayjs(
+        post.date_from
+      ).format('MM')}/31`,
+    },
+  })
 
   async function handleCancel() {
-
     try {
       await updatePost({
         variables: {
           postId: post.id,
           status: 'CANCELLED',
         },
-     })
-   
-      
+      })
+
       toast({
         title: 'Success',
         message: 'You have cancelled the post.',
         type: 'success',
       })
-  
+
       setCancelPost(false)
       await fetchPosts()
-     
     } catch (error) {
       const typedError = error as Error
       toast({
@@ -50,8 +71,19 @@ const PostByDay: FC<PostByDayProps> = ({ post, fetchPosts }) => {
         type: 'error',
       })
     }
-  
   }
+
+  useEffect(() => {
+    async function refetch() {
+      const res = await getPostsByMonth()
+
+      setHighlightedDays(
+        formatHighlightedDatesFromArray(res?.data?.getPostsByMonth)
+      )
+    }
+
+    refetch()
+  }, [post.status])
 
   return (
     <ul
@@ -76,12 +108,12 @@ const PostByDay: FC<PostByDayProps> = ({ post, fetchPosts }) => {
       </li>
       {post.status === 'FUFILLED' && (
         <li className="hover:underline mt-2">
-            <Link href={`/profile/reliever-profile/${post.relievers[0].id}`}>
+          <Link href={`/profile/reliever-profile/${post.relievers[0].id}`}>
             Reliever: {post.relievers[0].first_name}{' '}
             {post.relievers[0].last_name} (
             {post.relievers[0].qualified ? 'Qualified' : 'Unqualified'})
-        </Link>
-          </li>
+          </Link>
+        </li>
       )}
       {post.status !== 'CANCELLED' && post.status !== 'OPEN' ? (
         <li className="self-end text-2xl text-orange-500 hover:text-orange-400 hover:cursor-pointer">

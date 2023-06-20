@@ -174,7 +174,8 @@ const index = () => {
                   key={post.id}
                   post={post}
                   fetchPosts={fetchPosts}
-                 
+                  setHighlightedDays={setHighlightedDays}
+                  highlightedDays={highlightedDays}
                 />
               ))}
             </div>
