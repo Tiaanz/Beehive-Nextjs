@@ -93,6 +93,18 @@ export const GET_POSTS = gql`
     }
   }
 `
+
+//Define get posts query
+export const GET_POSTS_BY_MONTH = gql`
+  query GetPostsByMonth($centerId: Int!, $dateFrom: String!, $dateTo: String!) {
+  getPostsByMonth(center_id: $centerId, date_from: $dateFrom, date_to: $dateTo) {
+    date_from
+    date_to
+  }
+}
+`
+
+
 //define get All "OPEN" JOBS query
 export const GET_JOBS = gql`
   query GetOpenJobs {

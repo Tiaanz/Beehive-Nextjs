@@ -7,22 +7,61 @@ import Link from 'next/link'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
+import Badge from '@mui/material/Badge'
+import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import dayjs, { Dayjs } from 'dayjs'
-import { GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
+import { GET_POSTS, GET_MANAGER, GET_POSTS_BY_MONTH } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { Job } from '@/model'
 import PostByDay from '@/components/PostByDay'
+import { extractDatesFromArray } from '@/helper'
+
+function ServerDay(
+  props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
+) {
+  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props
+
+  const isSelected =
+    !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0
+
+  return (
+    <Badge
+      key={props.day.toString()}
+      overlap="circular"
+      badgeContent={isSelected ? '🟢' : undefined}
+    >
+      <PickersDay
+        {...other}
+        outsideCurrentMonth={outsideCurrentMonth}
+        day={day}
+      />
+    </Badge>
+  )
+}
 
 const index = () => {
   const { data: session } = useSession()
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
+  const [selectedMonth, setSelectedMonth] = React.useState<string | null>(
+    dayjs().format('MM')
+  )
+  const [highlightedDays, setHighlightedDays] = React.useState<number[]>([])
   const [posts, setPosts] = React.useState<Job[]>([])
 
-  const { data: managerData,error } = useQuery(GET_MANAGER, {
+  const { data: managerData, error } = useQuery(GET_MANAGER, {
     variables: { email: session?.user?.email },
   })
 
+  const { data } = useQuery(GET_POSTS_BY_MONTH, {
+    variables: {
+      centerId: managerData?.getOneManager?.ECE_id,
+      dateFrom: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/01`,
+      dateTo: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/31`,
+    },
+  })
+
+  const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
   const [getPosts] = useLazyQuery(GET_POSTS)
 
   async function fetchPosts() {
@@ -41,15 +80,42 @@ const index = () => {
     setSelectedDate(value)
   }
 
+  async function handleMonthChange(month: Dayjs | null) {
+    const res = await getPostsByMonth({
+      variables: {
+        centerId: managerData?.getOneManager?.ECE_id,
+        dateFrom: `${dayjs(month).format('YYYY')}/${dayjs(month).format('MM')}/01`,
+        dateTo: `${dayjs(month).format('YYYY')}/${dayjs(month).format('MM')}/31`,
+      },
+    })
+    setHighlightedDays(extractDatesFromArray(res?.data?.getPostsByMonth))
+  }
+
+  async function handleYearChange(year:Dayjs | null) {
+    const res = await getPostsByMonth({
+      variables: {
+        centerId: managerData?.getOneManager?.ECE_id,
+        dateFrom: `${dayjs(year).format('YYYY')}/${dayjs(year).format('MM')}/01`,
+        dateTo: `${dayjs(year).format('YYYY')}/${dayjs(year).format('MM')}/31`,
+      },
+    })
+    setHighlightedDays(extractDatesFromArray(res?.data?.getPostsByMonth))
+  }
+
   React.useEffect(() => {
     fetchPosts()
   }, [selectedDate, posts])
 
+  React.useEffect(() => {
+    setHighlightedDays(extractDatesFromArray(data?.getPostsByMonth))
+  }, [data?.getPostsByMonth])
 
-  if (error ) {
+
+
+  if (error) {
     return (
       <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
-        ERROR: {error?.message} 
+        ERROR: {error?.message}
       </h1>
     )
   }
@@ -71,7 +137,17 @@ const index = () => {
               sx={{ margin: 0 }}
               value={selectedDate}
               onChange={(newValue) => handleDateChange(newValue)}
+              onYearChange={(newYear)=>handleYearChange(newYear)}
+              onMonthChange={(newMonth) => handleMonthChange(newMonth)}
               className="mr-6 min-w-fit"
+              slots={{
+                day: ServerDay,
+              }}
+              slotProps={{
+                day: {
+                  highlightedDays,
+                } as any,
+              }}
             />
             <div className="flex flex-wrap sm:flex-row flex-col xl:justify-start justify-center">
               {posts?.map((post) => (
