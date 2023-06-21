@@ -44,7 +44,7 @@ export function extractDatesFromArray(arr: string | any[]) {
   return dateNotIncludeZero
 }
 
-export function formatHighlightedDatesFromArray(arr: Post[]) {
+export function formatHighlightedDatesFromArray(arr: Post[],currentMonth:number) {
   const dates = []
 
   for (let i = 0; i < arr?.length; i++) {
@@ -61,9 +61,13 @@ export function formatHighlightedDatesFromArray(arr: Post[]) {
     }
   }
 
-  const dateNumbers = dates.map((dateObj) => {
+  const filteredMonth=dates.filter(dateObj=>dayjs(dateObj.date).month()===currentMonth)
+
+  const dateNumbers = filteredMonth.map((dateObj) => {
     return { ...dateObj, date: dateObj.date.slice(8) }
   })
+
+  
 
   const dateNotIncludeZero = dateNumbers.map((dateObj) => {
     if (dateObj.date.startsWith('0')) {

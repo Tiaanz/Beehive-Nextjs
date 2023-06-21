@@ -136,7 +136,7 @@ const index = () => {
         (post: Post) =>
           post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
       )
-    ));
+    ,dayjs(month).month()));
 
   }
 
@@ -155,7 +155,7 @@ const index = () => {
         (post: Post) =>
           post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
       )
-    ));
+    ,dayjs(year).month()));
   }
 
   React.useEffect(() => {
@@ -169,7 +169,7 @@ const index = () => {
         (post: Post) =>
           post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
       )
-    ));
+    ,dayjs().month()));
       
     // setHighlightedDays([
     //   { date: 1, badgeContent: '🟢' },
