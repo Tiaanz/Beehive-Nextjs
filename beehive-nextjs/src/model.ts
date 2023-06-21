@@ -27,4 +27,11 @@ export interface Job {
   relievers: Reliever[]
 }
 
+export interface Post {
+  date_from: string
+  date_to: string
+  relieverIDs: string[]
+  status: string
+}
+
 

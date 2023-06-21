@@ -15,6 +15,7 @@ import { useLazyQuery, useQuery } from '@apollo/client'
 import { Job } from '@/model'
 import PostByDay from '@/components/PostByDay'
 import { formatHighlightedDatesFromArray } from '@/helper'
+import { Box, CircularProgress } from '@mui/material'
 
 function ServerDay(
   props: PickersDayProps<Dayjs> & {
@@ -68,7 +69,7 @@ const index = () => {
   })
 
   const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
-  const [getPosts] = useLazyQuery(GET_POSTS)
+  const [getPosts,{ loading: fetchJobLoading }] = useLazyQuery(GET_POSTS)
 
   async function fetchPosts() {
     const res = await getPosts({
@@ -129,13 +130,12 @@ const index = () => {
 
   React.useEffect(() => {
     fetchPosts()
-  }, [selectedDate, posts])
+  }, [selectedDate])
 
   React.useEffect(() => {
     setHighlightedDays(() =>
       formatHighlightedDatesFromArray(data?.getPostsByMonth, dayjs().month())
     )
-    // setHighlightedDays(()=>[{ date: 12, badgeContent: '🟢' }])
   }, [data?.getPostsByMonth])
 
   if (error) {
@@ -176,7 +176,11 @@ const index = () => {
               }}
             />
             <div className="flex flex-wrap sm:flex-row flex-col xl:justify-start justify-center">
-              {posts?.map((post) => (
+              {fetchJobLoading ?
+                <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>:
+                posts?.map((post) => (
                 <PostByDay
                   key={post.id}
                   post={post}

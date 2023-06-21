@@ -13,7 +13,7 @@ config()
 // })
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: 'https://beehive-graphql-api.onrender.com/',
 });
 
 

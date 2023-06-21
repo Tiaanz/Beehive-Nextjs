@@ -15,32 +15,11 @@ import {
 } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import Link from 'next/link'
-import { Job } from '@/model'
-import { formatHighlightedDatesFromArray,extractDatesFromArray } from '@/helper'
+import { Job, Post } from '@/model'
+import { formatHighlightedDatesFromArray } from '@/helper'
+import { Box, CircularProgress, LinearProgress } from '@mui/material'
 
-// function ServerDay(
-//   props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
-// ) {
-//   const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props
-
-//   const isSelected =
-//     !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0
-
-//   return (
-//     <Badge
-//       key={props.day.toString()}
-//       overlap="circular"
-//       badgeContent={isSelected ? '🟢' : undefined}
-//     >
-//       <PickersDay
-//         {...other}
-//         outsideCurrentMonth={outsideCurrentMonth}
-//         day={day}
-//       />
-//     </Badge>
-//   )
-// }
-
+//highlight days with jobs
 function ServerDay(
   props: PickersDayProps<Dayjs> & {
     highlightedDays?: {
@@ -69,13 +48,6 @@ function ServerDay(
   )
 }
 
-interface Post {
-  date_from: string
-  date_to: string
-  relieverIDs: string[]
-  status: string
-}
-
 const index = () => {
   const { data: session } = useSession()
 
@@ -96,7 +68,8 @@ const index = () => {
     },
   })
 
-  const [getJobs] = useLazyQuery(GET_RELIEVER_JOBS)
+  const [getJobs, { loading: fetchJobLoading }] =
+    useLazyQuery(GET_RELIEVER_JOBS)
   const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
 
   async function fetchJobs() {
@@ -131,14 +104,15 @@ const index = () => {
         )}/31`,
       },
     })
-    
-    setHighlightedDays(formatHighlightedDatesFromArray(
-      res?.data?.getPostsByMonth?.filter(
-        (post: Post) =>
-          post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
-      )
-    ,dayjs(month).month()));
 
+    setHighlightedDays(
+      formatHighlightedDatesFromArray(
+        res?.data?.getPostsByMonth?.filter((post: Post) =>
+          post.relieverIDs.includes(relieverData?.getOneReliever?.id)
+        ),
+        dayjs(month).month()
+      )
+    )
   }
 
   async function handleYearChange(year: Dayjs | null) {
@@ -152,37 +126,29 @@ const index = () => {
       },
     })
 
-    setHighlightedDays(formatHighlightedDatesFromArray(
-      res?.data?.getPostsByMonth?.filter(
-        (post: Post) =>
-          post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
+    setHighlightedDays(
+      formatHighlightedDatesFromArray(
+        res?.data?.getPostsByMonth?.filter((post: Post) =>
+          post.relieverIDs.includes(relieverData?.getOneReliever?.id)
+        ),
+        dayjs(year).month()
       )
-    ,dayjs(year).month()));
+    )
   }
 
   React.useEffect(() => {
-  
     fetchJobs()
-    
-    
-    
-  }, [selectedDate, jobs])
-
-
+  }, [selectedDate])
 
   React.useEffect(() => {
-    
-    setHighlightedDays(formatHighlightedDatesFromArray(
-      data?.getPostsByMonth?.filter(
-        (post: Post) =>
-          post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
+    setHighlightedDays(
+      formatHighlightedDatesFromArray(
+        data?.getPostsByMonth?.filter((post: Post) =>
+          post.relieverIDs.includes(relieverData?.getOneReliever?.id)
+        ),
+        dayjs().month()
       )
-    ,dayjs().month()));
-  
-    // setHighlightedDays([
-    //   { date: 1, badgeContent: '🟢' },
-    //   { date: 15, badgeContent: '🔴' },
-    // ])
+    )
   }, [data?.getPostsByMonth])
 
   if (error) {
@@ -219,47 +185,54 @@ const index = () => {
                 } as any,
               }}
             />
-            <div className="flex flex-wrap xl:justify-start justify-center ">
-              {filteredJobs?.map((job) => (
-                <ul
-                  key={job.id}
-                  className="flex flex-col space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md sm:mr-4 mb-4"
-                >
-                  <li className="font-bold hover:underline">
-                    <Link href={`/profile/centre-profile/${job.center.ECE_id}`}>
-                      {job.center.name}
-                    </Link>
-                  </li>
-                  <li>Time: {job.time}</li>
-                  <li className="text-sm text-slate-600">
-                    {' '}
-                    {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}
-                  </li>
-                  <li>
-                    Status:{' '}
-                    <span
-                      style={{
-                        color:
-                          job.status === 'OPEN'
-                            ? 'orange'
-                            : job.status === 'FUFILLED'
-                            ? 'green'
-                            : 'red',
-                      }}
-                    >
-                    
-                      {job.status === 'OPEN'
-                        ? 'Awaiting center confirmation'
-                        : job.status === 'FUFILLED'
-                        ? 'CONFIRMED'
-                        : 'CANCELLED'}
-                    </span>
-                  </li>
-                  <li className="self-end text-amber-600 underline">
-                    <Link href={`/job-info/${job.id}`}>Detail...</Link>
-                  </li>
-                </ul>
-              ))}
+            <div className=" flex flex-wrap xl:justify-start justify-center ">
+              {fetchJobLoading ? (
+                <Box sx={{ display: 'flex' }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                filteredJobs?.map((job) => (
+                  <ul
+                    key={job.id}
+                    className="flex flex-col space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md sm:mr-4 mb-4"
+                  >
+                    <li className="font-bold hover:underline">
+                      <Link
+                        href={`/profile/centre-profile/${job.center.ECE_id}`}
+                      >
+                        {job.center.name}
+                      </Link>
+                    </li>
+                    <li>Time: {job.time}</li>
+                    <li className="text-sm text-slate-600">
+                      {' '}
+                      {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}
+                    </li>
+                    <li>
+                      Status:{' '}
+                      <span
+                        style={{
+                          color:
+                            job.status === 'OPEN'
+                              ? 'orange'
+                              : job.status === 'FUFILLED'
+                              ? 'green'
+                              : 'red',
+                        }}
+                      >
+                        {job.status === 'OPEN'
+                          ? 'Awaiting center confirmation'
+                          : job.status === 'FUFILLED'
+                          ? 'CONFIRMED'
+                          : 'CANCELLED'}
+                      </span>
+                    </li>
+                    <li className="self-end text-amber-600 underline">
+                      <Link href={`/job-info/${job.id}`}>Detail...</Link>
+                    </li>
+                  </ul>
+                ))
+              )}
             </div>
           </div>
         </div>

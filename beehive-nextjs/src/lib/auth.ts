@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
       `
 
         async function getOneReliever() {
-          const response = await fetch('http://localhost:4000', {
+          const response = await fetch('https://beehive-graphql-api.onrender.com/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
         const reliever = await getOneReliever()
 
         async function getOneManager() {
-          const response = await fetch('http://localhost:4000', {
+          const response = await fetch('https://beehive-graphql-api.onrender.com/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
