@@ -34,11 +34,11 @@ const index = () => {
         </Box>
       )}
       {data ? (
-        <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto md:justify-start flex-col">
+        <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto flex-col">
           <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
             Job information
           </LargeHeading>
-          <div className="p-2 max-w-lg">
+          <div className="p-2 max-w-2xl ">
             {data?.getJobById?.status === 'CONFIRMED' && (
               <div className="flex px-4 mb-4">
                 <FaThumbsUp className="text-2xl text-green-500 mr-4" />
