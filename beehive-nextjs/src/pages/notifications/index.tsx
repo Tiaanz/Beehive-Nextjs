@@ -110,13 +110,13 @@ const Notifications = () => {
             {filteredPosts?.length === 0 &&
               !relieverData?.getOneReliever?.id && (
                 <h1 className="p-6 text-lg">
-                  You don't have any notifications.
+                  You don&apos;t have any notifications.
                 </h1>
               )}
             {filteredJobs?.length === 0 &&
               !managerData?.getOneManager?.id && (
                 <h1 className="p-6 text-lg">
-                  You don't have any notifications.
+                  You don&apos;t have any notifications.
                 </h1>
               )}
           </>

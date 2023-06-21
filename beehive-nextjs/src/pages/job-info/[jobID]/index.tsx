@@ -51,7 +51,7 @@ const JobInfo = () => {
               <div className="flex px-4 mb-4">
                 <BiTimeFive className="text-2xl text-amber-500 mr-4" />
                 <p className="text-amber-500">
-                  Awaiting centre's confirmation.
+                  Awaiting centre&apos;s confirmation.
                 </p>
               </div>
             )}
