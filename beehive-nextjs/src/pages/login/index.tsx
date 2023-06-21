@@ -26,7 +26,8 @@ export default function Login() {
         password: data.get('password'),
         redirect: false,
       })
-      if (res?.error !== 'fetch failed' && res?.error !==null) {
+      if (res?.error !== 'fetch failed' && res?.error !== null) {
+         console.log(res?.error)
         toast({
           title: 'Error signing in',
           message: 'The email or password is incorrect.',

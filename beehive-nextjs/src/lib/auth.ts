@@ -44,7 +44,10 @@ export const authOptions: NextAuthOptions = {
         async function getOneReliever() {
           const response = await fetch('http://localhost:4000', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              authentication: 'beehiveSecret*',
+            },
             body: JSON.stringify({ query: GET_RELIEVER, variables: { email } }),
           })
 
@@ -52,13 +55,14 @@ export const authOptions: NextAuthOptions = {
           return data
         }
         const reliever = await getOneReliever()
- 
-        
 
         async function getOneManager() {
           const response = await fetch('http://localhost:4000', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              authentication: 'beehiveSecret*',
+            },
             body: JSON.stringify({ query: GET_MANAGER, variables: { email } }),
           })
 
@@ -67,8 +71,7 @@ export const authOptions: NextAuthOptions = {
         }
         const manager = await getOneManager()
 
-    
-       //if the user log in as a manager
+        //if the user log in as a manager
         if (
           reliever.data.getOneReliever === null ||
           email !== reliever.data.getOneReliever.email ||
@@ -91,7 +94,7 @@ export const authOptions: NextAuthOptions = {
             id: manager.data.getOneManager.id,
             name: manager.data.getOneManager.first_name,
             email: manager.data.getOneManager.email,
-            role:manager.data.getOneManager.role
+            role: manager.data.getOneManager.role,
           }
         }
 
@@ -101,18 +104,18 @@ export const authOptions: NextAuthOptions = {
           id: reliever.data.getOneReliever.id,
           name: reliever.data.getOneReliever.first_name,
           email: reliever.data.getOneReliever.email,
-          role:reliever.data.getOneReliever.role
+          role: reliever.data.getOneReliever.role,
         }
       },
     }),
   ],
   callbacks: {
-    async jwt({token,user}) {
-      return ({...token,...user})
+    async jwt({ token, user }) {
+      return { ...token, ...user }
     },
     async session({ session, token, user }) {
       session.user = token
       return session
-    }
-  }
+    },
+  },
 }
