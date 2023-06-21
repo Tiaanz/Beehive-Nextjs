@@ -69,7 +69,7 @@ const index = () => {
   })
 
   const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
-  const [getPosts,{ loading: fetchJobLoading }] = useLazyQuery(GET_POSTS)
+  const [getPosts, { loading: fetchJobLoading }] = useLazyQuery(GET_POSTS)
 
   async function fetchPosts() {
     const res = await getPosts({
@@ -176,18 +176,21 @@ const index = () => {
               }}
             />
             <div className="flex flex-wrap sm:flex-row flex-col xl:justify-start justify-center">
-              {fetchJobLoading ?
+              {fetchJobLoading ? (
                 <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-              </Box>:
+                  <CircularProgress />
+                </Box>
+              ) : (
                 posts?.map((post) => (
-                <PostByDay
-                  key={post.id}
-                  post={post}
-                  fetchPosts={fetchPosts}
-                  setHighlightedDays={setHighlightedDays}
-                />
-              ))}
+                  <PostByDay
+                    key={post.id}
+                    post={post}
+                    selectedDate={selectedDate}
+                    fetchPosts={fetchPosts}
+                    setHighlightedDays={setHighlightedDays}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>

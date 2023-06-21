@@ -9,11 +9,12 @@ import DialogTitle from '@mui/material/DialogTitle'
 import { UPDATE_POST, GET_POSTS_BY_MONTH } from '@/GraphQL_API'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { toast } from './ui/Toast'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { formatHighlightedDatesFromArray } from '@/helper'
 
 interface PostByDayProps {
   post: Job
+  selectedDate: Dayjs | null
   fetchPosts: () => Promise<void>
   setHighlightedDays: React.Dispatch<
     React.SetStateAction<
@@ -27,6 +28,7 @@ interface PostByDayProps {
 
 const PostByDay: FC<PostByDayProps> = ({
   post,
+  selectedDate,
   fetchPosts,
   setHighlightedDays,
 }) => {
@@ -77,7 +79,10 @@ const PostByDay: FC<PostByDayProps> = ({
       const res = await getPostsByMonth()
 
       setHighlightedDays(
-        formatHighlightedDatesFromArray(res?.data?.getPostsByMonth,dayjs(post.date_from).month())
+        formatHighlightedDatesFromArray(
+          res?.data?.getPostsByMonth,
+          dayjs(post.date_from).month()
+        )
       )
     }
 
@@ -89,6 +94,7 @@ const PostByDay: FC<PostByDayProps> = ({
       key={post.id}
       className="flex:1 flex flex-col space-y-2 border-2 p-4 border-amber-400 rounded-md sm:mr-4 mb-4 "
     >
+      <li className='font-bold'>{dayjs(selectedDate).format('DD MMM YYYY')}</li>
       <li>Time: {post.time}</li>
       <li className="text-sm text-slate-600">
         {' '}

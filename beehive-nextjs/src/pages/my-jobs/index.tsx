@@ -203,6 +203,7 @@ const index = () => {
                         {job.center.name}
                       </Link>
                     </li>
+                    <li className='font-bold'>{dayjs(selectedDate).format('DD MMM YYYY')}</li>
                     <li>Time: {job.time}</li>
                     <li className="text-sm text-slate-600">
                       {' '}
