@@ -26,18 +26,16 @@ export default function Login() {
         password: data.get('password'),
         redirect: false,
       })
-      if (res?.error !== 'fetch failed' && res?.error !== null) {
-         console.log(res?.error)
+      if (res?.error === "invalid password or email") {
+         
         toast({
           title: 'Error signing in',
           message: 'The email or password is incorrect.',
           type: 'error',
         })
-      }
-      if (res?.error === null) {
+      } else if (res?.error === null) {
         window.location.href = '/notifications'
-      }
-      if (res?.error ==='fetch failed') {
+      } else {
         toast({
           title: 'Error signing in',
           message: 'Please try agian later',

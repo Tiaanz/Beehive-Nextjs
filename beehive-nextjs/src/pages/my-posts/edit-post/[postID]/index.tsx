@@ -54,14 +54,7 @@ const index = () => {
         'Please complete all the fields and ensure they are valid input.'
       )
     } else {
-      // console.log(Number(data.get('centerId')))
-      // console.log(dateFrom?.format('DD/MM/YYYY'))
-      // console.log(dateTo?.format('DD/MM/YYYY'))
-      // console.log(
-      //   timeFrom?.format('hh:mm A') + ' - ' + timeTo?.format('hh:mm A')
-      // )
-      // console.log(data.get('qualified') === 'Yes')
-      // console.log(data.get('status'))
+     
       try {
         const res = await updatePost({
           variables: {
@@ -71,7 +64,7 @@ const index = () => {
             status: data.get('status'),
           },
         })
-        console.log(res?.data?.updatePost?.status)
+
 
         if (res?.data?.updatePost?.status === 'CANCELLED') {
           await updateNotAvailableDates({

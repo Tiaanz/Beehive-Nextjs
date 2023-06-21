@@ -48,8 +48,8 @@ export const authOptions: NextAuthOptions = {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              authentication: 'beehiveSecret*',
-            },
+              authentication: process.env.NEXT_PUBLIC_TOKEN,
+            } as HeadersInit | undefined,
             body: JSON.stringify({ query: GET_RELIEVER, variables: { email } }),
           })
 
@@ -63,8 +63,8 @@ export const authOptions: NextAuthOptions = {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              authentication: 'beehiveSecret*',
-            },
+              authentication: process.env.NEXT_PUBLIC_TOKEN,
+            } as HeadersInit | undefined,
             body: JSON.stringify({ query: GET_MANAGER, variables: { email } }),
           })
 

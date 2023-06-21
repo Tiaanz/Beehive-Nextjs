@@ -64,8 +64,7 @@ const index = () => {
       post.status === 'OPEN' &&
       dayjs(post.date_from).isAfter(dayjs(), 'day')
   )
-  console.log(filteredJobs)
-  console.log(filteredPosts)
+ 
 
   if (error) {
     return (
