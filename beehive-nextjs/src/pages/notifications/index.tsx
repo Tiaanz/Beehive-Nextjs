@@ -7,14 +7,12 @@ import JobCard from '@/components/JobCard'
 import PostCard from '@/components/PostCard'
 import dayjs from 'dayjs'
 import { Box, LinearProgress } from '@mui/material'
-import {Job } from '@/model'
-
-
+import { Job } from '@/model'
 
 const index = () => {
   const { data: session } = useSession()
 
-  const { data: jobsData,error } = useQuery(GET_JOBS, {
+  const { data: jobsData, error } = useQuery(GET_JOBS, {
     variables: { status: 'OPEN' },
   })
 
@@ -61,14 +59,18 @@ const index = () => {
 
   //get posts that the reliever has applied
   const filteredPosts = postsData?.getPostsByCenter?.filter(
-    (post: Job) => post.relieverIDs.length !== 0 && post.status === 'OPEN' && dayjs(post.date_from).isAfter(dayjs(), 'day')
+    (post: Job) =>
+      post.relieverIDs.length !== 0 &&
+      post.status === 'OPEN' &&
+      dayjs(post.date_from).isAfter(dayjs(), 'day')
   )
+  console.log(filteredJobs)
+  console.log(filteredPosts)
 
-
-  if (error ) {
+  if (error) {
     return (
       <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
-        ERROR: {error?.message} 
+        ERROR: {error?.message}
       </h1>
     )
   }
@@ -106,9 +108,18 @@ const index = () => {
                   lastChildIndex={filteredPosts.length - 1}
                 />
               ))}
-            {(filteredPosts?.length === 0 || filteredJobs?.length === 0) && (
-              <h1 className="p-6 text-lg">You don't have any notifications.</h1>
-            )}
+            {filteredPosts?.length === 0 &&
+              !relieverData?.getOneReliever?.id && (
+                <h1 className="p-6 text-lg">
+                  You don't have any notifications.
+                </h1>
+              )}
+            {filteredJobs?.length === 0 &&
+              !managerData?.getOneManager?.id && (
+                <h1 className="p-6 text-lg">
+                  You don't have any notifications.
+                </h1>
+              )}
           </>
         )}
       </div>
