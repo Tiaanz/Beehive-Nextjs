@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/client'
 import { GET_CENTER } from '@/GraphQL_API'
 import { useRouter } from 'next/router'
 
-const page = () => {
+const CenterProfile = () => {
   const router = useRouter()
 
   const id = router.query.centerID
@@ -82,4 +82,4 @@ const page = () => {
   )
 }
 
-export default page
+export default CenterProfile

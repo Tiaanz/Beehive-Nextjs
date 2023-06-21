@@ -12,7 +12,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { GET_MANAGER, GET_CENTER, UPDATE_CENTER } from '@/GraphQL_API'
 
-const page = () => {
+const MyCentre = () => {
   const { data: session } = useSession()
 
   const { data: managerData } = useQuery(GET_MANAGER, {
@@ -204,4 +204,4 @@ const page = () => {
   )
 }
 
-export default page
+export default MyCentre

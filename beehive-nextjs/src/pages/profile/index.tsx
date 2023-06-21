@@ -12,7 +12,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { AiOutlinePlusCircle } from 'react-icons/ai'
 import { GET_RELIEVER, UPDATE_RELIEVER } from '@/GraphQL_API'
 
-const page = () => {
+const Profile = () => {
   const { data: session } = useSession()
 
   const { data, loading, error } = useQuery(GET_RELIEVER, {
@@ -197,4 +197,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Profile

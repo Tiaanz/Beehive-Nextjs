@@ -23,7 +23,7 @@ import { LinearProgress } from '@mui/material'
 
 const theme = createTheme()
 
-const index = () => {
+const EditPost = () => {
   const router = useRouter()
   const id = router.query.postID
 
@@ -256,4 +256,4 @@ const index = () => {
   )
 }
 
-export default index
+export default EditPost

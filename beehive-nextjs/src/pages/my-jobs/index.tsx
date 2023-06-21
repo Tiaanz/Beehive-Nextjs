@@ -48,7 +48,7 @@ function ServerDay(
   )
 }
 
-const index = () => {
+const MyJobs = () => {
   const { data: session } = useSession()
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
@@ -242,4 +242,4 @@ const index = () => {
   )
 }
 
-export default index
+export default MyJobs

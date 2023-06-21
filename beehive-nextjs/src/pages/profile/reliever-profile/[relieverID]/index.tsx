@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client'
 import { Avatar, Box, LinearProgress } from '@mui/material'
 import { useRouter } from 'next/router'
 
-const index = () => {
+const RelieverProfile = () => {
   const router = useRouter()
 
   const id = router.query.relieverID
@@ -77,4 +77,4 @@ const index = () => {
   )
 }
 
-export default index
+export default RelieverProfile

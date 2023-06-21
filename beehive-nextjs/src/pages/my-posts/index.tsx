@@ -45,7 +45,7 @@ function ServerDay(
   )
 }
 
-const index = () => {
+const MyPosts = () => {
   const { data: session } = useSession()
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
@@ -199,4 +199,4 @@ const index = () => {
   )
 }
 
-export default index
+export default MyPosts

@@ -12,7 +12,7 @@ import { Box, LinearProgress } from '@mui/material'
 import { BiTimeFive } from 'react-icons/bi'
 import { ImCancelCircle } from 'react-icons/im'
 
-const index = () => {
+const JobInfo = () => {
   const router = useRouter()
   const id = router.query.jobID
 
@@ -145,4 +145,4 @@ const index = () => {
   )
 }
 
-export default index
+export default JobInfo

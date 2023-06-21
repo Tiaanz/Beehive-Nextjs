@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { Box, LinearProgress } from '@mui/material'
 import { Job } from '@/model'
 
-const index = () => {
+const Notifications = () => {
   const { data: session } = useSession()
 
   const { data: jobsData, error } = useQuery(GET_JOBS, {
@@ -126,4 +126,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Notifications

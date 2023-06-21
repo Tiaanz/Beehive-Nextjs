@@ -20,7 +20,7 @@ import { LinearProgress } from '@mui/material'
 
 const theme = createTheme()
 
-const index = ({}) => {
+const AddPost = ({}) => {
   const { data: session } = useSession()
 
   const {
@@ -213,4 +213,4 @@ const index = ({}) => {
   )
 }
 
-export default index
+export default AddPost
