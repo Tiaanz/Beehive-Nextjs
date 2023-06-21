@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              authentication: process.env.NEXT_PUBLIC_TOKEN,
+              authentication: process.env.TOKEN,
             } as HeadersInit | undefined,
             body: JSON.stringify({ query: GET_RELIEVER, variables: { email } }),
           })
