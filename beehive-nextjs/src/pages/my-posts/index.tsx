@@ -87,6 +87,7 @@ const index = () => {
   }
 
   async function handleMonthChange(month: Dayjs | null) {
+    setHighlightedDays([])
     const res = await getPostsByMonth({
       variables: {
         centerId: managerData?.getOneManager?.ECE_id,
@@ -98,12 +99,17 @@ const index = () => {
         )}/31`,
       },
     })
+
     setHighlightedDays(
-      formatHighlightedDatesFromArray(res?.data?.getPostsByMonth)
+      formatHighlightedDatesFromArray(
+        res?.data?.getPostsByMonth,
+        dayjs(month).month()
+      )
     )
   }
 
   async function handleYearChange(year: Dayjs | null) {
+    setHighlightedDays([])
     const res = await getPostsByMonth({
       variables: {
         centerId: managerData?.getOneManager?.ECE_id,
@@ -114,7 +120,10 @@ const index = () => {
       },
     })
     setHighlightedDays(
-      formatHighlightedDatesFromArray(res?.data?.getPostsByMonth)
+      formatHighlightedDatesFromArray(
+        res?.data?.getPostsByMonth,
+        dayjs(year).month()
+      )
     )
   }
 
@@ -123,12 +132,10 @@ const index = () => {
   }, [selectedDate, posts])
 
   React.useEffect(() => {
-    setHighlightedDays(formatHighlightedDatesFromArray(data?.getPostsByMonth))
-    //  setHighlightedDays([
-    //     { date: 1, badgeContent: '🟢' },
-    //     { date: 15, badgeContent: '🔴' },
-    //     { date: 15, badgeContent: '🟢' },
-    //   ])
+    setHighlightedDays(() =>
+      formatHighlightedDatesFromArray(data?.getPostsByMonth, dayjs().month())
+    )
+    // setHighlightedDays(()=>[{ date: 12, badgeContent: '🟢' }])
   }, [data?.getPostsByMonth])
 
   if (error) {

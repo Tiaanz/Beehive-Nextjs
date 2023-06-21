@@ -120,6 +120,7 @@ const index = () => {
   }
 
   async function handleMonthChange(month: Dayjs | null) {
+    setHighlightedDays([])
     const res = await getPostsByMonth({
       variables: {
         dateFrom: `${dayjs(month).format('YYYY')}/${dayjs(month).format(
@@ -141,6 +142,7 @@ const index = () => {
   }
 
   async function handleYearChange(year: Dayjs | null) {
+    setHighlightedDays([])
     const res = await getPostsByMonth({
       variables: {
         dateFrom: `${dayjs(year).format('YYYY')}/${dayjs(year).format(
@@ -159,8 +161,14 @@ const index = () => {
   }
 
   React.useEffect(() => {
+  
     fetchJobs()
+    
+    
+    
   }, [selectedDate, jobs])
+
+
 
   React.useEffect(() => {
     
@@ -170,7 +178,7 @@ const index = () => {
           post.relieverIDs.includes(relieverData?.getOneReliever?.id) 
       )
     ,dayjs().month()));
-      
+  
     // setHighlightedDays([
     //   { date: 1, badgeContent: '🟢' },
     //   { date: 15, badgeContent: '🔴' },

@@ -77,7 +77,7 @@ const PostByDay: FC<PostByDayProps> = ({
       const res = await getPostsByMonth()
 
       setHighlightedDays(
-        formatHighlightedDatesFromArray(res?.data?.getPostsByMonth)
+        formatHighlightedDatesFromArray(res?.data?.getPostsByMonth,dayjs(post.date_from).month())
       )
     }
 
