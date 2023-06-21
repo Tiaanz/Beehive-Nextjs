@@ -1,6 +1,8 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcrypt'
+import { config } from 'dotenv'
+config()
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' },

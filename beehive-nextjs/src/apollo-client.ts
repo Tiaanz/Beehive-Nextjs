@@ -1,5 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context';
+import { config } from 'dotenv'
+config()
 // const client = new ApolloClient({
 //   uri: 'http://localhost:4000',
 //   cache: new InMemoryCache(),
