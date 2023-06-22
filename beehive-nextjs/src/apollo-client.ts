@@ -4,8 +4,9 @@ import { getSession } from 'next-auth/react';
 
 
 
-const SERVER = 'http://localhost:4000'
+const SERVER = 'https://beehive-graphql-api.onrender.com/'
 //'https://beehive-graphql-api.onrender.com/'
+//'http://localhost:4000'
 
 const httpLink = createHttpLink({
   uri: SERVER,
@@ -16,7 +17,6 @@ const httpLink = createHttpLink({
 const authLink = setContext(async(_, { headers }) => {
 
   const session = await getSession()
-  
   
   // Get the token from wherever it is stored (e.g., localStorage, state)
   const token = session?.user?.token || ''
