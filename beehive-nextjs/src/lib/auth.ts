@@ -2,13 +2,13 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcrypt'
 import { config } from 'dotenv'
-import { getToken } from 'next-auth/jwt'
 config()
 
 
-const SERVER = 'http://localhost:4000'
+const SERVER = 'https://beehive-graphql-api.onrender.com/'
 //'https://beehive-graphql-api.onrender.com/'
 //'http://localhost:4000'
+
 export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' },
   pages: {
