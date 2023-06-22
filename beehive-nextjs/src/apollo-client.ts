@@ -1,22 +1,31 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context';
+import { getSession } from 'next-auth/react';
 
+
+
+const SERVER = 'http://localhost:4000'
+//'https://beehive-graphql-api.onrender.com/'
 
 const httpLink = createHttpLink({
-  uri: 'https://beehive-graphql-api.onrender.com/',
+  uri: SERVER,
 });
 
 
 // Create a middleware link to attach the token to each request
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext(async(_, { headers }) => {
+
+  const session = await getSession()
+  
+  
   // Get the token from wherever it is stored (e.g., localStorage, state)
-  const token = process.env.NEXT_PUBLIC_TOKEN
+  const token = session?.user?.token || ''
 
   // Return the headers object with the Authorization header
   return {
     headers: {
       ...headers,
-      authentication: token ? ` ${token}` : '',
+      authorization: token ? `${token}` : '',
     },
   }
 })

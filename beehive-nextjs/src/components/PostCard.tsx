@@ -12,7 +12,7 @@ interface JobCardProps {
   lastChildIndex: number
 }
 
-const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
+const PostCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
 
 
   return (
@@ -86,4 +86,4 @@ const JobCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
   )
 }
 
-export default JobCard
+export default PostCard

@@ -12,6 +12,8 @@ import { Job } from '@/model'
 const Notifications = () => {
   const { data: session } = useSession()
 
+  
+  
   const { data: jobsData, error } = useQuery(GET_JOBS, {
     variables: { status: 'OPEN' },
   })
@@ -23,9 +25,11 @@ const Notifications = () => {
     }
   )
 
+
   const { data: postsData } = useQuery(GET_POSTS, {
     variables: { centerId: managerData?.getOneManager?.ECE_id },
   })
+
 
   const { data: relieverData, loading: relieverDataLoading } = useQuery(
     GET_RELIEVER,
@@ -64,7 +68,8 @@ const Notifications = () => {
       post.status === 'OPEN' &&
       dayjs(post.date_from).isAfter(dayjs(), 'day')
   )
- 
+  
+  
 
   if (error) {
     return (
@@ -107,18 +112,17 @@ const Notifications = () => {
                   lastChildIndex={filteredPosts.length - 1}
                 />
               ))}
-            {filteredPosts?.length === 0 &&
-              !relieverData?.getOneReliever?.id && (
+            {(filteredPosts?.length === 0 &&
+              !relieverData?.getOneReliever?.id )  && (
                 <h1 className="p-6 text-lg">
                   You don&apos;t have any notifications.
                 </h1>
               )}
-            {filteredJobs?.length === 0 &&
-              !managerData?.getOneManager?.id && (
-                <h1 className="p-6 text-lg">
-                  You don&apos;t have any notifications.
-                </h1>
-              )}
+            {(filteredJobs?.length === 0 && !managerData?.getOneManager?.id)  && (
+              <h1 className="p-6 text-lg">
+                You don&apos;t have any notifications.
+              </h1>
+            )}
           </>
         )}
       </div>
