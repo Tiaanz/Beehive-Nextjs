@@ -8,8 +8,12 @@ import { GET_JOB_BY_ID } from '@/GraphQL_API'
 import { Box, LinearProgress } from '@mui/material'
 import JobStatus from '@/components/JobStatus'
 import DateAndTime from '@/components/DateAndTime'
+import { useSession } from 'next-auth/react'
 
 const JobInfo = () => {
+
+  const { data: session } = useSession()
+  
   const router = useRouter()
   const id = router.query.jobID
 
@@ -30,7 +34,7 @@ const JobInfo = () => {
         <Box className="mx-auto w-1/2 pt-80">
           <LinearProgress />
         </Box>
-      ) : data ? (
+      ) : data?.getJobById ? (
         <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto flex-col">
           <LargeHeading size="sm" className={`p-6 max-w-3xl leading-10`}>
             Job information

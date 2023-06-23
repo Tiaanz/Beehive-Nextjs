@@ -15,7 +15,9 @@ export default withAuth(
       )
     }
     if (
-      req.nextUrl.pathname.startsWith('/my-jobs') &&
+      (req.nextUrl.pathname.startsWith('/my-jobs') ||
+        req.nextUrl.pathname.startsWith('/profile/centre-profile') ||
+        req.nextUrl.pathname.startsWith('/job-info')) &&
       req.nextauth.token?.role !== 'RELIEVER'
     ) {
       return NextResponse.rewrite(
@@ -37,6 +39,6 @@ export const config = {
     '/notifications',
     '/my-posts/:path*',
     '/my-centre',
-    '/job-info'
+    '/job-info/:path*',
   ],
 }
