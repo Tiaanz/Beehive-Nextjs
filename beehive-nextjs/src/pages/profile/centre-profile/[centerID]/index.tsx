@@ -20,11 +20,10 @@ const CenterProfile = () => {
     variables: { ECE_id: Number(id) },
   })
 
-
-  if (error ) {
+  if (error) {
     return (
       <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
-        ERROR: {error?.message} 
+        ERROR: {error?.message}
       </h1>
     )
   }
@@ -32,8 +31,8 @@ const CenterProfile = () => {
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
- 
-      {centerData ? (
+
+      {centerData?.getOneCenter ? (
         <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto items-center md:justify-start flex-col md:flex-row">
           <div className="basis-1/3 flex flex-col items-center">
             <Avatar
@@ -51,8 +50,6 @@ const CenterProfile = () => {
             <p className="text-sm md:text-base italic">
               {centerData?.getOneCenter?.address}
             </p>
-            {/* <p className="text-sm md:text-base"><b>Center Manager: </b>{centerData?.getOneCenter?.manager.first_name}</p> */}
-            {/* <p className="text-sm md:text-base"> {centerData?.getOneCenter?.manager.phone}</p> */}
           </div>
           <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
             <h3 className="md:my-4 my-2 font-bold md:text-lg text-sm">
@@ -73,10 +70,12 @@ const CenterProfile = () => {
             )}
           </div>
         </div>
-      ) : !loading && (
-        <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
-          Page not found!
-        </h1>
+      ) : (
+        !loading && (
+          <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
+            Page not found!
+          </h1>
+        )
       )}
     </>
   )

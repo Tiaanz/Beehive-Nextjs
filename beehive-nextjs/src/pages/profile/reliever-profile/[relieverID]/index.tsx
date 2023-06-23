@@ -27,7 +27,7 @@ const RelieverProfile = () => {
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
 
-      {data ? (
+      {data?.getRelieverById ? (
         <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto items-center md:justify-start flex-col md:flex-row">
           <div className="basis-1/3 flex flex-col items-center">
             <Avatar

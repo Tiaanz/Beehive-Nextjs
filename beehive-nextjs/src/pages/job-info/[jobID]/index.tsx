@@ -17,6 +17,8 @@ const JobInfo = () => {
     variables: { jobId: id },
   })
 
+
+
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
@@ -34,7 +36,7 @@ const JobInfo = () => {
             Job information
           </LargeHeading>
           <div className="p-2 max-w-2xl">
-            <JobStatus status={data.getJobById.status} />
+            <JobStatus status={data.getJobById?.status} />
 
             <div className="flex bg-slate-200 p-2">
               <IoCalendar className="text-2xl mr-4" />
@@ -42,9 +44,9 @@ const JobInfo = () => {
             </div>
 
             <DateAndTime
-              dateFrom={data.getJobById.date_from}
-              dateTo={data.getJobById.date_to}
-              time={data.getJobById.time}
+              dateFrom={data.getJobById?.date_from}
+              dateTo={data.getJobById?.date_to}
+              time={data.getJobById?.time}
             />
 
             <div className="flex bg-slate-200 p-2">
@@ -53,8 +55,8 @@ const JobInfo = () => {
             </div>
 
             <div className="flex flex-col items-center mt-2 p-2 shadow-md mb-6 rounded">
-              <p className="font-bold">{data.getJobById.center.name}</p>
-              <p>{data.getJobById.center.address}</p>
+              <p className="font-bold">{data.getJobById?.center.name}</p>
+              <p>{data.getJobById?.center.address}</p>
             </div>
 
             <div className="flex bg-slate-200 p-2">
@@ -66,10 +68,10 @@ const JobInfo = () => {
 
             <div className="flex flex-col items-center mt-2 p-2 shadow-md mb-6 rounded">
               <p className="font-bold">
-                {data.getJobById.center.manager.first_name}{' '}
-                {data.getJobById.center.manager.last_name}
+                {data.getJobById?.center.manager.first_name}{' '}
+                {data.getJobById?.center.manager.last_name}
               </p>
-              <p>{data.getJobById.center.manager.phone}</p>
+              <p>{data.getJobById?.center.manager.phone}</p>
             </div>
           </div>
         </div>

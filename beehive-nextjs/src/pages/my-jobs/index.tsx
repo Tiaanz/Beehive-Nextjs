@@ -191,8 +191,8 @@ const MyJobs = () => {
                   <CircularProgress />
                 </Box>
               ) : (
-                filteredJobs?.map((job) => (
-                  <JobByDay job={job} selectedDate={selectedDate} />
+                filteredJobs?.map((job:Job) => (
+                  <JobByDay key={job.id} job={job} selectedDate={selectedDate} />
                 ))
               )}
             </div>

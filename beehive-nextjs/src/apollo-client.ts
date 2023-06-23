@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 
 
 
-const SERVER = 'https://beehive-graphql-api.onrender.com/'
+const SERVER = 'http://localhost:4000'
 //'https://beehive-graphql-api.onrender.com/'
 //'http://localhost:4000'
 
