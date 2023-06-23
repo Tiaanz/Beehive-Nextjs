@@ -5,7 +5,7 @@ import { config } from 'dotenv'
 config()
 
 
-const SERVER = 'https://beehive-graphql-api.onrender.com/'
+const SERVER = 'http://localhost:4000'
 //'https://beehive-graphql-api.onrender.com/'
 //'http://localhost:4000'
 

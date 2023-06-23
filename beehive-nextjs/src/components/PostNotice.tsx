@@ -6,13 +6,13 @@ import RelieverCard from './RelieverCard'
 import { Job} from '@/model'
 
 
-interface JobCardProps {
+interface PostNoticeProps {
   post: Job
   index: number
   lastChildIndex: number
 }
 
-const PostCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
+const PostNotice: FC<PostNoticeProps> = ({ post, index, lastChildIndex }) => {
 
 
   return (
@@ -86,4 +86,4 @@ const PostCard: FC<JobCardProps> = ({ post, index, lastChildIndex }) => {
   )
 }
 
-export default PostCard
+export default PostNotice

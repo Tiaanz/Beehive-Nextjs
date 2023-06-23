@@ -15,14 +15,14 @@ import { Job } from '@/model'
 
 
 
-interface JobCardProps {
+interface JobNoticeProps {
   job: Job
   index: number
   lastChildIndex: number
   relieverId: string
 }
 
-const JobCard: FC<JobCardProps> = ({
+const JobNotice: FC<JobNoticeProps> = ({
   job,
   index,
   lastChildIndex,
@@ -207,4 +207,4 @@ const JobCard: FC<JobCardProps> = ({
   )
 }
 
-export default JobCard
+export default JobNotice

@@ -3,11 +3,12 @@ import LargeHeading from '@/components/ui/LargeHeading'
 import Meta from '@/components/Meta'
 import { GET_JOBS, GET_RELIEVER, GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
 import { useQuery } from '@apollo/client'
-import JobCard from '@/components/JobCard'
-import PostCard from '@/components/PostCard'
+import JobNotice from '@/components/JobNotice'
+import PostNotice from '@/components/PostNotice'
 import dayjs from 'dayjs'
 import { Box, LinearProgress } from '@mui/material'
 import { Job } from '@/model'
+
 
 const Notifications = () => {
   const { data: session } = useSession()
@@ -95,7 +96,7 @@ const Notifications = () => {
           <>
             {relieverData?.getOneReliever?.id &&
               filteredJobs?.map((job: Job, index: number) => (
-                <JobCard
+                <JobNotice
                   key={job.id}
                   job={job}
                   index={index}
@@ -105,7 +106,7 @@ const Notifications = () => {
               ))}
             {managerData?.getOneManager?.id &&
               filteredPosts?.map((post: Job, index: number) => (
-                <PostCard
+                <PostNotice
                   key={post.id}
                   post={post}
                   index={index}
