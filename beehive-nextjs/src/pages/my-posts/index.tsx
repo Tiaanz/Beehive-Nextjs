@@ -69,7 +69,7 @@ const MyPosts = () => {
   })
 
   const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
-  const [getPosts, { loading: fetchJobLoading }] = useLazyQuery(GET_POSTS)
+  const [getPosts, { loading: fetchPostLoading }] = useLazyQuery(GET_POSTS)
 
   async function fetchPosts() {
     const res = await getPosts({
@@ -176,7 +176,7 @@ const MyPosts = () => {
               }}
             />
             <div className="flex flex-wrap sm:flex-row flex-col xl:justify-start justify-center">
-              {fetchJobLoading ? (
+              {fetchPostLoading ? (
                 <Box sx={{ display: 'flex' }}>
                   <CircularProgress />
                 </Box>

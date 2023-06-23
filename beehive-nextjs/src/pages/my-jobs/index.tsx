@@ -16,7 +16,7 @@ import {
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { Job, Post } from '@/model'
 import { formatHighlightedDatesFromArray } from '@/helper'
-import { Box, CircularProgress, LinearProgress } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 import JobByDay from '@/components/JobByDay'
 
 //highlight days with jobs
