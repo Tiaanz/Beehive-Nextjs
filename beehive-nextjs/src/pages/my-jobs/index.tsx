@@ -14,10 +14,10 @@ import {
   GET_POSTS_BY_MONTH,
 } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
-import Link from 'next/link'
 import { Job, Post } from '@/model'
 import { formatHighlightedDatesFromArray } from '@/helper'
 import { Box, CircularProgress, LinearProgress } from '@mui/material'
+import JobByDay from '@/components/JobByDay'
 
 //highlight days with jobs
 function ServerDay(
@@ -192,46 +192,7 @@ const MyJobs = () => {
                 </Box>
               ) : (
                 filteredJobs?.map((job) => (
-                  <ul
-                    key={job.id}
-                    className="flex flex-col space-y-2 border-2 p-4 h-fit border-amber-400 rounded-md sm:mr-4 mb-4"
-                  >
-                    <li className="font-bold hover:underline">
-                      <Link
-                        href={`/profile/centre-profile/${job.center.ECE_id}`}
-                      >
-                        {job.center.name}
-                      </Link>
-                    </li>
-                    <li className='font-bold'>{dayjs(selectedDate).format('DD MMM YYYY')}</li>
-                    <li>Time: {job.time}</li>
-                    <li className="text-sm text-slate-600">
-                      {' '}
-                      {job.qualified ? 'Qualified' : 'Qualified, Unqualified'}
-                    </li>
-                    <li>
-                      Status:{' '}
-                      <span
-                        style={{
-                          color:
-                            job.status === 'OPEN'
-                              ? 'orange'
-                              : job.status === 'FUFILLED'
-                              ? 'green'
-                              : 'red',
-                        }}
-                      >
-                        {job.status === 'OPEN'
-                          ? 'Awaiting center confirmation'
-                          : job.status === 'FUFILLED'
-                          ? 'CONFIRMED'
-                          : 'CANCELLED'}
-                      </span>
-                    </li>
-                    <li className="self-end text-amber-600 underline">
-                      <Link href={`/job-info/${job.id}`}>Detail...</Link>
-                    </li>
-                  </ul>
+                  <JobByDay job={job} selectedDate={selectedDate} />
                 ))
               )}
             </div>

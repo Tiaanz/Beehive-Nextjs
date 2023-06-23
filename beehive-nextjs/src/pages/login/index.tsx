@@ -70,7 +70,7 @@ export default function Login() {
             width={80}
             height={80}
             quality={100}
-          ></Image>
+          />
 
           <Box
             component="form"
