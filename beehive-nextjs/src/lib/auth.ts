@@ -26,8 +26,8 @@ export const authOptions: NextAuthOptions = {
         //perform authentication logic
         //find out user from db
         const GET_RELIEVER = `
-          query GetOneReliever($email: String!) {
-            getOneReliever(email: $email) {
+          query GetRelieverByEmail($email: String!) {
+            getRelieverByEmail(email: $email) {
               id
               first_name
               email
@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
         }
       `
 
-        async function getOneReliever() {
+        async function getRelieverByEmail() {
           const response = await fetch(SERVER, {
             method: 'POST',
             headers: {
@@ -62,7 +62,7 @@ export const authOptions: NextAuthOptions = {
           const data = await response.json()
           return data
         }
-        const reliever = await getOneReliever()
+        const reliever = await getRelieverByEmail()
 
         async function getOneManager() {
           const response = await fetch(SERVER, {
@@ -80,11 +80,11 @@ export const authOptions: NextAuthOptions = {
 
         //if the user log in as a manager
         if (
-          reliever.data.getOneReliever === null ||
-          email !== reliever.data.getOneReliever.email ||
+          reliever.data.getRelieverByEmail === null ||
+          email !== reliever.data.getRelieverByEmail.email ||
           !(await bcrypt.compare(
             password,
-            reliever.data.getOneReliever.password
+            reliever.data.getRelieverByEmail.password
           ))
         ) {
           if (
@@ -108,11 +108,11 @@ export const authOptions: NextAuthOptions = {
 
         //if the user log in as a reliever
         return {
-          id: reliever.data.getOneReliever.id,
-          name: reliever.data.getOneReliever.first_name,
-          email: reliever.data.getOneReliever.email,
-          role: reliever.data.getOneReliever.role,
-          token:reliever.data.getOneReliever.token
+          id: reliever.data.getRelieverByEmail.id,
+          name: reliever.data.getRelieverByEmail.first_name,
+          email: reliever.data.getRelieverByEmail.email,
+          role: reliever.data.getRelieverByEmail.role,
+          token:reliever.data.getRelieverByEmail.token
         }
       },
     }),

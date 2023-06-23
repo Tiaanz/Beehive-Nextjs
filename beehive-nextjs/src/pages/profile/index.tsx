@@ -28,8 +28,8 @@ const Profile = () => {
 
   useEffect(() => {
     if (!loading) {
-      setBio(data?.getOneReliever?.bio)
-      setImageUrl(data?.getOneReliever?.photo_url)
+      setBio(data?.getRelieverByEmail?.bio)
+      setImageUrl(data?.getRelieverByEmail?.photo_url)
     }
   }, [loading])
 
@@ -94,7 +94,7 @@ const Profile = () => {
   return (
     <>
       <Meta title="Early childhood Relief teachers | Beehive" />
-      {data?.getOneReliever !== null ? (
+      {data?.getRelieverByEmail !== null ? (
         <div className="w-11/12 md:pt-20 pt-10 flex mt-12 md:w-4/5 mx-auto items-center md:justify-start flex-col md:flex-row">
           <div className="basis-1/3 flex flex-col items-center">
             <Avatar
@@ -115,10 +115,10 @@ const Profile = () => {
 
             <p className="text-sm md:text-base">{session?.user?.email}</p>
             <p className="text-sm md:text-base">
-              {data?.getOneReliever?.phone}
+              {data?.getRelieverByEmail?.phone}
             </p>
             <p className="text-sm md:text-base font-bold">
-              {data?.getOneReliever?.qualified?"Qualified":"Unqualified"}
+              {data?.getRelieverByEmail?.qualified?"Qualified":"Unqualified"}
             </p>
           </div>
           <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">

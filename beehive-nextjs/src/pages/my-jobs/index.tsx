@@ -85,7 +85,7 @@ const MyJobs = () => {
 
   //only show the jobs that the reliever has applied
   const filteredJobs = jobs.filter((job: Job) =>
-    job.relieverIDs.includes(relieverData?.getOneReliever?.id)
+    job.relieverIDs.includes(relieverData?.getRelieverByEmail?.id)
   )
 
   function handleDateChange(value: Dayjs | null) {
@@ -108,7 +108,7 @@ const MyJobs = () => {
     setHighlightedDays(
       formatHighlightedDatesFromArray(
         res?.data?.getPostsByMonth?.filter((post: Post) =>
-          post.relieverIDs.includes(relieverData?.getOneReliever?.id)
+          post.relieverIDs.includes(relieverData?.getRelieverByEmail?.id)
         ),
         dayjs(month).month()
       )
@@ -129,7 +129,7 @@ const MyJobs = () => {
     setHighlightedDays(
       formatHighlightedDatesFromArray(
         res?.data?.getPostsByMonth?.filter((post: Post) =>
-          post.relieverIDs.includes(relieverData?.getOneReliever?.id)
+          post.relieverIDs.includes(relieverData?.getRelieverByEmail?.id)
         ),
         dayjs(year).month()
       )
@@ -144,7 +144,7 @@ const MyJobs = () => {
     setHighlightedDays(
       formatHighlightedDatesFromArray(
         data?.getPostsByMonth?.filter((post: Post) =>
-          post.relieverIDs.includes(relieverData?.getOneReliever?.id)
+          post.relieverIDs.includes(relieverData?.getRelieverByEmail?.id)
         ),
         dayjs().month()
       )

@@ -12,8 +12,8 @@ export const GET_FILTERED_CENTER = gql`
 
 //Define get a reliever query
 export const GET_RELIEVER = gql`
-  query GetOneReliever($email: String!) {
-    getOneReliever(email: $email) {
+  query GetRelieverByEmail($email: String!) {
+    getRelieverByEmail(email: $email) {
       id
       phone
       bio

@@ -43,18 +43,18 @@ const Notifications = () => {
   // and jobs that are in reliever's available dates
   const filteredJobs = jobsData?.getOpenJobs?.filter(
     (job: Job) =>
-      !job.relieverIDs.includes(relieverData?.getOneReliever?.id) &&
-      !job.declined_relieverIDs.includes(relieverData?.getOneReliever?.id) &&
+      !job.relieverIDs.includes(relieverData?.getRelieverByEmail?.id) &&
+      !job.declined_relieverIDs.includes(relieverData?.getRelieverByEmail?.id) &&
       (job.qualified
-        ? relieverData?.getOneReliever?.qualified === true
+        ? relieverData?.getRelieverByEmail?.qualified === true
         : true) &&
-      !relieverData?.getOneReliever?.not_available_dates.includes(
+      !relieverData?.getRelieverByEmail?.not_available_dates.includes(
         job.date_from
       ) &&
-      !relieverData?.getOneReliever?.not_available_dates.includes(
+      !relieverData?.getRelieverByEmail?.not_available_dates.includes(
         job.date_to
       ) &&
-      !relieverData?.getOneReliever?.not_available_dates.some(
+      !relieverData?.getRelieverByEmail?.not_available_dates.some(
         (date: string) =>
           dayjs(date).isBefore(job.date_to) &&
           dayjs(date).isAfter(job.date_from)
@@ -94,14 +94,14 @@ const Notifications = () => {
           </Box>
         ) : (
           <>
-            {relieverData?.getOneReliever?.id &&
+            {relieverData?.getRelieverByEmail?.id &&
               filteredJobs?.map((job: Job, index: number) => (
                 <JobNotice
                   key={job.id}
                   job={job}
                   index={index}
                   lastChildIndex={filteredJobs.length - 1}
-                  relieverId={relieverData?.getOneReliever?.id}
+                  relieverId={relieverData?.getRelieverByEmail?.id}
                 />
               ))}
             {managerData?.getOneManager?.id &&
@@ -114,7 +114,7 @@ const Notifications = () => {
                 />
               ))}
             {(filteredPosts?.length === 0 &&
-              !relieverData?.getOneReliever?.id )  && (
+              !relieverData?.getRelieverByEmail?.id )  && (
                 <h1 className="p-6 text-lg">
                   You don&apos;t have any notifications.
                 </h1>

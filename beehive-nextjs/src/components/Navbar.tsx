@@ -69,7 +69,7 @@ const Navbar = () => {
                   </li>
                   <li>
                     {' '}
-                    {relieverData?.getOneReliever?.role === 'RELIEVER' && (
+                    {relieverData?.getRelieverByEmail?.role === 'RELIEVER' && (
                       <Link
                         className={buttonVariants({ variant: 'link' })}
                         href="/my-jobs"
@@ -91,7 +91,7 @@ const Navbar = () => {
                     )}
                   </li>
                   <li>
-                    {relieverData?.getOneReliever?.role === 'RELIEVER' && (
+                    {relieverData?.getRelieverByEmail?.role === 'RELIEVER' && (
                       <Link
                         className={buttonVariants({ variant: 'link' })}
                         href="/profile"
@@ -126,7 +126,7 @@ const Navbar = () => {
                 >
                   NOTIFICATIONS
                 </Link>
-                {relieverData?.getOneReliever?.role === 'RELIEVER' && (
+                {relieverData?.getRelieverByEmail?.role === 'RELIEVER' && (
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-jobs"
@@ -142,7 +142,7 @@ const Navbar = () => {
                     MY POSTS
                   </Link>
                 )}
-                {relieverData?.getOneReliever?.role === 'RELIEVER' && (
+                {relieverData?.getRelieverByEmail?.role === 'RELIEVER' && (
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/profile"
