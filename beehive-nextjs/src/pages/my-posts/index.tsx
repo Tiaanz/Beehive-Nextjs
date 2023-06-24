@@ -10,7 +10,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import Badge from '@mui/material/Badge'
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import dayjs, { Dayjs } from 'dayjs'
-import { GET_POSTS, GET_MANAGER, GET_POSTS_BY_MONTH } from '@/GraphQL_API'
+import { GET_POSTS_BY_DATE, GET_MANAGER, GET_POSTS_BY_MONTH } from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { Job } from '@/model'
 import PostByDay from '@/components/PostByDay'
@@ -69,7 +69,7 @@ const MyPosts = () => {
   })
 
   const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
-  const [getPosts, { loading: fetchPostLoading }] = useLazyQuery(GET_POSTS)
+  const [getPosts, { loading: fetchPostLoading }] = useLazyQuery(GET_POSTS_BY_DATE)
 
   async function fetchPosts() {
     const res = await getPosts({
@@ -80,7 +80,7 @@ const MyPosts = () => {
       },
     })
 
-    setPosts(res?.data?.getPostsByCenter || [])
+    setPosts(res?.data?.getPostsByDate || [])
   }
 
   function handleDateChange(value: Dayjs | null) {

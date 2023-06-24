@@ -69,12 +69,37 @@ export const GET_CENTER = gql`
 `
 
 //Define get posts query
-export const GET_POSTS = gql`
-  query GetPostsByCenter($centerId: Int!, $dateFrom: String, $dateTo: String) {
-    getPostsByCenter(
+export const GET_POSTS_BY_DATE = gql`
+  query GetPostsByDate($centerId: Int!, $dateFrom: String!, $dateTo: String!) {
+    getPostsByDate(
       center_id: $centerId
       date_from: $dateFrom
       date_to: $dateTo
+    ) {
+      id
+      center_id
+      time
+      qualified
+      status
+      date_from
+      date_to
+      relieverIDs
+      relievers {
+        id
+        first_name
+        last_name
+        email
+        qualified
+      }
+    }
+  }
+`
+
+//Define get posts query
+export const GET_POSTS_BY_CENTER = gql`
+  query GetPostsByCenter($centerId: Int!) {
+    getPostsByCenter(
+      center_id: $centerId
     ) {
       id
       center_id

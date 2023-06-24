@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react'
 import LargeHeading from '@/components/ui/LargeHeading'
 import Meta from '@/components/Meta'
-import { GET_JOBS, GET_RELIEVER, GET_POSTS, GET_MANAGER } from '@/GraphQL_API'
+import { GET_JOBS, GET_RELIEVER, GET_POSTS_BY_CENTER, GET_MANAGER } from '@/GraphQL_API'
 import { useQuery } from '@apollo/client'
 import JobNotice from '@/components/JobNotice'
 import PostNotice from '@/components/PostNotice'
@@ -27,7 +27,7 @@ const Notifications = () => {
   )
 
 
-  const { data: postsData } = useQuery(GET_POSTS, {
+  const { data: postsData } = useQuery(GET_POSTS_BY_CENTER, {
     variables: { centerId: managerData?.getManagerByEmail?.ECE_id },
   })
 
