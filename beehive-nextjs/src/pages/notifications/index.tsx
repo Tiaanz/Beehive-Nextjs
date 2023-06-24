@@ -28,7 +28,7 @@ const Notifications = () => {
 
 
   const { data: postsData } = useQuery(GET_POSTS, {
-    variables: { centerId: managerData?.getOneManager?.ECE_id },
+    variables: { centerId: managerData?.getManagerByEmail?.ECE_id },
   })
 
 
@@ -104,7 +104,7 @@ const Notifications = () => {
                   relieverId={relieverData?.getRelieverByEmail?.id}
                 />
               ))}
-            {managerData?.getOneManager?.id &&
+            {managerData?.getManagerByEmail?.id &&
               filteredPosts?.map((post: Job, index: number) => (
                 <PostNotice
                   key={post.id}
@@ -119,7 +119,7 @@ const Notifications = () => {
                   You don&apos;t have any notifications.
                 </h1>
               )}
-            {(filteredJobs?.length === 0 && !managerData?.getOneManager?.id)  && (
+            {(filteredJobs?.length === 0 && !managerData?.getManagerByEmail?.id)  && (
               <h1 className="p-6 text-lg">
                 You don&apos;t have any notifications.
               </h1>

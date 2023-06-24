@@ -62,7 +62,7 @@ const MyPosts = () => {
 
   const { data } = useQuery(GET_POSTS_BY_MONTH, {
     variables: {
-      centerId: managerData?.getOneManager?.ECE_id,
+      centerId: managerData?.getManagerByEmail?.ECE_id,
       dateFrom: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/01`,
       dateTo: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/31`,
     },
@@ -74,7 +74,7 @@ const MyPosts = () => {
   async function fetchPosts() {
     const res = await getPosts({
       variables: {
-        centerId: managerData?.getOneManager?.ECE_id,
+        centerId: managerData?.getManagerByEmail?.ECE_id,
         dateFrom: selectedDate?.format('YYYY/MM/DD'),
         dateTo: selectedDate?.format('YYYY/MM/DD'),
       },
@@ -91,7 +91,7 @@ const MyPosts = () => {
     setHighlightedDays([])
     const res = await getPostsByMonth({
       variables: {
-        centerId: managerData?.getOneManager?.ECE_id,
+        centerId: managerData?.getManagerByEmail?.ECE_id,
         dateFrom: `${dayjs(month).format('YYYY')}/${dayjs(month).format(
           'MM'
         )}/01`,
@@ -113,7 +113,7 @@ const MyPosts = () => {
     setHighlightedDays([])
     const res = await getPostsByMonth({
       variables: {
-        centerId: managerData?.getOneManager?.ECE_id,
+        centerId: managerData?.getManagerByEmail?.ECE_id,
         dateFrom: `${dayjs(year).format('YYYY')}/${dayjs(year).format(
           'MM'
         )}/01`,

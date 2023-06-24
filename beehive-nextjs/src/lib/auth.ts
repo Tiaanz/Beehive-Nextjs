@@ -38,8 +38,8 @@ export const authOptions: NextAuthOptions = {
           }
         `
         const GET_MANAGER = `
-        query GetOneManager($email: String!) {
-          getOneManager(email: $email) {
+        query GetManagerByEmail($email: String!) {
+          getManagerByEmail(email: $email) {
             id
             first_name
             email
@@ -64,7 +64,7 @@ export const authOptions: NextAuthOptions = {
         }
         const reliever = await getRelieverByEmail()
 
-        async function getOneManager() {
+        async function getManagerByEmail() {
           const response = await fetch(SERVER, {
             method: 'POST',
             headers: {
@@ -76,7 +76,7 @@ export const authOptions: NextAuthOptions = {
           const data = await response.json()
           return data
         }
-        const manager = await getOneManager()
+        const manager = await getManagerByEmail()
 
         //if the user log in as a manager
         if (
@@ -88,21 +88,21 @@ export const authOptions: NextAuthOptions = {
           ))
         ) {
           if (
-            manager.data.getOneManager === null ||
-            email !== manager.data.getOneManager.email ||
+            manager.data.getManagerByEmail === null ||
+            email !== manager.data.getManagerByEmail.email ||
             !(await bcrypt.compare(
               password,
-              manager.data.getOneManager.password
+              manager.data.getManagerByEmail.password
             ))
           ) {
             throw new Error('invalid password or email')
           }
           return {
-            id: manager.data.getOneManager.id,
-            name: manager.data.getOneManager.first_name,
-            email: manager.data.getOneManager.email,
-            role: manager.data.getOneManager.role,
-            token:manager.data.getOneManager.token
+            id: manager.data.getManagerByEmail.id,
+            name: manager.data.getManagerByEmail.first_name,
+            email: manager.data.getManagerByEmail.email,
+            role: manager.data.getManagerByEmail.role,
+            token:manager.data.getManagerByEmail.token
           }
         }
 

@@ -42,8 +42,8 @@ export const GET_RELIEVER_BY_ID = gql`
 
 //Define get a manager query
 export const GET_MANAGER = gql`
-  query GetOneManager($email: String!) {
-    getOneManager(email: $email) {
+  query GetManagerByEmail($email: String!) {
+    getManagerByEmail(email: $email) {
       id
       ECE_id
       phone

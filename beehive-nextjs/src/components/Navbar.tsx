@@ -80,7 +80,7 @@ const Navbar = () => {
                     )}
                   </li>
                   <li>
-                    {managerData?.getOneManager?.role === 'MANAGER' && (
+                    {managerData?.getManagerByEmail?.role === 'MANAGER' && (
                       <Link
                         className={buttonVariants({ variant: 'link' })}
                         href="/my-posts"
@@ -102,7 +102,7 @@ const Navbar = () => {
                     )}
                   </li>
                   <li>
-                    {managerData?.getOneManager?.role === 'MANAGER' && (
+                    {managerData?.getManagerByEmail?.role === 'MANAGER' && (
                       <Link
                         className={buttonVariants({ variant: 'link' })}
                         href="/my-centre"
@@ -134,7 +134,7 @@ const Navbar = () => {
                     MY JOBS
                   </Link>
                 )}
-                {managerData?.getOneManager?.role === 'MANAGER' && (
+                {managerData?.getManagerByEmail?.role === 'MANAGER' && (
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-posts"
@@ -150,7 +150,7 @@ const Navbar = () => {
                     PROFILE
                   </Link>
                 )}
-                {managerData?.getOneManager?.role === 'MANAGER' && (
+                {managerData?.getManagerByEmail?.role === 'MANAGER' && (
                   <Link
                     className={buttonVariants({ variant: 'link' })}
                     href="/my-centre"

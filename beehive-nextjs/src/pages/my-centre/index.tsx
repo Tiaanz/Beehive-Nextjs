@@ -24,7 +24,7 @@ const MyCentre = () => {
     loading,
     error,
   } = useQuery(GET_CENTER, {
-    variables: { ECE_id: managerData?.getOneManager?.ECE_id },
+    variables: { ECE_id: managerData?.getManagerByEmail?.ECE_id },
   })
 
   const [updateCenter, { loading: mutationLoading}] =
@@ -47,7 +47,7 @@ const MyCentre = () => {
       const data = new FormData(event.currentTarget)
       const res = await updateCenter({
         variables: {
-          eceId: managerData?.getOneManager?.ECE_id,
+          eceId: managerData?.getManagerByEmail?.ECE_id,
           description: data.get('description'),
         },
       })
@@ -72,7 +72,7 @@ const MyCentre = () => {
         reader.onloadend = async () => {
           const res = await updateCenter({
             variables: {
-              eceId: managerData?.getOneManager?.ECE_id,
+              eceId: managerData?.getManagerByEmail?.ECE_id,
               photoUrl: reader.result as string,
             },
           })
@@ -129,7 +129,7 @@ const MyCentre = () => {
           </p>
           <p className="text-sm md:text-base">{session?.user?.email}</p>
           <p className="text-sm md:text-base">
-            {managerData?.getOneManager?.phone}
+            {managerData?.getManagerByEmail?.phone}
           </p>
           <p className="text-sm md:text-base italic">
             {centerData?.getOneCenter?.address}

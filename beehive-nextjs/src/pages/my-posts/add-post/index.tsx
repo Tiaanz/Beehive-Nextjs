@@ -132,7 +132,7 @@ const AddPost = ({}) => {
                   <h1 className="text-xl">Add a post</h1>{' '}
                   <TextField
                     margin="normal"
-                    value={managerData?.getOneManager?.ECE_id || ''}
+                    value={managerData?.getManagerByEmail?.ECE_id || ''}
                     required
                     fullWidth
                     id="centerId"
