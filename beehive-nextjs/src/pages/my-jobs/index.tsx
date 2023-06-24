@@ -80,7 +80,7 @@ const MyJobs = () => {
       },
     })
 
-    setJobs(res?.data?.getJobsByReliever || [])
+    setJobs(res?.data?.getJobsByDate || [])
   }
 
   //only show the jobs that the reliever has applied
