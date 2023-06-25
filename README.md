@@ -47,9 +47,9 @@ Teachers can view comprehensive job details and track their applications using a
 
 ## Tech stack
 
-#### • TypeScript
+**TypeScript:** Provides type safety and enhanced developer productivity.
 
-Provides type safety and enhanced developer productivity.
+
 
 #### • Next.js
 
