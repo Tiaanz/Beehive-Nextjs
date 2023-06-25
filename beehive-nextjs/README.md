@@ -1,38 +1,95 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<!-- ![boardgame!](server/public/pics/banner1.jpg) -->
+<img src="public/Beehive.png" alt="boardgame" width="800" height="400">
 
-## Getting Started
+# Beehive
 
-First, run the development server:
+Beehive is a powerful web application designed to facilitate seamless connections between early childhood teachers and centers. It offers a wide range of features that empower centers and teachers to connect, collaborate, and find the perfect match for their needs.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Key Features for Centers
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### • Sign up and Sign in
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Centers can easily create an account and access their dashboard using their email and password.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+#### • Manage Center Profile
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Centers can enhance their profile by uploading an image and providing a detailed description.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#### • Post Job Listings
 
-## Learn More
+Centers can create job posts by specifying the date range, time range, and other specific requirements.
 
-To learn more about Next.js, take a look at the following resources:
+#### • Receive Teacher Applications
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Centers receive instant notifications when teachers apply for job listings. They can view the teacher's profile and accept applications accordingly.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### • Efficient Job Management
 
-## Deploy on Vercel
+Centers can easily manage their job listings and applications using a convenient calendar-based interface.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key Features for Teachers
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### • Sign up and Sign in
+
+Teachers can quickly register and log in to the platform using their email and password.
+
+#### • Update Personal Profile
+
+Teachers can personalize their profile by uploading an image and adding a biography.
+
+#### • Job Notifications
+
+Teachers receive timely notifications when centers post job listings on their available days. They can review the center's profile and choose to apply or decline the job.
+
+#### • Job Details and Tracking
+
+Teachers can view comprehensive job details and track their applications using an intuitive calendar-based interface.
+
+## Tech stack
+
+#### • TypeScript
+
+Provides type safety and enhanced developer productivity.
+
+#### • Next.js
+
+A popular React framework for server-side rendering and efficient front-end development.
+
+#### • Tailwindcss
+
+A utility-first CSS framework for rapid and responsive UI development.
+
+#### • NextAuth
+
+Enables secure authentication and authorization for user management.
+
+#### • MongoDB
+
+A flexible and scalable NoSQL database for efficient data storage.
+
+#### • Prisma
+
+A modern data access toolkit for working with databases, providing type-safe querying and migrations.
+
+#### • GraphQL
+
+A powerful query language and runtime for APIs, enabling efficient data fetching and manipulation.
+
+#### • Apollo client and Apollo server
+
+Libraries for building efficient and scalable GraphQL clients and servers.
+
+#### • Zod
+
+A TypeScript-first schema validation library for robust input validation.
+
+## Installation and Usage
+
+To run Beehive locally, follow these steps:
+
+1. Clone the repository: `git clone [repository URL]`
+2. Install dependencies: `npm install`
+3. Set up environment variables: Create a `.env` file based on the provided `.env.example` file and add the necessary configuration.
+4. Run the application: `npm run dev`.
+
+Make sure you have the required dependencies and configurations in place before running Beehive.
