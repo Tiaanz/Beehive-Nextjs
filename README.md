@@ -1,5 +1,5 @@
 <!-- ![boardgame!](server/public/pics/banner1.jpg) -->
-<img src="public/Beehive.png" alt="boardgame" width="800" height="400">
+<img src="beehive-nextjs/public/background.jpeg" alt="beehive" width="800" height="400">
 
 # Beehive
 
@@ -7,81 +7,45 @@ Beehive is a powerful web application designed to facilitate seamless connection
 
 ## Key Features for Centers
 
-#### • Sign up and Sign in
+**• Sign up and Sign in:** Centers can easily create an account and access their dashboard using their email and password.
 
-Centers can easily create an account and access their dashboard using their email and password.
+**• Manage Center Profile:** Centers can enhance their profile by uploading an image and providing a detailed description.
 
-#### • Manage Center Profile
+**• Post Job Listings:** Centers can create job posts by specifying the date range, time range, and other specific requirements.
 
-Centers can enhance their profile by uploading an image and providing a detailed description.
+**• Receive Teacher Applications:** Centers receive instant notifications when teachers apply for job listings. They can view the teacher's profile and accept applications accordingly.
 
-#### • Post Job Listings
-
-Centers can create job posts by specifying the date range, time range, and other specific requirements.
-
-#### • Receive Teacher Applications
-
-Centers receive instant notifications when teachers apply for job listings. They can view the teacher's profile and accept applications accordingly.
-
-#### • Efficient Job Management
-
-Centers can easily manage their job listings and applications using a convenient calendar-based interface.
+**• Efficient Job Management:** Centers can easily manage their job listings and applications using a convenient calendar-based interface.
 
 ## Key Features for Teachers
 
-#### • Sign up and Sign in
+**• Sign up and Sign in:** Teachers can quickly register and log in to the platform using their email and password. 
 
-Teachers can quickly register and log in to the platform using their email and password.
+**• Update Personal Profile:** Teachers can personalize their profile by uploading an image and adding a biography.
 
-#### • Update Personal Profile
+**• Job Notifications:** Teachers receive timely notifications when centers post job listings on their available days. They can review the center's profile and choose to apply or decline the job.
 
-Teachers can personalize their profile by uploading an image and adding a biography.
-
-#### • Job Notifications
-
-Teachers receive timely notifications when centers post job listings on their available days. They can review the center's profile and choose to apply or decline the job.
-
-#### • Job Details and Tracking
-
-Teachers can view comprehensive job details and track their applications using an intuitive calendar-based interface.
+**• Job Details and Tracking:** Teachers can view comprehensive job details and track their applications using an intuitive calendar-based interface.
 
 ## Tech stack
 
-**TypeScript:** Provides type safety and enhanced developer productivity.
+**• Next.js:** A popular React framework for server-side rendering and efficient front-end development.
 
+**• TypeScript:** Provides type safety and enhanced developer productivity.
 
+**• Tailwindcss:** A utility-first CSS framework for rapid and responsive UI development.
 
-#### • Next.js
+**• NextAuth:** Enables secure authentication and authorization for user management.
 
-A popular React framework for server-side rendering and efficient front-end development.
+**• MongoDB:** A flexible and scalable NoSQL database for efficient data storage.
 
-#### • Tailwindcss
+**• Prisma:** A modern data access toolkit for working with databases, providing type-safe querying and migrations.
 
-A utility-first CSS framework for rapid and responsive UI development.
+**• GraphQL:** A powerful query language and runtime for APIs, enabling efficient data fetching and manipulation.
 
-#### • NextAuth
+**• Apollo client and Apollo server:** Libraries for building efficient and scalable GraphQL clients and servers.
 
-Enables secure authentication and authorization for user management.
-
-#### • MongoDB
-
-A flexible and scalable NoSQL database for efficient data storage.
-
-#### • Prisma
-
-A modern data access toolkit for working with databases, providing type-safe querying and migrations.
-
-#### • GraphQL
-
-A powerful query language and runtime for APIs, enabling efficient data fetching and manipulation.
-
-#### • Apollo client and Apollo server
-
-Libraries for building efficient and scalable GraphQL clients and servers.
-
-#### • Zod
-
-A TypeScript-first schema validation library for robust input validation.
+**• Zod:** A TypeScript-first schema validation library for robust input validation.
 
 ## Installation and Usage
 
