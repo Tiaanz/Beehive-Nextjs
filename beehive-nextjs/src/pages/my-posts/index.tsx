@@ -10,7 +10,11 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import Badge from '@mui/material/Badge'
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import dayjs, { Dayjs } from 'dayjs'
-import { GET_POSTS_BY_DATE, GET_MANAGER, GET_POSTS_BY_MONTH } from '@/GraphQL_API'
+import {
+  GET_POSTS_BY_DATE,
+  GET_MANAGER,
+  GET_POSTS_BY_MONTH,
+} from '@/GraphQL_API'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { Job } from '@/model'
 import PostByDay from '@/components/PostByDay'
@@ -60,7 +64,6 @@ const MyPosts = () => {
     variables: { email: session?.user?.email },
   })
 
-
   const { data } = useQuery(GET_POSTS_BY_MONTH, {
     variables: {
       centerId: managerData?.getManagerByEmail?.ECE_id,
@@ -68,10 +71,10 @@ const MyPosts = () => {
       dateTo: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/31`,
     },
   })
- 
 
   const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
-  const [getPosts, { loading: fetchPostLoading }] = useLazyQuery(GET_POSTS_BY_DATE)
+  const [getPosts, { loading: fetchPostLoading }] =
+    useLazyQuery(GET_POSTS_BY_DATE)
 
   async function fetchPosts() {
     const res = await getPosts({
@@ -102,6 +105,12 @@ const MyPosts = () => {
         )}/31`,
       },
     })
+    console.log(
+      formatHighlightedDatesFromArray(
+        res?.data?.getPostsByMonth,
+        dayjs(month).month()
+      )
+    )
 
     setHighlightedDays(
       formatHighlightedDatesFromArray(
