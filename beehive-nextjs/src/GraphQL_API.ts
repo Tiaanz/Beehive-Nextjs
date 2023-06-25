@@ -308,18 +308,12 @@ export const ADD_POST = gql`
 export const UPDATE_POST = gql`
   mutation UpdatePost(
     $postId: String!
-    $dateFrom: String
-    $dateTo: String
     $time: String
-    $qualified: Boolean
     $status: String
   ) {
     updatePost(
       post_id: $postId
-      date_from: $dateFrom
-      date_to: $dateTo
       time: $time
-      qualified: $qualified
       status: $status
     ) {
       id
@@ -330,8 +324,8 @@ export const UPDATE_POST = gql`
 
 // Define apply job mutation
 export const APPLY_JOB = gql`
-  mutation ApplyJob($applyJobId: String!, $relieverId: String!) {
-    applyJob(id: $applyJobId, relieverID: $relieverId) {
+  mutation ApplyJob($jobId: String!, $relieverId: String!) {
+    applyJob(jobID: $jobId, relieverID: $relieverId) {
       id
       relieverIDs
     }
@@ -340,8 +334,8 @@ export const APPLY_JOB = gql`
 
 // Define decline job mutation
 export const DECLINE_JOB = gql`
-  mutation DeclineJob($declineJobId: String!, $relieverId: String!) {
-    declineJob(id: $declineJobId, relieverID: $relieverId) {
+  mutation DeclineJob($jobId: String!, $relieverId: String!) {
+    declineJob(jobID: $jobId, relieverID: $relieverId) {
       id
       declined_relieverIDs
     }
@@ -350,8 +344,8 @@ export const DECLINE_JOB = gql`
 
 // Define accpet job mutation
 export const ACCEPT_JOB = gql`
-  mutation AcceptJob($acceptJobId: String!, $relieverId: String!) {
-    acceptJob(id: $acceptJobId, relieverID: $relieverId) {
+  mutation AcceptJob($jobId: String!, $relieverId: String!) {
+    acceptJob(jobID: $jobId, relieverID: $relieverId) {
       id
       relieverIDs
       status
@@ -361,8 +355,8 @@ export const ACCEPT_JOB = gql`
 
 // Define accpet job mutation //getJobId is relieverId
 export const GET_JOB = gql`
-  mutation GetJob($getJobId: String!, $jobId: String!) {
-    getJob(id: $getJobId, jobID: $jobId) {
+  mutation GetJob($relieverId: String!, $jobId: String!) {
+    getJob(relieverID: $relieverId, jobID: $jobId) {
       id
       jobIDs
       jobs {

@@ -53,7 +53,7 @@ const MyJobs = () => {
 
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs())
   const [jobs, setJobs] = React.useState<Job[]>([])
-  // const [highlightedDays, setHighlightedDays] = React.useState<number[]>([])
+  
   const [highlightedDays, setHighlightedDays] = React.useState<
     { date: number; badgeContent: React.ReactNode }[]
   >([])
@@ -67,6 +67,8 @@ const MyJobs = () => {
       dateTo: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/31`,
     },
   })
+
+  
 
   const [getJobs, { loading: fetchJobLoading }] =
     useLazyQuery(GET_RELIEVER_JOBS)
@@ -104,6 +106,7 @@ const MyJobs = () => {
         )}/31`,
       },
     })
+
 
     setHighlightedDays(
       formatHighlightedDatesFromArray(

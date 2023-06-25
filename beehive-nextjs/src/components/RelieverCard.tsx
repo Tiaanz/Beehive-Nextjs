@@ -27,14 +27,14 @@ const RelieverCard: FC<RelieverCardProps> = ({ reliever, jobId }) => {
     await acceptJob({
       variables: {
         relieverId: reliever.id,
-        acceptJobId: jobId,
+        jobId: jobId,
       },
     })
 
     //set not available dates for the reliever
     await getJob({
       variables: {
-        getJobId: reliever.id,
+        relieverId: reliever.id,
         jobId,
       },
     })

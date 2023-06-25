@@ -39,7 +39,7 @@ const JobNotice: FC<JobNoticeProps> = ({
     try {
       await applyJob({
         variables: {
-          applyJobId: job.id,
+          jobId: job.id,
           relieverId,
         },
       })
@@ -66,7 +66,7 @@ const JobNotice: FC<JobNoticeProps> = ({
     try {
       await declineJob({
         variables: {
-          declineJobId: job.id,
+          jobId: job.id,
           relieverId,
         },
       })

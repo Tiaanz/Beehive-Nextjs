@@ -60,6 +60,7 @@ const MyPosts = () => {
     variables: { email: session?.user?.email },
   })
 
+
   const { data } = useQuery(GET_POSTS_BY_MONTH, {
     variables: {
       centerId: managerData?.getManagerByEmail?.ECE_id,
@@ -67,6 +68,7 @@ const MyPosts = () => {
       dateTo: `${dayjs().format('YYYY')}/${dayjs().format('MM')}/31`,
     },
   })
+ 
 
   const [getPostsByMonth] = useLazyQuery(GET_POSTS_BY_MONTH)
   const [getPosts, { loading: fetchPostLoading }] = useLazyQuery(GET_POSTS_BY_DATE)
