@@ -1,5 +1,5 @@
 <!-- ![boardgame!](server/public/pics/banner1.jpg) -->
-<img src="beehive-nextjs/public/background.jpeg" alt="beehive" width="800" height="400">
+<img src="beehive-nextjs/public/beehive.jpeg" alt="beehive" width="800" height="400">
 
 # Beehive
 
