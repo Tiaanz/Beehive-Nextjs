@@ -118,7 +118,9 @@ const Profile = () => {
               {data?.getRelieverByEmail?.phone}
             </p>
             <p className="text-sm md:text-base font-bold">
-              {data?.getRelieverByEmail?.qualified?"Qualified":"Unqualified"}
+              {data?.getRelieverByEmail?.qualified
+                ? 'Qualified'
+                : 'Unqualified'}
             </p>
           </div>
           <div className="basis-2/3 flex flex-col md:justify-start md:items-start items-center">
@@ -157,17 +159,18 @@ const Profile = () => {
             )}
             {isEditing && (
               <>
-                <form onSubmit={handleSave} className="w-full flex flex-col">
+                <form onSubmit={handleSave} className="w-full flex flex-col items-center sm:items-start">
                   {mutationLoading ? (
                     <Box className="lg:w-2/3 md:w-3/4 w-full h-72 flex flex-col justify-center">
                       <LinearProgress />
                     </Box>
                   ) : (
                     <textarea
-                      rows={15}
+                      rows={12}
+                      cols={48}
                       name="bio"
                       defaultValue={bio}
-                      className="block p-2.5 lg:w-4/5 md:w-3/4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                      className="block p-2.5 lg:w-4/5 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Write your bio here..."
                       overflow-y="scroll"
                     ></textarea>

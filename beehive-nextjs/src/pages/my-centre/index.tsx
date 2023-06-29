@@ -27,7 +27,7 @@ const MyCentre = () => {
     variables: { ECE_id: managerData?.getManagerByEmail?.ECE_id },
   })
 
-  const [updateCenter, { loading: mutationLoading}] =
+  const [updateCenter, { loading: mutationLoading }] =
     useMutation(UPDATE_CENTER)
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -68,7 +68,7 @@ const MyCentre = () => {
       const file = event.target.files?.[0]
       if (file) {
         const reader = new FileReader()
-  
+
         reader.onloadend = async () => {
           const res = await updateCenter({
             variables: {
@@ -78,7 +78,7 @@ const MyCentre = () => {
           })
           setImageUrl(res.data.updateCenter.photo_url)
         }
-  
+
         reader.readAsDataURL(file)
       }
     } catch (error) {
@@ -89,13 +89,12 @@ const MyCentre = () => {
         type: 'error',
       })
     }
-   
   }
 
   if (error) {
     return (
       <h1 className="text-xl w-11/12 md:pt-20 pt-10 mt-12 md:w-4/5 mx-auto">
-        ERROR: {error?.message} 
+        ERROR: {error?.message}
       </h1>
     )
   }
@@ -171,14 +170,15 @@ const MyCentre = () => {
           )}
           {isEditing && (
             <>
-              <form onSubmit={handleSave} className="w-full flex flex-col">
+              <form onSubmit={handleSave} className="w-full flex flex-col items-center sm:items-start">
                 {mutationLoading ? (
                   <Box className="lg:w-2/3 md:w-3/4 w-full h-72 flex flex-col justify-center">
                     <LinearProgress />
                   </Box>
                 ) : (
                   <textarea
-                    rows={15}
+                    rows={12}
+                    cols={48}
                     name="description"
                     defaultValue={description}
                     className="block p-2.5 lg:w-4/5 md:w-3/4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
