@@ -35,6 +35,8 @@ Beehive is a powerful web application designed to facilitate seamless connection
 
 **• Tailwindcss:** A utility-first CSS framework for rapid and responsive UI development.
 
+**• Material UI:** A React component library.
+
 **• NextAuth:** Enables secure authentication and authorization for user management.
 
 **• MongoDB:** A flexible and scalable NoSQL database for efficient data storage.
